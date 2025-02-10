@@ -9,26 +9,3 @@ react-helmet-async: SEO 및 문서 <head> 제어
 GSAP: 강력한 애니메이션 라이브러리
 React Router: 리액트형식의 페이지 이동
 React Query: 현명한 자원관리
-
-프로젝트 구조
-
-eobom/
-├─ public/
-├─ src/
-│ ├─ assets/
-│ ├─ components/
-│ ├─ pages/
-│ ├─ hooks/
-│ ├─ context/
-│ ├─ layouts/
-│ ├─ utils/
-│ ├─ types/
-│ ├─ styles/
-│ ├─ App.tsx
-│ └─ index.tsx
-├─ .gitignore
-├─ package.json
-├─ tsconfig.json
-├─ tailwind.config.js
-├─ postcss.config.js
-└─ README.md
