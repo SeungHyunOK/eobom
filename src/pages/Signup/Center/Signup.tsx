@@ -38,7 +38,7 @@ const auth = getAuth();
 auth.languageCode = "ko";
 
 function Signup() {
-  const [step, setStep] = useState<number>(2);
+  const [step, setStep] = useState<number>(0);
   const [userId, setUserId] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
   const [userIdValidation, setUserIdValidation] = useState<boolean | null>(null);
