@@ -8,10 +8,11 @@ type InputProps = {
   value: string,
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
   onClick?: () => void,
+  prefix?: React.JSX.Element | null,
   suffix?: React.JSX.Element | null,
 }
 
-const Input = ({ type, label, placeholder, value, onChange, onClick, suffix }: InputProps) => {
+const Input = ({ type, label, placeholder, value, onChange, onClick, prefix, suffix }: InputProps) => {
   const underlines = ["bg-[#D4D2D2]", "bg-[#181818]"];
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
 
@@ -19,12 +20,12 @@ const Input = ({ type, label, placeholder, value, onChange, onClick, suffix }: I
     switch (type) {
       case "id":
         return (
-          <input className="text-[19px] font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} />
+          <input className="text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} />
         );
       case "password":
         return (
           <>
-            <input className="text-[19px] font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} type={passwordVisible ? "text" : "password"} />
+            <input className="text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} type={passwordVisible ? "text" : "password"} />
             <button onClick={() => setPasswordVisible(!passwordVisible)}>
               {
                 passwordVisible ?
@@ -36,19 +37,16 @@ const Input = ({ type, label, placeholder, value, onChange, onClick, suffix }: I
         );
       case "text":
         return (
-          <input className="text-[19px] font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} />
+          <input className="text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} />
         );
+      case "date":
       case "tel":
         return (
-          <input className="text-[19px] font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} type="tel" />
-        );
-      case "number":
-        return (
-          <input className="text-[19px] font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} type="number" />
+          <input className="text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} type="tel" />
         );
       default:
         return (
-          <input className="text-[19px] font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} />
+          <input className="text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} />
         );
     }
   }
@@ -61,11 +59,12 @@ const Input = ({ type, label, placeholder, value, onChange, onClick, suffix }: I
             <Space css="h-[20px]" /></>
           : null
       }
-      <div className="flex justify-between">
+      <div className="flex">
+        {prefix ?? null}
         {BodyComponent()}
         {suffix ?? null}
       </div>
-      <div className={`w-full h-[2px] ${underlines[value ? 1 : 0]}`} />
+      <div className={`${type === "date" ? "w-[126px]" : "w-full"} h-[2px] ${underlines[value ? 1 : 0]}`} />
     </label>
   );
 };

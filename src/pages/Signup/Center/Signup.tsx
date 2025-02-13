@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ProgressBar from "../../../components/common/ProgressBar";
 import Button from "../../../components/common/Button";
 import Title from "../../../components/common/Title";
@@ -10,10 +10,35 @@ import CheckButton from "../../../components/common/CheckButton";
 import BottomSheet from "../../../components/common/BottomSheet";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import Label from "../../../components/common/Label";
+import { initializeApp } from "firebase/app";
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import Delay from "../../../components/common/Delay";
 
+
+declare global {
+  interface Window {
+    recaptchaVerifier: any;
+    confirmationResult: any;
+  }
+}
+
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
+};
+
+initializeApp(firebaseConfig);
+
+const auth = getAuth();
+auth.languageCode = "ko";
 
 function Signup() {
-  const [step, setStep] = useState<number>(0);
+  const [step, setStep] = useState<number>(2);
   const [userId, setUserId] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
   const [userIdValidation, setUserIdValidation] = useState<boolean | null>(null);
@@ -25,9 +50,11 @@ function Signup() {
   const [centerName, setCenterName] = useState<string>("");
   const [centerOwnerName, setCenterOwnerName] = useState<string>("");
   const [registrationNumber, setRegistrationNumber] = useState<string>("");
+  const [openingDate, setOpeningDate] = useState<string>("");
   const [openBottomSheet, setOpenBottomSheet] = useState<boolean>(false);
   const [showerTruck, setShowerTruck] = useState<boolean | null>(null);
   const [centerRating, setCenterRating] = useState<number | null>(null);
+  const divRef = useRef<HTMLDivElement>(null);
   const openSearchAddress = useDaumPostcodePopup();
 
   const TOTAL = 5;
@@ -58,6 +85,27 @@ function Signup() {
 
   const handleSendAuthCode = (value: boolean) => {
     setOpenBottomSheet(value);
+    if (!value) return;
+
+    const recaptchaCerifier = divRef.current;
+
+    if (!recaptchaCerifier) return;
+
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, recaptchaCerifier, {
+        "size": "invisible",
+        "callback": () => {
+          //
+        }
+      });
+    }
+
+    signInWithPhoneNumber(auth, `+82${userPhoneNumber.replace(/[^0-9]/g, "")}`, window.recaptchaVerifier)
+      .then((confirmationResult) => {
+        window.confirmationResult = confirmationResult;
+      }).catch((error) => {
+        console.log(error);
+      });
   }
 
   const handleChangeCenterAddressDetail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,6 +122,16 @@ function Signup() {
 
   const handleChangeCenterOwnerName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCenterOwnerName(e.target.value);
+  }
+
+  const handleChangeOpeningDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const date = e.target.value.replace(/[^0-9]/g, "");
+    if (date.length <= 4) {
+      setOpeningDate(date.replace(/^(\d{2})(\d{1,2})$/, "$1.$2"));
+    }
+    else if (date.length <= 6) {
+      setOpeningDate(date.replace(/^(\d{2})(\d{2})(\d{1,2})$/, "$1.$2.$3"));
+    }
   }
 
   const handleClickDone = () => {
@@ -111,7 +169,7 @@ function Signup() {
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/key.png" />
-              <FormTitle content={<>사용하실 아이디와<br />비밀번호를 입력해주세요"</>} />
+              <FormTitle content={<>사용하실 아이디와<br />비밀번호를 입력해주세요</>} />
               <Space css={"h-[46px]"} />
               <Input type="id" label="아이디" placeholder="아이디를 입력해주세요" value={userId} onChange={handleChangeUserId} />
               <Space css={"h-[6px]"} />
@@ -163,10 +221,11 @@ function Signup() {
               <Space css={"h-[46px]"} />
               <Input type="text" placeholder="예시 ) 010-1234-5678" value={userPhoneNumber} onChange={handleChangeUserPhoneNumber} />
             </div>
+            <div ref={divRef} />
             <Button text="인증번호 발송" onClick={() => handleSendAuthCode(true)} disabled={!userPhoneNumber} />
             {
               openBottomSheet ?
-                <BottomSheet start={Date.now()} close={() => handleSendAuthCode(false)} />
+                <BottomSheet start={Date.now()} handleSendAuthCode={handleSendAuthCode} handleClickDone={handleClickDone} />
                 : null
             }
           </div>
@@ -210,7 +269,7 @@ function Signup() {
               <Space css={"h-[28px]"} />
               <Input type="text" label="대표자 성명" placeholder="예시 ) 홍길동" value={centerOwnerName} onChange={handleChangeCenterOwnerName} suffix={centerOwnerName ? CloseButton(() => setCenterOwnerName("")) : null} />
               <Space css={"h-[28px]"} />
-              <Input type="text" label="개원 일자" placeholder="YY.MM.DD" value={""} />
+              <Input type="date" label="개원 일자" placeholder="YY.MM.DD" value={openingDate} onChange={handleChangeOpeningDate} prefix={<img className="w-[24px] mr-[6px]" src={openingDate ? "/assets/icons/calendar-bold.svg" : "/assets/icons/calendar.svg"} />} />
             </div>
             <Button text="입력 완료" onClick={handleClickDone} disabled={false} />
           </div>
@@ -262,15 +321,23 @@ function Signup() {
 
   return (
     <div className="flex flex-col font-pre h-full p-[20px]">
-      <div className="flex flex-col justify-center flex-1 ">
-        <FormTitle content={<>이어봄 회원가입이<br />완료되었어요!</>} align="text-center" />
-        <FormTitle content={<>이제 어르신 정보를 등록하고<br />보호사 구인을 할 수 있어요</>} align="text-center" />
-      </div>
-      <p className="text-[13px] text-[#918686] underline underline-offset-2 text-center">
-        다음에 입력할게요
-      </p>
-      <Space css={"h-[8px]"} />
-      <Button text="어르신 정보 등록하기" onClick={() => { }} disabled={false} />
+      <Delay start={Date.now()} seconds={2} components={[
+        <>
+          <div className="flex flex-col justify-center flex-1 ">
+            <FormTitle content={<>이어봄 회원가입이<br />완료되었어요!</>} align="text-center" />
+          </div>
+        </>,
+        <>
+          <div className="flex flex-col justify-center flex-1 ">
+            <FormTitle content={<>이제 어르신 정보를 등록하고<br />보호사 구인을 할 수 있어요</>} align="text-center" />
+          </div>
+          <p className="text-[13px] text-[#918686] underline underline-offset-2 text-center cursor-pointer">
+            다음에 입력할게요
+          </p>
+          <Space css={"h-[8px]"} />
+          <Button text="어르신 정보 등록하기" onClick={() => { }} disabled={false} />
+        </>
+      ]} />
     </div >
   );
 }
