@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 
 
-const TimeTable = () => {
+type TimeTableProps = {
+  setWeeklyHours: React.Dispatch<React.SetStateAction<number>>,
+}
+
+const TimeTable = ({ setWeeklyHours }: TimeTableProps) => {
   const [selected, setSelected] = useState<boolean[][]>(Array.from(Array(12), () => Array(7).fill(false)));
   const [mouseDown, setMouseDown] = useState<boolean>(false);
 
@@ -25,6 +29,11 @@ const TimeTable = () => {
           return prev.map((row, i) => {
             return row.map((value, j) => {
               if (i === rowNum && j === colNum) {
+                if (value) {
+                  setWeeklyHours(prev => prev - 1);
+                } else {
+                  setWeeklyHours(prev => prev + 1);
+                }
                 return !value
               }
               else {
@@ -34,12 +43,16 @@ const TimeTable = () => {
           });
         });
       } else if (e.type === "mouseenter") {
-        console.log(e);
         if (mouseDown && !selected[rowNum][colNum]) {
           setSelected(prev => {
             return prev.map((row, i) => {
               return row.map((value, j) => {
                 if (i === rowNum && j === colNum && mouseDown) {
+                  if (value) {
+                    setWeeklyHours(prev => prev - 1);
+                  } else {
+                    setWeeklyHours(prev => prev + 1);
+                  }
                   return !value
                 }
                 else {
@@ -53,6 +66,11 @@ const TimeTable = () => {
             return prev.map((row, i) => {
               return row.map((value, j) => {
                 if (i === rowNum && j === colNum && mouseDown) {
+                  if (value) {
+                    setWeeklyHours(prev => prev - 1);
+                  } else {
+                    setWeeklyHours(prev => prev + 1);
+                  }
                   return !value
                 }
                 else {

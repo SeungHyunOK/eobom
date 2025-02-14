@@ -57,8 +57,6 @@ function Signup() {
   const divRef = useRef<HTMLDivElement>(null);
   const openSearchAddress = useDaumPostcodePopup();
 
-  const TOTAL = 5;
-
   const handleChangeUserId = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserId(e.target.value);
     setUserIdValidation(null);
@@ -286,15 +284,15 @@ function Signup() {
               <Space css={"h-[46px]"} />
               <Label text="센터 등급" />
               <Space css={"h-[18px]"} />
-              <CheckButton text="A등급" width="w-[70px]" onClick={() => setCenterRating(0)} checked={centerRating === 0} />
-              <CheckButton text="B등급" width="w-[70px]" onClick={() => setCenterRating(1)} checked={centerRating === 1} />
-              <CheckButton text="C등급" width="w-[70px]" onClick={() => setCenterRating(2)} checked={centerRating === 2} />
-              <CheckButton text="D등급" width="w-[70px]" onClick={() => setCenterRating(3)} checked={centerRating === 3} />
+              <CheckButton text="A등급" width="w-[70px]" height="h-[34px]" onClick={() => setCenterRating(0)} checked={centerRating === 0} />
+              <CheckButton text="B등급" width="w-[70px]" height="h-[34px]" onClick={() => setCenterRating(1)} checked={centerRating === 1} />
+              <CheckButton text="C등급" width="w-[70px]" height="h-[34px]" onClick={() => setCenterRating(2)} checked={centerRating === 2} />
+              <CheckButton text="D등급" width="w-[70px]" height="h-[34px]" onClick={() => setCenterRating(3)} checked={centerRating === 3} />
               <Space css={"h-[34px]"} />
               <Label text="목욕 차량 소유 여부" />
               <Space css={"h-[18px]"} />
-              <CheckButton text="네" width="w-[110px]" onClick={() => setShowerTruck(true)} checked={showerTruck === true} />
-              <CheckButton text="아니오" width="w-[110px]" onClick={() => setShowerTruck(false)} checked={showerTruck === false} />
+              <CheckButton text="네" width="w-[110px]" height="h-[34px]" onClick={() => setShowerTruck(true)} checked={showerTruck === true} />
+              <CheckButton text="아니오" width="w-[110px]" height="h-[34px]" onClick={() => setShowerTruck(false)} checked={showerTruck === false} />
             </div>
             <Button text="회원가입 완료" onClick={handleClickDone} disabled={showerTruck === null || centerRating === null} />
           </div>
@@ -311,7 +309,7 @@ function Signup() {
           <Title text="회원가입" />
         </div>
         <Space css={"h-[16px]"} />
-        <ProgressBar width={step <= 0 ? "w-[0px]" : `w-${step}/${TOTAL}`} />
+        <ProgressBar step={step} total={6} />
         {
           BodyComponent()
         }
