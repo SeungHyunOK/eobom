@@ -14,6 +14,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import Delay from "../../../components/common/Delay";
 import TextArea from "../../../components/common/TextArea";
+import TextButton from "../../../components/common/TextButton";
 
 
 declare global {
@@ -189,8 +190,8 @@ function Signup() {
               <Input type="password" label="비밀번호" placeholder="비밀번호를 입력해주세요" value={userPassword} onChange={handleChangeUserPassword} />
               <Space css={"h-[6px]"} />
               {
-                userPasswordValidation === false ?
-                  <p className="text-[13px] text-[#FF8411] font-semibold">
+                userPasswordValidation === false
+                  ? <p className="text-[13px] text-[#FF8411] font-semibold">
                     영문, 숫자, 특수기호 3가지를 포함해주세요
                   </p>
                   : <Space css="h-[19px]" />
@@ -231,8 +232,8 @@ function Signup() {
             <div ref={divRef} />
             <Button text="인증번호 발송" onClick={() => handleSendAuthCode(true)} disabled={!userPhoneNumber} />
             {
-              openBottomSheet ?
-                <BottomSheet start={Date.now()} handleSendAuthCode={handleSendAuthCode} handleClickDone={handleClickDone} />
+              openBottomSheet
+                ? <BottomSheet start={Date.now()} handleSendAuthCode={handleSendAuthCode} handleClickDone={handleClickDone} />
                 : null
             }
           </div>
@@ -287,7 +288,7 @@ function Signup() {
         return (
           <div className="h-full flex flex-col">
             <ProgressBar width={"w-5/6"} />
-            <div className="flex-1">
+            <div className="h-full flex flex-col flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/memo.png" />
               <FormTitle content={<>매칭 확률을 높이기 위하여<br />추가 정보를 입력해주세요</>} />
@@ -323,7 +324,7 @@ function Signup() {
             <div className="h-full flex flex-col flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/camera.png" />
-              <FormTitle content={<>프로필 사진을 등록해주세요</>} />
+              <FormTitle content={<>마지막으로,<br />프로필 사진을 등록해주세요</>} />
               <Space css={"h-[14px]"} />
               <Explanation text="매칭 요청 시 신뢰도를 높일 수 있어요" />
               <Space css={"h-[46px]"} />
@@ -336,11 +337,10 @@ function Signup() {
                 </div>
               </div>
             </div>
-            <p className="text-[13px] text-[#918686] underline underline-offset-2 text-center cursor-pointer" onClick={handleClickDone}>
-              다음에 등록할게요
-            </p>
-            <Space css={"h-[8px]"} />
-            <Button text="회원가입 완료" onClick={() => { }} disabled={true} />
+            <Space css={"h-[56px]"} />
+            <Button text="회원가입 완료" onClick={() => { }} disabled={true} textButton={
+              <TextButton text="다음에 등록할게요" onClick={handleClickDone} />
+            } />
           </div>
         );
     }
@@ -348,7 +348,7 @@ function Signup() {
 
   if (step <= 6) {
     return (
-      <div className="flex flex-col justify-center font-pre h-full p-[20px] select-none">
+      <div className="flex flex-col justify-center font-pre p-[20px] select-none">
         <Space css={"h-[28px]"} />
         <div className="flex justify-center">
           <img className="absolute left-[20px] cursor-pointer" src="/assets/icons/past.svg" onClick={handleClickPrev} />
@@ -358,27 +358,28 @@ function Signup() {
         {
           BodyComponent()
         }
+        <Space css={"h-[80px]"} />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col font-pre h-full p-[20px] select-none">
+    <div className="h-full flex flex-col font-pre p-[20px] select-none">
       <Delay start={Date.now()} seconds={2} components={[
         <>
           <div className="flex flex-col justify-center flex-1 ">
             <FormTitle content={<>이어봄 회원가입이<br />완료되었어요!</>} align="text-center" />
           </div>
+          <Space css={"h-[76px]"} />
         </>,
         <>
           <div className="flex flex-col justify-center flex-1 ">
             <FormTitle content={<>이제 어르신 정보를 등록하고<br />보호사 구인을 할 수 있어요</>} align="text-center" />
           </div>
-          <p className="text-[13px] text-[#918686] underline underline-offset-2 text-center cursor-pointer">
-            다음에 입력할게요
-          </p>
-          <Space css={"h-[8px]"} />
-          <Button text="어르신 정보 등록하기" onClick={() => { }} disabled={false} />
+          <Space css={"h-[56px]"} />
+          <Button text="어르신 정보 등록하기" onClick={() => { }} disabled={false} textButton={
+            <TextButton text="다음에 입력할게요" onClick={() => { }} />
+          } />
         </>
       ]} />
     </div >

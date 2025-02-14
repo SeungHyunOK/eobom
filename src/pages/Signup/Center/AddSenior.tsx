@@ -9,6 +9,7 @@ import Space from "../../../components/common/Space";
 import CheckButton from "../../../components/common/CheckButton";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import Label from "../../../components/common/Label";
+import TextButton from "../../../components/common/TextButton";
 
 
 function AddSenior() {
@@ -135,16 +136,15 @@ function AddSenior() {
               <div className="flex w-full justify-center cursor-pointer">
                 <div className="w-[180px] h-[180px] bg-[#D4D2D2] rounded-[30px]">
                   <div className="relative top-[157px] left-[157px] flex justify-center items-center w-[46px] h-[46px] bg-[#FAF9F9] rounded-[50%] shadow-md">
-                    <img src="/assets/icons/camera.svg"></img>
+                    <img src="/assets/icons/camera.svg" />
                   </div>
                 </div>
               </div>
             </div>
-            <p className="text-[13px] text-[#918686] underline underline-offset-2 text-center cursor-pointer" onClick={handleClickDone}>
-              다음에 등록할게요
-            </p>
-            <Space css={"h-[8px]"} />
-            <Button text="어르신 정보 등록 완료" onClick={() => { }} disabled={true} />
+            <Space css={"h-[56px]"} />
+            <Button text="어르신 정보 등록 완료" onClick={() => { }} disabled={true} textButton={
+              <TextButton text="다음에 등록할게요" onClick={handleClickDone} />
+            } />
           </div>
         );
     }
@@ -152,7 +152,7 @@ function AddSenior() {
 
   if (step <= 2) {
     return (
-      <div className="flex flex-col justify-center font-pre h-full p-[20px] select-none">
+      <div className="flex flex-col justify-center font-pre p-[20px] select-none">
         <Space css={"h-[28px]"} />
         <div className="flex justify-center">
           <img className="absolute left-[20px] cursor-pointer" src="/assets/icons/past.svg" onClick={handleClickPrev} />
@@ -162,20 +162,20 @@ function AddSenior() {
         {
           BodyComponent()
         }
+        <Space css={"h-[80px]"} />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col font-pre h-full p-[20px] select-none">
-      <div className="flex flex-col justify-center flex-1 ">
+    <div className="h-full flex flex-col font-pre p-[20px] select-none">
+      <div className="flex flex-col justify-center flex-1">
         <FormTitle content={<>구인 정보를 등록하면<br />즉시 매칭을 받을 수 있어요</>} align="text-center" />
       </div>
-      <p className="text-[13px] text-[#918686] underline underline-offset-2 text-center cursor-pointer">
-        홈으로
-      </p>
-      <Space css={"h-[8px]"} />
-      <Button text="어르신 구인 정보 등록하기" onClick={() => { }} disabled={false} />
+      <Space css={"h-[56px]"} />
+      <Button text="어르신 구인 정보 등록하기" onClick={() => { }} disabled={false} textButton={
+        <TextButton text="홈으로" onClick={() => { }} />
+      } />
     </div >
   );
 }

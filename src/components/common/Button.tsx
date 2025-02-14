@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
+import Space from "./Space";
 
 type ButtonProps = {
   text: string,
   onClick: () => void,
   disabled: boolean,
+  textButton?: React.JSX.Element | null,
 }
 
-const Button = ({ text, onClick, disabled }: ButtonProps) => {
+const Button = ({ text, onClick, disabled, textButton }: ButtonProps) => {
   const [bottom, setBottom] = useState<number>(0);
 
   let animationFrameId: number | null = null;
@@ -38,9 +40,19 @@ const Button = ({ text, onClick, disabled }: ButtonProps) => {
   }, []);
 
   return (
-    <button className={`relative w-full min-h-[48px] ${disabled ? "bg-[#D4D2D2] cursor-default" : "bg-[#FF8411] cursor-pointer"} rounded-[10px] text-[#FFFFFF] font-bold`} onClick={disabled ? () => { } : onClick} style={{ bottom: `${bottom}px` }}>
-      {text}
-    </button>
+    <div className="fixed w-full left-[0px] p-[20px] pt-[0px] bg-[#FFFFFF]" style={{ bottom: `${bottom}px` }}>
+      {
+        textButton
+          ? <>
+            {textButton}
+            <Space css="h-[6px]" />
+          </>
+          : null
+      }
+      <button className={`relative w-full min-h-[48px] ${disabled ? "bg-[#D4D2D2] cursor-default" : "bg-[#FF8411] cursor-pointer"} rounded-[10px] text-[#FFFFFF] font-bold`} onClick={disabled ? () => { } : onClick}>
+        {text}
+      </button>
+    </div>
   );
 };
 

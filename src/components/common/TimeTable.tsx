@@ -8,6 +8,7 @@ type TimeTableProps = {
 const TimeTable = ({ setWeeklyHours }: TimeTableProps) => {
   const [selected, setSelected] = useState<boolean[][]>(Array.from(Array(12), () => Array(7).fill(false)));
   const [mouseDown, setMouseDown] = useState<boolean>(false);
+  const [currentDiv, setCurrentDiv] = useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleMouseUp = () => setMouseDown(false);
@@ -22,7 +23,73 @@ const TimeTable = ({ setWeeklyHours }: TimeTableProps) => {
   }, []);
 
   const table = () => {
+    const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+      const x = e.touches[0].clientX;
+      const y = e.touches[0].clientY;
+      const div = document.elementFromPoint(x, y) as HTMLDivElement;
+
+      if (div) {
+        const [rowNum, colNum] = div.id.split('.').map(Number);
+
+        setSelected(prev => {
+          return prev.map((row, i) => {
+            return row.map((value, j) => {
+              if (i === rowNum && j === colNum) {
+                if (value) {
+                  setWeeklyHours(prev => prev - 1);
+                } else {
+                  setWeeklyHours(prev => prev + 1);
+                }
+                return !value;
+              }
+              else {
+                return value;
+              }
+            });
+          });
+        });
+        setCurrentDiv(div);
+      }
+    }
+
+    const handleTouch = (e: React.TouchEvent<HTMLDivElement>) => {
+      const x = e.touches[0].clientX;
+      const y = e.touches[0].clientY;
+      const div = document.elementFromPoint(x, y) as HTMLDivElement;
+
+      if (currentDiv !== div) {
+        if (div) {
+          const [rowNum, colNum] = div.id.split('.').map(Number);
+
+          setSelected(prev => {
+            return prev.map((row, i) => {
+              return row.map((value, j) => {
+                if (i === rowNum && j === colNum) {
+                  if (value) {
+                    setWeeklyHours(prev => prev - 1);
+                  } else {
+                    setWeeklyHours(prev => prev + 1);
+                  }
+                  return !value;
+                }
+                else {
+                  return value;
+                }
+              });
+            });
+          });
+        }
+        setCurrentDiv(div);
+      }
+    }
+
+    const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+      handleTouch(e);
+      setCurrentDiv(null);
+    }
+
     const handleTouchBox = (e: React.MouseEvent<HTMLDivElement>, rowNum: number, colNum: number) => {
+      if (currentDiv) return;
 
       if (e.type === "mousedown") {
         setSelected(prev => {
@@ -34,10 +101,10 @@ const TimeTable = ({ setWeeklyHours }: TimeTableProps) => {
                 } else {
                   setWeeklyHours(prev => prev + 1);
                 }
-                return !value
+                return !value;
               }
               else {
-                return value
+                return value;
               }
             });
           });
@@ -53,10 +120,10 @@ const TimeTable = ({ setWeeklyHours }: TimeTableProps) => {
                   } else {
                     setWeeklyHours(prev => prev + 1);
                   }
-                  return !value
+                  return !value;
                 }
                 else {
-                  return value
+                  return value;
                 }
               });
             });
@@ -71,10 +138,10 @@ const TimeTable = ({ setWeeklyHours }: TimeTableProps) => {
                   } else {
                     setWeeklyHours(prev => prev + 1);
                   }
-                  return !value
+                  return !value;
                 }
                 else {
-                  return value
+                  return value;
                 }
               });
             });
@@ -87,16 +154,20 @@ const TimeTable = ({ setWeeklyHours }: TimeTableProps) => {
       [...Array(12)].map((_, rowNum) => {
         return (
           <>
-            <div key={rowNum} className="relative bottom-[-2vh] flex justify-center items-center leading-[0px] text-[11px] text-[#9C9898] font-bold" >
+            <div key={rowNum} className="relative bottom-[-15px] flex justify-center items-center leading-[0px] text-[11px] text-[#9C9898] font-bold" >
               {rowNum + 10}
             </div>
             {
               [...Array(7)].map((_, colNum) => {
-                return <div key={rowNum * 12 + colNum} className={`${selected[rowNum][colNum] ? "bg-[#FFF2CC] outline outline-[1px] outline-[#FFAE00] z-0" : "bg-[#FFFFFF] outline outline-[1px] outline-[#D4D2D2]"}`}
+                return <div id={`${rowNum}.${colNum}`} key={rowNum * 12 + colNum} className={`touch-none min-h-[30px] outline outline-[1px] ${selected[rowNum][colNum] ? "bg-[#FFF2CC] outline-[#FFAE00] z-0" : "bg-[#FFFFFF] outline-[#D4D2D2]"}`}
                   onMouseUp={(e) => handleTouchBox(e, rowNum, colNum)}
                   onMouseDown={(e) => handleTouchBox(e, rowNum, colNum)}
                   onMouseEnter={(e) => handleTouchBox(e, rowNum, colNum)}
-                  onMouseLeave={(e) => handleTouchBox(e, rowNum, colNum)} />
+                  onMouseLeave={(e) => handleTouchBox(e, rowNum, colNum)}
+                  onTouchStart={(e) => handleTouchStart(e)}
+                  onTouchEnd={(e) => handleTouchEnd(e)}
+                  onTouchMove={(e) => handleTouch(e)}
+                />
               })
             }
           </>
@@ -105,7 +176,7 @@ const TimeTable = ({ setWeeklyHours }: TimeTableProps) => {
     );
   }
   return (
-    <div className="w-full flex-1 select-none">
+    <div className="w-full select-none">
       <div className="grid grid-cols-[30px_1fr_1fr_1fr_1fr_1fr_1fr_1fr] h-[30px] gap-[1px] p-[1px]">
         <div key={1} className="relative bottom-[-15px] flex justify-center items-center leading-[0px] text-[11px] text-[#9C9898] font-bold" >
           {9}
@@ -120,7 +191,7 @@ const TimeTable = ({ setWeeklyHours }: TimeTableProps) => {
           })
         }
       </div>
-      <div className="grid grid-rows-13 grid-cols-[30px_1fr_1fr_1fr_1fr_1fr_1fr_1fr] w-full h-full gap-[1px]">
+      <div className="h-full grid grid-rows-13 grid-cols-[30px_1fr_1fr_1fr_1fr_1fr_1fr_1fr] w-full h-full gap-[1px]">
         {table()}
       </div>
     </div>

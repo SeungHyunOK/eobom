@@ -66,13 +66,15 @@ const BottomSheet = ({ start, handleSendAuthCode, handleClickDone }: BottomSheet
           <p className="text-[22px] font-bold text-[#181818] text-center">
             문자메시지로 전송 받은<br />인증번호를 입력해주세요
           </p>
+          <Space css="h-[10px]" />
           {
             validCode === false ?
               <p className="text-[13px] text-[#FF8411] text-center font-semibold">
                 인증번호를 다시 확인해주세요
               </p>
-              : null
+              : <Space css="h-[20px]" />
           }
+          <Space css="h-[40px]" />
           <Input type="phone" placeholder="인증번호 입력" value={authCode} onChange={handleChangeCode} suffix={Timer()} />
           <Space css="h-[12px]" />
           <p className="text-[13px] text-[#717171] underline underline-offset-2 text-end cursor-pointer" onClick={() => handleSendAuthCode(true)}>

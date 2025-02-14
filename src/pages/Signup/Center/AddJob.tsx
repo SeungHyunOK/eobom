@@ -11,12 +11,11 @@ import TimeTable from "../../../components/common/TimeTable";
 import CheckBox from "../../../components/common/CheckBox";
 import TextArea from "../../../components/common/TextArea";
 import RadioButton from "../../../components/common/RadioButton";
+import TextButton from "../../../components/common/TextButton";
 
 
 function AddJob() {
-
-  const [step, setStep] = useState<number>(0);
-
+  const [step, setStep] = useState<number>(5);
   const [mealAssist, setMealAssist] = useState<boolean>(false);
   const [toiletAssist, setToiletAssist] = useState<boolean>(false);
   const [movingAssist, setMovingAssist] = useState<boolean>(false);
@@ -31,7 +30,6 @@ function AddJob() {
   const [weeklyHours, setWeeklyHours] = useState<number>(0);
   const [hourlyWage, setHourlyWage] = useState<string>("");
   const [features, setFeatures] = useState<boolean[]>(Array(10).fill(false));
-
   const [requests, setRequests] = useState<string>("");
 
   const handleChangeMealAssist = () => {
@@ -103,7 +101,7 @@ function AddJob() {
     switch (step) {
       case 0:
         return (
-          <div className="h-full flex flex-col h-full ">
+          <div className="h-full flex flex-col">
             <ProgressBar width={"w-[0px]"} />
             <div className="flex-1">
               <Space css={"h-[36px]"} />
@@ -131,12 +129,14 @@ function AddJob() {
               <Space css={"h-[18px]"} />
               <CheckBox text="방문 목욕이 필요해요" prefix={<img className="w-[24px] mr-[6px]" src="/assets/images/soap.png" />} onClick={handleChangeBathingAssist} checked={bathingAssist} />
             </div>
-            <Button text="선택 완료" onClick={handleClickDone} disabled={!mealAssist && !toiletAssist && !movingAssist && !livingAssist && !bathingAssist} />
+            <Button text="선택 완료" onClick={handleClickDone} disabled={!mealAssist && !toiletAssist && !movingAssist && !livingAssist && !bathingAssist} textButton={
+              <TextButton text="임시저장" onClick={() => { }} />
+            } />
           </div>
         );
       case 1:
         return (
-          <div className="h-full flex flex-col h-full ">
+          <div className="h-full flex flex-col">
             <ProgressBar width={"w-1/5"} />
             <div className="flex-1">
               <Space css={"h-[36px]"} />
@@ -151,7 +151,9 @@ function AddJob() {
               <Space css={"h-[18px]"} />
               <CheckBox text="3명" onClick={() => setCaregiverCount(3)} checked={caregiverCount === 3} />
             </div>
-            <Button text="선택 완료" onClick={handleClickDone} disabled={!caregiverCount} />
+            <Button text="선택 완료" onClick={handleClickDone} disabled={!caregiverCount} textButton={
+              <TextButton text="임시저장" onClick={() => { }} />
+            } />
           </div>
         );
       case 2:
@@ -167,16 +169,18 @@ function AddJob() {
               <Space css={"h-[36px]"} />
               <TimeTable setWeeklyHours={setWeeklyHours} />
             </div>
-            <Button text="선택 완료" onClick={handleClickDone} disabled={false} />
+            <Button text="선택 완료" onClick={handleClickDone} disabled={false} textButton={
+              <TextButton text="임시저장" onClick={() => { }} />
+            } />
           </div>
         );
       case 3:
         return (
           <div className="h-full flex flex-col">
             <ProgressBar width={"w-3/5"} />
-            <div className="flex-1">
+            <div className="h-full flex flex-col flex-1">
               <Space css={"h-[36px]"} />
-              <img className="w-[24px]" src="/assets/images/house.png" />
+              <img className="w-[24px]" src="/assets/images/money.png" />
               <FormTitle content={<>해당 돌봄의<br />지급 가능한 시급을 입력해주세요</>} />
               <Space css={"h-[14px]"} />
               <Explanation text="2025년 최저시급은 10,030원이에요" />
@@ -190,7 +194,9 @@ function AddJob() {
                 {getMonthlyWage()} 원
               </div>
             </div>
-            <Button text="입력 완료" onClick={handleClickDone} disabled={!hourlyWage} />
+            <Button text="입력 완료" onClick={handleClickDone} disabled={!hourlyWage} textButton={
+              <TextButton text="임시저장" onClick={() => { }} />
+            } />
           </div >
         );
       case 4:
@@ -199,7 +205,7 @@ function AddJob() {
             <ProgressBar width={"w-4/5"} />
             <div className="h-full flex flex-col flex-1">
               <Space css={"h-[36px]"} />
-              <img className="w-[24px]" src="/assets/images/clock.png" />
+              <img className="w-[24px]" src="/assets/images/eyes.png" />
               <FormTitle content={<>희망하는 보호사님의 성향을<br />3가지 선택해주세요</>} />
               <Space css={"h-[36px]"} />
               <div className="flex gap-[8px] flex-wrap">
@@ -215,7 +221,9 @@ function AddJob() {
                 <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/memo.png" />} text="꼼꼼해요" width="w-[110px]" height="h-[50px]" onClick={() => handleChangeFeatures(9)} checked={features[9]} />
               </div>
             </div>
-            <Button text="선택 완료" onClick={handleClickDone} disabled={!features.some(value => value)} />
+            <Button text="선택 완료" onClick={handleClickDone} disabled={!features.some(value => value)} textButton={
+              <TextButton text="임시저장" onClick={() => { }} />
+            } />
           </div>
         );
       case 5:
@@ -229,7 +237,9 @@ function AddJob() {
               <Space css={"h-[36px]"} />
               <TextArea placeholder="예시 ) 거동 불가 어르신으로 욕창 관리에 특히나 신경써주시기 바랍니다." value={requests} onChange={handleChangeRequests} maxLength={100} rows={4} />
             </div>
-            <Button text="구인 정보 등록 완료" onClick={handleClickDone} disabled={false} />
+            <Button text="구인 정보 등록 완료" onClick={handleClickDone} disabled={false} textButton={
+              <TextButton text="임시저장" onClick={() => { }} />
+            } />
           </div>
         );
     }
@@ -237,7 +247,7 @@ function AddJob() {
 
   if (step <= 5) {
     return (
-      <div className="flex flex-col justify-center font-pre h-full p-[20px] select-none">
+      <div className="flex flex-col justify-center font-pre p-[20px] select-none">
         <Space css={"h-[28px]"} />
         <div className="flex justify-center">
           <img className="absolute left-[20px] cursor-pointer" src="/assets/icons/past.svg" onClick={handleClickPrev} />
@@ -247,20 +257,20 @@ function AddJob() {
         {
           BodyComponent()
         }
+        <Space css={"h-[80px]"} />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col font-pre h-full p-[20px] select-none">
-      <div className="flex flex-col justify-center flex-1 ">
+    <div className="h-full flex flex-col font-pre p-[20px] select-none">
+      <div className="flex flex-col justify-center flex-1">
         <FormTitle content={<>구인 정보를 등록하면<br />즉시 매칭을 받을 수 있어요</>} align="text-center" />
       </div>
-      <p className="text-[13px] text-[#918686] underline underline-offset-2 text-center cursor-pointer">
-        홈으로
-      </p>
-      <Space css={"h-[8px]"} />
-      <Button text="어르신 구인 정보 등록하기" onClick={() => { }} disabled={false} />
+      <Space css={"h-[56px]"} />
+      <Button text="어르신 구인 정보 등록하기" onClick={() => { }} disabled={false} textButton={
+        <TextButton text="홈으로" onClick={() => { }} />
+      } />
     </div >
   );
 }

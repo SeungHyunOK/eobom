@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Space from "./Space";
 
 type InputProps = {
@@ -15,38 +15,44 @@ type InputProps = {
 const Input = ({ type, label, placeholder, value, onChange, onClick, prefix, suffix }: InputProps) => {
   const underlines = ["bg-[#D4D2D2]", "bg-[#181818]"];
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
+  const [scrollY, setScrollY] = useState<number>(0);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleFocus = () => {
+    setScrollY(window.screenY);
+  }
+
+  const handleBlur = () => {
+    window.scrollTo(0, scrollY);
+  }
 
   const BodyComponent = () => {
     switch (type) {
       case "id":
         return (
-          <input className="text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} />
+          <input ref={inputRef} className="text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} onFocus={handleFocus} onBlur={handleBlur} />
         );
       case "password":
         return (
           <>
-            <input className="text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} type={passwordVisible ? "text" : "password"} />
+            <input ref={inputRef} className="text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} type={passwordVisible ? "text" : "password"} onFocus={handleFocus} onBlur={handleBlur} />
             <button onClick={() => setPasswordVisible(!passwordVisible)}>
-              {
-                passwordVisible ?
-                  <img src="/assets/icons/eye-open.svg" />
-                  : <img src="/assets/icons/eye-close.svg" />
-              }
+              <img src={`/assets/icons/${passwordVisible ? "eye-open" : "eye-close"}.svg`} />
             </button>
           </>
         );
       case "text":
         return (
-          <input className="text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} />
+          <input ref={inputRef} className="text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} onFocus={handleFocus} onBlur={handleBlur} />
         );
       case "date":
       case "tel":
         return (
-          <input className="text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} type="tel" />
+          <input ref={inputRef} className="text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} type="tel" onFocus={handleFocus} onBlur={handleBlur} />
         );
       default:
         return (
-          <input className="text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} />
+          <input ref={inputRef} className="text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} onFocus={handleFocus} onBlur={handleBlur} />
         );
     }
   }
