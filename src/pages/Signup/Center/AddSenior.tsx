@@ -62,6 +62,7 @@ function AddSenior() {
       case 0:
         return (
           <div className="h-full flex flex-col h-full ">
+            <ProgressBar width={"w-[0px]"} />
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/waving-hand.png" />
@@ -75,19 +76,21 @@ function AddSenior() {
               <Space css={"h-[18px]"} />
               <Label text="성별" />
               <Space css={"h-[18px]"} />
-              <img className="w-[16px]" src="/assets/images/man.png" />
-              <CheckButton text="🙋‍♂️ 남성" width="w-[88px]" height="h-[50px]" onClick={() => setSeniorGender(0)} checked={seniorGender === 0} />
-              <img className="w-[16px]" src="/assets/images/person.png" />
-              <CheckButton text="🙋‍♀️ 여성" width="w-[88px]" height="h-[50px]" onClick={() => setSeniorGender(1)} checked={seniorGender === 1} />
+              <div className="flex gap-[8px] flex-wrap">
+                <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/man.png" />} text="남성" width="w-[88px]" height="h-[50px]" onClick={() => setSeniorGender(0)} checked={seniorGender === 0} />
+                <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/person.png" />} text="여성" width="w-[88px]" height="h-[50px]" onClick={() => setSeniorGender(1)} checked={seniorGender === 1} />
+              </div>
               <Space css={"h-[34px]"} />
               <Label text="장기요양등급" />
               <Space css={"h-[18px]"} />
-              <CheckButton text="1등급" width="w-[70px]" height="h-[34px]" onClick={() => setSeniorRating(1)} checked={seniorRating === 1} />
-              <CheckButton text="2등급" width="w-[70px]" height="h-[34px]" onClick={() => setSeniorRating(2)} checked={seniorRating === 2} />
-              <CheckButton text="3등급" width="w-[70px]" height="h-[34px]" onClick={() => setSeniorRating(3)} checked={seniorRating === 3} />
-              <CheckButton text="4등급" width="w-[70px]" height="h-[34px]" onClick={() => setSeniorRating(4)} checked={seniorRating === 4} />
-              <CheckButton text="5등급" width="w-[70px]" height="h-[34px]" onClick={() => setSeniorRating(5)} checked={seniorRating === 5} />
-              <CheckButton text="인지지원 등급" width="w-[126px]" height="h-[34px]" onClick={() => setSeniorRating(0)} checked={seniorRating === 0} />
+              <div className="flex gap-[8px] flex-wrap">
+                <CheckButton text="1등급" width="w-[70px]" height="h-[34px]" onClick={() => setSeniorRating(1)} checked={seniorRating === 1} />
+                <CheckButton text="2등급" width="w-[70px]" height="h-[34px]" onClick={() => setSeniorRating(2)} checked={seniorRating === 2} />
+                <CheckButton text="3등급" width="w-[70px]" height="h-[34px]" onClick={() => setSeniorRating(3)} checked={seniorRating === 3} />
+                <CheckButton text="4등급" width="w-[70px]" height="h-[34px]" onClick={() => setSeniorRating(4)} checked={seniorRating === 4} />
+                <CheckButton text="5등급" width="w-[70px]" height="h-[34px]" onClick={() => setSeniorRating(5)} checked={seniorRating === 5} />
+                <CheckButton text="인지지원 등급" width="w-[126px]" height="h-[34px]" onClick={() => setSeniorRating(0)} checked={seniorRating === 0} />
+              </div>
             </div>
             <Button text="입력 완료" onClick={handleClickDone} disabled={!seniorName || !seniorBirthday || seniorGender === null || seniorRating === null} />
           </div>
@@ -95,6 +98,7 @@ function AddSenior() {
       case 1:
         return (
           <div className="h-full flex flex-col">
+            <ProgressBar width={"w-1/2"} />
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/house.png" />
@@ -122,6 +126,7 @@ function AddSenior() {
       case 2:
         return (
           <div className="h-full flex flex-col">
+            <ProgressBar width={"w-2/2"} />
             <div className="h-full flex flex-col flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/camera.png" />
@@ -147,14 +152,13 @@ function AddSenior() {
 
   if (step <= 2) {
     return (
-      <div className="flex flex-col justify-center font-pre h-full p-[20px]">
+      <div className="flex flex-col justify-center font-pre h-full p-[20px] select-none">
         <Space css={"h-[28px]"} />
         <div className="flex justify-center">
           <img className="absolute left-[20px] cursor-pointer" src="/assets/icons/past.svg" onClick={handleClickPrev} />
           <Title text="어르신 정보" />
         </div>
         <Space css={"h-[16px]"} />
-        <ProgressBar step={step} total={2} />
         {
           BodyComponent()
         }
@@ -163,7 +167,7 @@ function AddSenior() {
   }
 
   return (
-    <div className="flex flex-col font-pre h-full p-[20px]">
+    <div className="flex flex-col font-pre h-full p-[20px] select-none">
       <div className="flex flex-col justify-center flex-1 ">
         <FormTitle content={<>구인 정보를 등록하면<br />즉시 매칭을 받을 수 있어요</>} align="text-center" />
       </div>

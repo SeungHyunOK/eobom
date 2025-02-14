@@ -34,10 +34,6 @@ function AddJob() {
 
   const [requests, setRequests] = useState<string>("");
 
-  useEffect(() => {
-
-  }, [step]);
-
   const handleChangeMealAssist = () => {
     setMealAssist(!mealAssist);
     setMealAssistDetail(null);
@@ -108,6 +104,7 @@ function AddJob() {
       case 0:
         return (
           <div className="h-full flex flex-col h-full ">
+            <ProgressBar width={"w-[0px]"} />
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/memo.png" />
@@ -140,6 +137,7 @@ function AddJob() {
       case 1:
         return (
           <div className="h-full flex flex-col h-full ">
+            <ProgressBar width={"w-1/5"} />
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/people.png" />
@@ -159,6 +157,7 @@ function AddJob() {
       case 2:
         return (
           <div className="h-full flex flex-col">
+            <ProgressBar width={"w-2/5"} />
             <div className="h-full flex flex-col flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/clock.png" />
@@ -167,7 +166,6 @@ function AddJob() {
               <Explanation text="해당 시간 근무가 가능한 보호사님을 추천해드려요" />
               <Space css={"h-[36px]"} />
               <TimeTable setWeeklyHours={setWeeklyHours} />
-              <Space css="h-[80px]" />
             </div>
             <Button text="선택 완료" onClick={handleClickDone} disabled={false} />
           </div>
@@ -175,6 +173,7 @@ function AddJob() {
       case 3:
         return (
           <div className="h-full flex flex-col">
+            <ProgressBar width={"w-3/5"} />
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/house.png" />
@@ -197,21 +196,24 @@ function AddJob() {
       case 4:
         return (
           <div className="h-full flex flex-col">
+            <ProgressBar width={"w-4/5"} />
             <div className="h-full flex flex-col flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/clock.png" />
               <FormTitle content={<>희망하는 보호사님의 성향을<br />3가지 선택해주세요</>} />
               <Space css={"h-[36px]"} />
-              <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/hearts.png" />} text="친절해요" width="w-[110px]" height="h-[50px]" onClick={() => handleChangeFeatures(0)} checked={features[0]} />
-              <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/soap.png" />} text="위생 관리 철저해요" width="w-[190px]" height="h-[50px]" onClick={() => handleChangeFeatures(1)} checked={features[1]} />
-              <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/hospital.png" />} text="근무 경험이 많아요" width="w-[190px]" height="h-[50px]" onClick={() => handleChangeFeatures(2)} checked={features[2]} />
-              <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/running.png" />} text="성실해요" width="w-[110px]" height="h-[50px]" onClick={() => handleChangeFeatures(3)} checked={features[3]} />
-              <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/coffee.png" />} text="차분해요" width="w-[110px]" height="h-[50px]" onClick={() => handleChangeFeatures(4)} checked={features[4]} />
-              <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/sun.png" />} text="밝고 긍정적이에요" width="w-[190px]" height="h-[50px]" onClick={() => handleChangeFeatures(5)} checked={features[5]} />
-              <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/speech-balloon.png" />} text="소통을 잘해요" width="w-[154px]" height="h-[50px]" onClick={() => handleChangeFeatures(6)} checked={features[6]} />
-              <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/handshake.png" />} text="믿음직해요" width="w-[144px]" height="h-[50px]" onClick={() => handleChangeFeatures(7)} checked={features[7]} />
-              <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/ambulance.png" />} text="응급대처가 가능해요" width="w-[190px]" height="h-[50px]" onClick={() => handleChangeFeatures(8)} checked={features[8]} />
-              <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/memo.png" />} text="꼼꼼해요" width="w-[110px]" height="h-[50px]" onClick={() => handleChangeFeatures(9)} checked={features[9]} />
+              <div className="flex gap-[8px] flex-wrap">
+                <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/hearts.png" />} text="친절해요" width="w-[110px]" height="h-[50px]" onClick={() => handleChangeFeatures(0)} checked={features[0]} />
+                <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/soap.png" />} text="위생 관리 철저해요" width="w-[190px]" height="h-[50px]" onClick={() => handleChangeFeatures(1)} checked={features[1]} />
+                <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/hospital.png" />} text="근무 경험이 많아요" width="w-[190px]" height="h-[50px]" onClick={() => handleChangeFeatures(2)} checked={features[2]} />
+                <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/running.png" />} text="성실해요" width="w-[110px]" height="h-[50px]" onClick={() => handleChangeFeatures(3)} checked={features[3]} />
+                <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/coffee.png" />} text="차분해요" width="w-[110px]" height="h-[50px]" onClick={() => handleChangeFeatures(4)} checked={features[4]} />
+                <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/sun.png" />} text="밝고 긍정적이에요" width="w-[190px]" height="h-[50px]" onClick={() => handleChangeFeatures(5)} checked={features[5]} />
+                <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/speech-balloon.png" />} text="소통을 잘해요" width="w-[154px]" height="h-[50px]" onClick={() => handleChangeFeatures(6)} checked={features[6]} />
+                <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/handshake.png" />} text="믿음직해요" width="w-[144px]" height="h-[50px]" onClick={() => handleChangeFeatures(7)} checked={features[7]} />
+                <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/ambulance.png" />} text="응급대처가 가능해요" width="w-[190px]" height="h-[50px]" onClick={() => handleChangeFeatures(8)} checked={features[8]} />
+                <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/memo.png" />} text="꼼꼼해요" width="w-[110px]" height="h-[50px]" onClick={() => handleChangeFeatures(9)} checked={features[9]} />
+              </div>
             </div>
             <Button text="선택 완료" onClick={handleClickDone} disabled={!features.some(value => value)} />
           </div>
@@ -219,13 +221,13 @@ function AddJob() {
       case 5:
         return (
           <div className="h-full flex flex-col">
+            <ProgressBar width={"w-5/5"} />
             <div className="h-full flex flex-col flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/speech-balloon.png" />
               <FormTitle content={<>기타 요청사항을<br />입력해주세요</>} />
               <Space css={"h-[36px]"} />
-              <TextArea placeholder="예시 ) 거동 불가 어르신으로 욕창 관리에 특히나 신경써주시기 바랍니다" value={requests} onChange={handleChangeRequests} limit={100} />
-              <Space css="h-[80px]" />
+              <TextArea placeholder="예시 ) 거동 불가 어르신으로 욕창 관리에 특히나 신경써주시기 바랍니다." value={requests} onChange={handleChangeRequests} maxLength={100} rows={4} />
             </div>
             <Button text="구인 정보 등록 완료" onClick={handleClickDone} disabled={false} />
           </div>
@@ -233,16 +235,15 @@ function AddJob() {
     }
   }
 
-  if (step <= 6) {
+  if (step <= 5) {
     return (
-      <div className="flex flex-col justify-center font-pre h-full p-[20px]">
+      <div className="flex flex-col justify-center font-pre h-full p-[20px] select-none">
         <Space css={"h-[28px]"} />
         <div className="flex justify-center">
           <img className="absolute left-[20px] cursor-pointer" src="/assets/icons/past.svg" onClick={handleClickPrev} />
           <Title text="요양보호사 모집 조건" />
         </div>
         <Space css={"h-[16px]"} />
-        <ProgressBar step={step} total={5} />
         {
           BodyComponent()
         }
@@ -251,7 +252,7 @@ function AddJob() {
   }
 
   return (
-    <div className="flex flex-col font-pre h-full p-[20px]">
+    <div className="flex flex-col font-pre h-full p-[20px] select-none">
       <div className="flex flex-col justify-center flex-1 ">
         <FormTitle content={<>구인 정보를 등록하면<br />즉시 매칭을 받을 수 있어요</>} align="text-center" />
       </div>

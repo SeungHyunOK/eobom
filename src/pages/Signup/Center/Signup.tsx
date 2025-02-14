@@ -13,6 +13,7 @@ import Label from "../../../components/common/Label";
 import { initializeApp } from "firebase/app";
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import Delay from "../../../components/common/Delay";
+import TextArea from "../../../components/common/TextArea";
 
 
 declare global {
@@ -54,6 +55,7 @@ function Signup() {
   const [openBottomSheet, setOpenBottomSheet] = useState<boolean>(false);
   const [showerTruck, setShowerTruck] = useState<boolean | null>(null);
   const [centerRating, setCenterRating] = useState<number | null>(null);
+  const [centerIntroduction, setCenterIntroduction] = useState<string>("");
   const divRef = useRef<HTMLDivElement>(null);
   const openSearchAddress = useDaumPostcodePopup();
 
@@ -132,6 +134,10 @@ function Signup() {
     }
   }
 
+  const handleChangeVenterIntroduction = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCenterIntroduction(e.target.value);
+  }
+
   const handleClickDone = () => {
     setStep(prev => prev + 1);
   }
@@ -164,6 +170,7 @@ function Signup() {
       case 0:
         return (
           <div className="h-full flex flex-col h-full ">
+            <ProgressBar width={"w-[0px]"} />
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/key.png" />
@@ -195,6 +202,7 @@ function Signup() {
       case 1:
         return (
           <div className="h-full flex flex-col">
+            <ProgressBar width={"w-1/6"} />
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/waving-hand.png" />
@@ -210,6 +218,7 @@ function Signup() {
       case 2:
         return (
           <div className="h-full flex flex-col">
+            <ProgressBar width={"w-2/6"} />
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/telephone.png" />
@@ -231,6 +240,7 @@ function Signup() {
       case 3:
         return (
           <div className="h-full flex flex-col">
+            <ProgressBar width={"w-3/6"} />
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/house.png" />
@@ -256,6 +266,7 @@ function Signup() {
       case 4:
         return (
           <div className="h-full flex flex-col">
+            <ProgressBar width={"w-4/6"} />
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/check-mark.png" />
@@ -275,6 +286,7 @@ function Signup() {
       case 5:
         return (
           <div className="h-full flex flex-col">
+            <ProgressBar width={"w-5/6"} />
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/memo.png" />
@@ -284,32 +296,65 @@ function Signup() {
               <Space css={"h-[46px]"} />
               <Label text="센터 등급" />
               <Space css={"h-[18px]"} />
-              <CheckButton text="A등급" width="w-[70px]" height="h-[34px]" onClick={() => setCenterRating(0)} checked={centerRating === 0} />
-              <CheckButton text="B등급" width="w-[70px]" height="h-[34px]" onClick={() => setCenterRating(1)} checked={centerRating === 1} />
-              <CheckButton text="C등급" width="w-[70px]" height="h-[34px]" onClick={() => setCenterRating(2)} checked={centerRating === 2} />
-              <CheckButton text="D등급" width="w-[70px]" height="h-[34px]" onClick={() => setCenterRating(3)} checked={centerRating === 3} />
+              <div className="flex gap-[8px] flex-wrap">
+                <CheckButton text="A등급" width="w-[70px]" height="h-[34px]" onClick={() => setCenterRating(0)} checked={centerRating === 0} />
+                <CheckButton text="B등급" width="w-[70px]" height="h-[34px]" onClick={() => setCenterRating(1)} checked={centerRating === 1} />
+                <CheckButton text="C등급" width="w-[70px]" height="h-[34px]" onClick={() => setCenterRating(2)} checked={centerRating === 2} />
+                <CheckButton text="D등급" width="w-[70px]" height="h-[34px]" onClick={() => setCenterRating(3)} checked={centerRating === 3} />
+              </div>
               <Space css={"h-[34px]"} />
               <Label text="목욕 차량 소유 여부" />
               <Space css={"h-[18px]"} />
-              <CheckButton text="네" width="w-[110px]" height="h-[34px]" onClick={() => setShowerTruck(true)} checked={showerTruck === true} />
-              <CheckButton text="아니오" width="w-[110px]" height="h-[34px]" onClick={() => setShowerTruck(false)} checked={showerTruck === false} />
+              <div className="flex gap-[8px] flex-wrap">
+                <CheckButton text="네" width="w-[110px]" height="h-[34px]" onClick={() => setShowerTruck(true)} checked={showerTruck === true} />
+                <CheckButton text="아니오" width="w-[110px]" height="h-[34px]" onClick={() => setShowerTruck(false)} checked={showerTruck === false} />
+              </div>
+              <Label text="한줄 소개" />
+              <Space css={"h-[18px]"} />
+              <TextArea placeholder="예시 ) 5년 연속 A등급, 이어봄 재가방문요양센터입니다." value={centerIntroduction} onChange={handleChangeVenterIntroduction} maxLength={30} rows={2} />
             </div>
-            <Button text="회원가입 완료" onClick={handleClickDone} disabled={showerTruck === null || centerRating === null} />
+            <Button text="입력 완료" onClick={handleClickDone} disabled={showerTruck === null || centerRating === null} />
+          </div>
+        );
+      case 6:
+        return (
+          <div className="h-full flex flex-col">
+            <ProgressBar width={"w-6/6"} />
+            <div className="h-full flex flex-col flex-1">
+              <Space css={"h-[36px]"} />
+              <img className="w-[24px]" src="/assets/images/camera.png" />
+              <FormTitle content={<>프로필 사진을 등록해주세요</>} />
+              <Space css={"h-[14px]"} />
+              <Explanation text="매칭 요청 시 신뢰도를 높일 수 있어요" />
+              <Space css={"h-[46px]"} />
+              <Space css={"h-[80px]"} />
+              <div className="flex w-full justify-center cursor-pointer">
+                <div className="w-[180px] h-[180px] bg-[#D4D2D2] rounded-[30px]">
+                  <div className="relative top-[157px] left-[157px] flex justify-center items-center w-[46px] h-[46px] bg-[#FAF9F9] rounded-[50%] shadow-md">
+                    <img src="/assets/icons/camera.svg"></img>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p className="text-[13px] text-[#918686] underline underline-offset-2 text-center cursor-pointer" onClick={handleClickDone}>
+              다음에 등록할게요
+            </p>
+            <Space css={"h-[8px]"} />
+            <Button text="회원가입 완료" onClick={() => { }} disabled={true} />
           </div>
         );
     }
   }
 
-  if (step <= 5) {
+  if (step <= 6) {
     return (
-      <div className="flex flex-col justify-center font-pre h-full p-[20px]">
+      <div className="flex flex-col justify-center font-pre h-full p-[20px] select-none">
         <Space css={"h-[28px]"} />
         <div className="flex justify-center">
           <img className="absolute left-[20px] cursor-pointer" src="/assets/icons/past.svg" onClick={handleClickPrev} />
           <Title text="회원가입" />
         </div>
         <Space css={"h-[16px]"} />
-        <ProgressBar step={step} total={6} />
         {
           BodyComponent()
         }
@@ -318,7 +363,7 @@ function Signup() {
   }
 
   return (
-    <div className="flex flex-col font-pre h-full p-[20px]">
+    <div className="flex flex-col font-pre h-full p-[20px] select-none">
       <Delay start={Date.now()} seconds={2} components={[
         <>
           <div className="flex flex-col justify-center flex-1 ">

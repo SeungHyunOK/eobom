@@ -6,7 +6,7 @@ type ButtonProps = {
 
 const RadioButton = ({ text, onClick, checked }: ButtonProps) => {
   return (
-    <div className={`w-full h-[36px] flex items-center } font-bold text-[18px]`} onClick={onClick}>
+    <div className={`w-full h-[36px] flex items-center cursor-pointer font-bold text-[18px]`} onClick={onClick}>
       <div className="flex justify-center items-center w-[20px] h-[20px] rounded-[50%] shadow-sm border border-[#D4D2D2] mr-[8px]">
         {
           checked
