@@ -49,7 +49,7 @@ const Button = ({ text, onClick, disabled, textButton }: ButtonProps) => {
           </>
           : null
       }
-      <button className={`relative w-full min-h-[48px] ${disabled ? "bg-[#D4D2D2] cursor-default" : "bg-[#FF8411] cursor-pointer"} rounded-[10px] text-[#FFFFFF] font-bold`} onClick={disabled ? () => { } : onClick}>
+      <button className={`relative w-full min-h-[48px] ${disabled ? "bg-[#D4D2D2] cursor-default" : "bg-[#FF8411] cursor-pointer"} rounded-[10px] text-[19px] text-[#FFFFFF] font-bold`} onClick={disabled ? () => { } : onClick}>
         {text}
       </button>
     </div>
