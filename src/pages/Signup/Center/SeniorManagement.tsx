@@ -21,7 +21,7 @@ function SeniorManagement() {
 
   return (
     <div className="flex flex-col justify-center font-pre select-none">
-      <CenterHeader text="어르신 관리" prev={true} />
+      <CenterHeader text="어르신 관리" prev={false} />
       <div className="flex flex-col justify-center p-[20px] items-center">
         <Tab tabs={["대기", "진행 중", "매칭 완료"]} width="w-1/3" current={tapIndex} onClick={handleClickTap} />
         <Space css="h-[24px]" />
