@@ -1,7 +1,4 @@
-import { useState } from "react";
 import Space from "../../../components/common/Space";
-import CheckButton from "../../../components/common/CheckButton";
-import Resume from "../../../components/common/Resume";
 import CenterHeader from "../../../components/common/CenterHeader";
 import NavBar from "../../../components/common/NavBar";
 
@@ -75,7 +72,7 @@ function Main() {
         <Space css="h-[12px]" />
         <p className="text-[14px] text-[#717171] font-bold">{"(주) 얼리어스"}</p>
       </div>
-      <NavBar />
+      <NavBar center={true} />
     </div>
   );
 }

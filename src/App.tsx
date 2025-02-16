@@ -6,11 +6,12 @@ import AddJob from "./pages/Signup/Center/AddJob";
 import JobDetail from "./pages/Signup/Center/JobDetail";
 import Matching from "./pages/Signup/Center/Matching";
 import Main from "./pages/Signup/Center/Main";
+import SeniorManagement from "./pages/Signup/Center/SeniorManagement";
 
 function App() {
   return (
     <>
-      <Main />
+      <SeniorManagement />
     </>
   );
 }
