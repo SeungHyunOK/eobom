@@ -8,12 +8,12 @@ import Matching from "./pages/Signup/Center/Matching";
 import Main from "./pages/Signup/Center/Main";
 import SeniorManagement from "./pages/Signup/Center/SeniorManagement";
 import ChatList from "./pages/Signup/Center/ChatList";
-import Chat from "./pages/Signup/Center/Chat";
+import MyPage from "./pages/Signup/Center/MyPage";
 
 function App() {
   return (
     <>
-      <Chat />
+      <MyPage />
     </>
   );
 }

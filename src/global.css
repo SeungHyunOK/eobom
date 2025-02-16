@@ -44,6 +44,13 @@ body,
 }
 
 @font-face {
+  font-family: Pretendard;
+  font-weight: 900;
+  src: local("Pretendard Black"),
+    url("../public/assets/fonts/pretendard/Pretendard-Black.woff2") format("woff2");
+}
+
+@font-face {
   font-family: Jalpullineun Day;
   font-weight: 500;
   src: local("JalpullineunDay Medium"),
