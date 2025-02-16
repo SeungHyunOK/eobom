@@ -10,7 +10,7 @@ function JobDetail() {
 
   return (
     <div className="flex flex-col justify-center font-pre select-none">
-      <CenterHeader text="매칭 추천 리스트" />
+      <CenterHeader text="매칭 추천 리스트" prev={true} />
       <div className="flex flex-col justify-center p-[20px] items-end">
         <div className="flex gap-[8px]">
           <CheckButton width="w-[80px]" height="h-[30px]" text="이어봄 추천" fontSize="text-[13px]" checked={sortBy === 0} onClick={() => setSortBy(0)} />

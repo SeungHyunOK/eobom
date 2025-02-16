@@ -5,6 +5,7 @@ module.exports = {
     extend: {},
     fontFamily: {
       pre: ['Pretendard'],
+      jal: ['Jalpullineun Day'],
     },
   },
   plugins: [],

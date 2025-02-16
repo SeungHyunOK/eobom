@@ -61,7 +61,7 @@ function JobDetail() {
 
   return (
     <div className="flex flex-col justify-center font-pre select-none">
-      <CenterHeader text="구인 정보 확인" />
+      <CenterHeader text="구인 정보 확인" prev={true} />
       <div className="flex flex-col justify-center p-[20px]">
         <Space css="h-[40px]" />
         <div className="flex w-full justify-center cursor-pointer">
