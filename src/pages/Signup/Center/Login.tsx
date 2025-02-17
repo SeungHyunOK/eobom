@@ -7,14 +7,14 @@ import { useNavigate } from "react-router-dom";
 
 
 function Login() {
-  const [tapIndex, setTapIndex] = useState<number>(0);
+  const [tabIndex, setTabIndex] = useState<number>(0);
   const [step, setStep] = useState<number>(0);
   const [userId, setUserId] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
   const navigate = useNavigate();
 
-  const handleClickTap = (index: number) => {
-    setTapIndex(index);
+  const handleClickTab = (index: number) => {
+    setTabIndex(index);
     setStep(0);
   }
 
@@ -27,7 +27,7 @@ function Login() {
   }
 
   const handleNavigateSignup = () => {
-    if (tapIndex === 1) {
+    if (tabIndex === 1) {
       navigate("/signup/center");
     }
   }
@@ -41,7 +41,7 @@ function Login() {
     case 0:
       return (
         <div className="h-full flex flex-col items-center font-pre select-none p-[20px]">
-          <Tab tabs={["요양보호사", "센터"]} width="w-1/2" current={tapIndex} onClick={handleClickTap} />
+          <Tab tabs={["요양보호사", "센터"]} width="w-1/2" current={tabIndex} onClick={handleClickTab} />
           <div className="w-full h-full flex flex-col justify-center items-center p-[20px]">
             <img className="w-[190px]" src="/assets/icons/logo-full.svg" />
             <Space css="h-[100px]" />
@@ -61,7 +61,7 @@ function Login() {
     case 1:
       return (
         <div className="h-full flex flex-col items-center font-pre select-none p-[20px]">
-          <Tab tabs={["요양보호사", "센터"]} width="w-1/2" current={tapIndex} onClick={handleClickTap} />
+          <Tab tabs={["요양보호사", "센터"]} width="w-1/2" current={tabIndex} onClick={handleClickTab} />
           <div className="w-full h-full flex flex-col">
             <Space css={"h-[60px]"} />
             <div className="flex justify-center">

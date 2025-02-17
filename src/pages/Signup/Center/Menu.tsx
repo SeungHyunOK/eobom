@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 
 function Chat() {
-  const [tap, setTap] = useState<number>(0);
+  const [tab, setTab] = useState<number>(0);
   const [chatOn, setChatOn] = useState<boolean>(true);
   const navigate = useNavigate();
 
@@ -20,8 +20,8 @@ function Chat() {
     navigate("/mypage");
   }
 
-  const SubTap = () => {
-    switch (tap) {
+  const SubTab = () => {
+    switch (tab) {
       default:
       case 0:
         return (
@@ -81,12 +81,12 @@ function Chat() {
       <CenterHeader text="메뉴" prev={true} />
       <div className="flex h-full bg-[#FAF9F9]">
         <div className="w-[40vh] flex flex-col">
-          <button className={`h-[60px] flex justify-center items-center ${tap === 0 ? "bg-[#FFFFFF] text-[#181818] font-bold" : "text-[#3C3939] font-semibold"}`} onClick={() => setTap(0)}>어르신 관리</button>
-          <button className={`h-[60px] flex justify-center items-center ${tap === 1 ? "bg-[#FFFFFF] text-[#181818] font-bold" : "text-[#3C3939] font-semibold"}`} onClick={() => setTap(1)}>채팅</button>
-          <button className={`h-[60px] flex justify-center items-center ${tap === 2 ? "bg-[#FFFFFF] text-[#181818] font-bold" : "text-[#3C3939] font-semibold"}`} onClick={() => setTap(2)}>마이페이지</button>
+          <button className={`h-[60px] flex justify-center items-center ${tab === 0 ? "bg-[#FFFFFF] text-[#181818] font-bold" : "text-[#3C3939] font-semibold"}`} onClick={() => setTab(0)}>어르신 관리</button>
+          <button className={`h-[60px] flex justify-center items-center ${tab === 1 ? "bg-[#FFFFFF] text-[#181818] font-bold" : "text-[#3C3939] font-semibold"}`} onClick={() => setTab(1)}>채팅</button>
+          <button className={`h-[60px] flex justify-center items-center ${tab === 2 ? "bg-[#FFFFFF] text-[#181818] font-bold" : "text-[#3C3939] font-semibold"}`} onClick={() => setTab(2)}>마이페이지</button>
         </div>
         <div className="flex w-[60vh] flex-col">
-          {SubTap()}
+          {SubTab()}
         </div>
       </div>
     </div>
