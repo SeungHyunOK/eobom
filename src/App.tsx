@@ -10,11 +10,12 @@ import SeniorManagement from "./pages/Signup/Center/SeniorManagement";
 import ChatList from "./pages/Signup/Center/ChatList";
 import MyPage from "./pages/Signup/Center/MyPage";
 import Menu from "./pages/Signup/Center/Menu";
+import Login from "./pages/Signup/Center/Login";
 
 function App() {
   return (
     <>
-      <Menu />
+      <Login />
     </>
   );
 }
