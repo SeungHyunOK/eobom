@@ -9,11 +9,12 @@ import Main from "./pages/Signup/Center/Main";
 import SeniorManagement from "./pages/Signup/Center/SeniorManagement";
 import ChatList from "./pages/Signup/Center/ChatList";
 import MyPage from "./pages/Signup/Center/MyPage";
+import Menu from "./pages/Signup/Center/Menu";
 
 function App() {
   return (
     <>
-      <MyPage />
+      <Menu />
     </>
   );
 }

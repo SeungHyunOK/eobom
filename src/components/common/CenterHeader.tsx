@@ -15,7 +15,7 @@ const CenterHeader = ({ text, prev }: HeaderProps) => {
           }
           <p className="text-[20px] text-[#181818] font-medium">{text ?? "이어봄"}</p>
         </div>
-        <img className="cursor-pointer" src="/assets/icons/hamburger.svg" onClick={() => { }} />
+        <img className="cursor-pointer" src={`/assets/icons/${text === "메뉴" ? "home" : "hamburger"}.svg`} onClick={() => { }} />
       </div>
     </div>
   );
