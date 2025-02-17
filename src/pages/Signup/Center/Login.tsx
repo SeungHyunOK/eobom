@@ -3,6 +3,7 @@ import Tab from "../../../components/common/Tab";
 import Space from "../../../components/common/Space";
 import Button from "../../../components/common/Button";
 import Input from "../../../components/common/Input";
+import { useNavigate } from "react-router-dom";
 
 
 function Login() {
@@ -10,6 +11,7 @@ function Login() {
   const [step, setStep] = useState<number>(0);
   const [userId, setUserId] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleClickTap = (index: number) => {
     setTapIndex(index);
@@ -24,6 +26,16 @@ function Login() {
     setUserPassword(e.target.value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, ""));
   }
 
+  const handleNavigateSignup = () => {
+    if (tapIndex === 1) {
+      navigate("/signup/center");
+    }
+  }
+
+  const handleNavigateHome = () => {
+    navigate("/");
+  }
+
   switch (step) {
     default:
     case 0:
@@ -33,7 +45,7 @@ function Login() {
           <div className="w-full h-full flex flex-col justify-center items-center p-[20px]">
             <img className="w-[190px]" src="/assets/icons/logo-full.svg" />
             <Space css="h-[100px]" />
-            <button className="w-full h-[48px] flex justify-center items-center bg-[#FF8411] rounded-full text-[16px] text-[#FFFFFF] font-extrabold">
+            <button className="w-full h-[48px] flex justify-center items-center bg-[#FF8411] rounded-full text-[16px] text-[#FFFFFF] font-extrabold" onClick={handleNavigateSignup}>
               <img className="mr-[6px]" src="/assets/icons/telephone.svg" />
               전화번호로 시작하기
             </button>
@@ -69,7 +81,7 @@ function Login() {
                 : <Space css="h-[19px]" />
             }
           </div>
-          <Button text="로그인" onClick={() => { }} disabled={false} />
+          <Button text="로그인" onClick={handleNavigateHome} disabled={false} />
         </div>
       );
   }

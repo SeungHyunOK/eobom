@@ -3,13 +3,19 @@ import CenterHeader from "../../../components/common/CenterHeader";
 import ChatInput from "../../../components/common/ChatInput";
 import ChatMessage from "../../../components/common/ChatMessage";
 import Space from "../../../components/common/Space";
+import { useNavigate } from "react-router-dom";
 
 
 function MyPage() {
   const [text, setText] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
+  }
+
+  const handleNavigateLogin = () => {
+    navigate("/login");
   }
 
   return (
@@ -72,7 +78,7 @@ function MyPage() {
           <p>거절 30건</p>
         </div>
       </div>
-      <p className="p-[20px] text-[#9C9898] text-[15px] text-center font-semibold underline underline-offset-4 cursor-pointer">로그아웃</p>
+      <p className="p-[20px] text-[#9C9898] text-[15px] text-center font-semibold underline underline-offset-4 cursor-pointer" onClick={handleNavigateLogin}>로그아웃</p>
     </div >
   );
 }

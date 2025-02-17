@@ -14,8 +14,8 @@ const CheckBox = ({ text, onClick, checked, prefix }: BoxProps) => {
       </div>
       {
         checked
-          ? <img src="assets/icons/check-colored.svg" />
-          : <img src="assets/icons/check.svg" />
+          ? <img src="/assets/icons/check-colored.svg" />
+          : <img src="/assets/icons/check.svg" />
       }
     </button>
   );

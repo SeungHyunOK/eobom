@@ -10,6 +10,7 @@ import CheckButton from "../../../components/common/CheckButton";
 import { useDaumPostcodePopup } from "react-daum-postcode";
 import Label from "../../../components/common/Label";
 import TextButton from "../../../components/common/TextButton";
+import { useNavigate } from "react-router-dom";
 
 
 function AddSenior() {
@@ -21,6 +22,7 @@ function AddSenior() {
   const [seniorRating, setSeniorRating] = useState<number | null>(null);
   const [seniorAddress, setSeniorAddress] = useState<string>("");
   const [seniorAddressDetail, setSeniorAddressDetail] = useState<string>("");
+  const navigate = useNavigate();
   const openSearchAddress = useDaumPostcodePopup();
 
   const handleChangeSeniorName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +48,9 @@ function AddSenior() {
   }
 
   const handleClickPrev = () => {
-    if (step <= 0) return;
+    if (step <= 0) {
+      navigate(-1);
+    }
     setStep(prev => prev - 1);
   }
 
@@ -56,6 +60,14 @@ function AddSenior() {
         <img src="/assets/icons/close-bold-small.svg" />
       </button>
     );
+  }
+
+  const handleNavigateHome = () => {
+    navigate("/");
+  }
+
+  const handleNavigateAddJob = () => {
+    navigate("/jobs/add");
   }
 
   const BodyComponent = () => {
@@ -173,8 +185,8 @@ function AddSenior() {
         <FormTitle content={<>구인 정보를 등록하면<br />즉시 매칭을 받을 수 있어요</>} align="text-center" />
       </div>
       <Space css={"h-[56px]"} />
-      <Button text="어르신 구인 정보 등록하기" onClick={() => { }} disabled={false} textButton={
-        <TextButton text="홈으로" onClick={() => { }} />
+      <Button text="어르신 구인 정보 등록하기" onClick={handleNavigateAddJob} disabled={false} textButton={
+        <TextButton text="홈으로" onClick={handleNavigateHome} />
       } />
     </div >
   );

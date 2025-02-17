@@ -1,62 +1,17 @@
 import { useState } from "react";
-import ProgressBar from "../../../components/common/ProgressBar";
 import Button from "../../../components/common/Button";
-import Title from "../../../components/common/Title";
-import FormTitle from "../../../components/common/FormTitle";
-import Explanation from "../../../components/common/Explanation";
-import Input from "../../../components/common/Input";
 import Space from "../../../components/common/Space";
-import CheckButton from "../../../components/common/CheckButton";
-import { useDaumPostcodePopup } from "react-daum-postcode";
-import Label from "../../../components/common/Label";
-import TextButton from "../../../components/common/TextButton";
 import CenterHeader from "../../../components/common/CenterHeader";
+import { useNavigate } from "react-router-dom";
 
 
 function JobDetail() {
-
-  const [step, setStep] = useState<number>(0);
   const [seniorName, setSeniorName] = useState<string>("김ㅇㅇ");
-  const [seniorBirthday, setSeniorBirthday] = useState<string>("");
-  const [seniorGender, setSeniorGender] = useState<number | null>(null);
-  const [seniorRating, setSeniorRating] = useState<number | null>(null);
-  const [seniorAddress, setSeniorAddress] = useState<string>("");
-  const [seniorAddressDetail, setSeniorAddressDetail] = useState<string>("");
-  const openSearchAddress = useDaumPostcodePopup();
+  const navigate = useNavigate();
 
-  const handleChangeSeniorName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSeniorName(e.target.value);
-  }
+  const handleNavigateMatching = () => {
+    navigate("/matching");
 
-  const handleChangeSeniorBirthday = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const date = e.target.value.replace(/[^0-9]/g, "");
-    if (date.length <= 4) {
-      setSeniorBirthday(date.replace(/^(\d{2})(\d{1,2})$/, "$1.$2"));
-    }
-    else if (date.length <= 6) {
-      setSeniorBirthday(date.replace(/^(\d{2})(\d{2})(\d{1,2})$/, "$1.$2.$3"));
-    }
-  }
-
-  const handleChangeSeniorAddressDetail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSeniorAddressDetail(e.target.value);
-  }
-
-  const handleClickDone = () => {
-    setStep(prev => prev + 1);
-  }
-
-  const handleClickPrev = () => {
-    if (step <= 0) return;
-    setStep(prev => prev - 1);
-  }
-
-  const CloseButton = (resetData: () => void) => {
-    return (
-      <button onClickCapture={(e) => { e.stopPropagation(); e.preventDefault(); resetData(); }}>
-        <img src="/assets/icons/close-bold-small.svg" />
-      </button>
-    );
   }
 
   return (
@@ -221,7 +176,7 @@ function JobDetail() {
         </div>
       </div>
       <Space css={"h-[80px]"} />
-      <Button text="추천 매칭 확인하기" onClick={() => { }} disabled={false} />
+      <Button text="추천 매칭 확인하기" onClick={handleNavigateMatching} disabled={false} />
     </div>
   );
 }

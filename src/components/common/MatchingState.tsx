@@ -5,7 +5,7 @@ type MatchingStateProps = {
 const MatchingState = ({ state }: MatchingStateProps) => {
   return (
     <div className="flex flex-col items-center">
-      <div className="flex justify-between items-between w-full font-pre w-[260px]">
+      <div className="flex justify-between font-pre w-[260px]">
         <div className="flex flex-col items-center gap-[10px]">
           {
             state <= 0

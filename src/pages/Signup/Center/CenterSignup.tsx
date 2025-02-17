@@ -15,6 +15,7 @@ import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth
 import Delay from "../../../components/common/Delay";
 import TextArea from "../../../components/common/TextArea";
 import TextButton from "../../../components/common/TextButton";
+import { useNavigate } from "react-router-dom";
 
 
 declare global {
@@ -39,7 +40,7 @@ initializeApp(firebaseConfig);
 const auth = getAuth();
 auth.languageCode = "ko";
 
-function Signup() {
+function CenterSignup() {
   const [step, setStep] = useState<number>(0);
   const [userId, setUserId] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
@@ -58,6 +59,7 @@ function Signup() {
   const [centerRating, setCenterRating] = useState<number | null>(null);
   const [centerIntroduction, setCenterIntroduction] = useState<string>("");
   const divRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   const openSearchAddress = useDaumPostcodePopup();
 
   const handleChangeUserId = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -144,7 +146,9 @@ function Signup() {
   }
 
   const handleClickPrev = () => {
-    if (step <= 0) return;
+    if (step <= 0) {
+      navigate(-1);
+    }
     setStep(prev => prev - 1);
   }
 
@@ -164,6 +168,10 @@ function Signup() {
         <img src="/assets/icons/close-bold-small.svg" />
       </button>
     );
+  }
+
+  const handleNavigateLogin = () => {
+    navigate("/");
   }
 
   const BodyComponent = () => {
@@ -378,7 +386,7 @@ function Signup() {
           </div>
           <Space css={"h-[56px]"} />
           <Button text="어르신 정보 등록하기" onClick={() => { }} disabled={false} textButton={
-            <TextButton text="다음에 입력할게요" onClick={() => { }} />
+            <TextButton text="다음에 입력할게요" onClick={handleNavigateLogin} />
           } />
         </>
       ]} />
@@ -386,4 +394,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default CenterSignup;

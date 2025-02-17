@@ -48,7 +48,7 @@ const Input = ({ type, label, placeholder, value, onChange, onClick, prefix, suf
       case "date":
       case "tel":
         return (
-          <input ref={inputRef} className="text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none" placeholder={placeholder} value={value} onChange={onChange} type="tel" onFocus={handleFocus} onBlur={handleBlur} />
+          <input ref={inputRef} className={`${type === "date" ? "w-[80px]" : "w-full"} text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none`} placeholder={placeholder} value={value} onChange={onChange} type="tel" onFocus={handleFocus} onBlur={handleBlur} />
         );
       default:
         return (

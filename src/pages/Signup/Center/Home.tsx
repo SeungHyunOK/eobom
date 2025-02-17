@@ -3,7 +3,7 @@ import CenterHeader from "../../../components/common/CenterHeader";
 import NavBar from "../../../components/common/NavBar";
 
 
-function Main() {
+function Home() {
   return (
     <div className="flex flex-col justify-center font-pre select-none">
       <CenterHeader prev={false} />
@@ -72,9 +72,9 @@ function Main() {
         <Space css="h-[12px]" />
         <p className="text-[14px] text-[#717171] font-bold">{"(주) 얼리어스"}</p>
       </div>
-      <NavBar center={true} />
+      <NavBar center={true} current={0} />
     </div>
   );
 }
 
-export default Main;
+export default Home;

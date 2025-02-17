@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import MatchingState from "./MatchingState";
 import Space from "./Space";
 
@@ -6,6 +7,12 @@ type ItemProps = {
 }
 
 const SeniorItem = ({ state }: ItemProps) => {
+  const navigate = useNavigate();
+
+  const handleNavigateAddJob = () => {
+    navigate("/jobs/add");
+  }
+
   switch (state) {
     default:
     case 0:
@@ -16,7 +23,7 @@ const SeniorItem = ({ state }: ItemProps) => {
             <p className="text-[18px] text-[#3C3939] font-bold">김누구 어르신 {"(만 82세, 남)"}</p>
           </div>
           <p className="text-[16px] text-[#717171] font-semibold">서울시 노원구 공릉동 화랑로 425-13</p>
-          <button className={`w-full min-h-[48px] bg-[#FAF9F9] cursor-pointer rounded-[8px] text-[16px] text-[#717171] font-bold`} onClick={() => { }}>
+          <button className={`w-full min-h-[48px] bg-[#FAF9F9] cursor-pointer rounded-[8px] text-[16px] text-[#717171] font-bold`} onClick={handleNavigateAddJob}>
             방문 요양 구인하기
           </button>
         </div>

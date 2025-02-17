@@ -1,10 +1,24 @@
 import { useState } from "react";
 import CenterHeader from "../../../components/common/CenterHeader";
+import { useNavigate } from "react-router-dom";
 
 
 function Chat() {
   const [tap, setTap] = useState<number>(0);
   const [chatOn, setChatOn] = useState<boolean>(true);
+  const navigate = useNavigate();
+
+  const handleNavigateSeniorManagement = (index: number) => {
+    navigate("/seniors");
+  }
+
+  const handleNavigateChat = () => {
+    navigate("/chats");
+  }
+
+  const handleNavigateMypage = () => {
+    navigate("/mypage");
+  }
 
   const SubTap = () => {
     switch (tap) {
@@ -16,9 +30,9 @@ function Chat() {
               어르신 관리
               <div className="relative w-full top-[4px] border-b border-b-[#D4D2D2]" />
             </div>
-            <button className="w-full h-[60px] flex items-center p-[24px] border-b-[2px] border-b-[#FAF9F9] text-[16px] text-[#181818] font-bold">대기 중 어르신</button>
-            <button className="w-full h-[60px] flex items-center p-[24px] border-b-[2px] border-b-[#FAF9F9] text-[16px] text-[#181818] font-bold">매칭 중 어르신</button>
-            <button className="w-full h-[60px] flex items-center p-[24px] border-b-[2px] border-b-[#FAF9F9] text-[16px] text-[#181818] font-bold">매칭 완료 어르신</button>
+            <button className="w-full h-[60px] flex items-center p-[24px] border-b-[2px] border-b-[#FAF9F9] text-[16px] text-[#181818] font-bold" onClick={() => handleNavigateSeniorManagement(0)}>대기 중 어르신</button>
+            <button className="w-full h-[60px] flex items-center p-[24px] border-b-[2px] border-b-[#FAF9F9] text-[16px] text-[#181818] font-bold" onClick={() => handleNavigateSeniorManagement(1)}>매칭 중 어르신</button>
+            <button className="w-full h-[60px] flex items-center p-[24px] border-b-[2px] border-b-[#FAF9F9] text-[16px] text-[#181818] font-bold" onClick={() => handleNavigateSeniorManagement(2)}>매칭 완료 어르신</button>
           </div>
         );
       case 1:
@@ -28,10 +42,10 @@ function Chat() {
               채팅
               <div className="relative w-full top-[4px] border-b border-b-[#D4D2D2]" />
             </div>
-            <button className="w-full h-[60px] flex items-center p-[24px] border-b-[2px] border-b-[#FAF9F9] text-[16px] text-[#181818] font-bold">채팅 목록</button>
-            <button className="w-full h-[60px] flex justify-between items-center p-[24px] border-b-[2px] border-b-[#FAF9F9] text-[16px] text-[#181818] font-bold">
+            <button className="w-full h-[60px] flex items-center p-[24px] border-b-[2px] border-b-[#FAF9F9] text-[16px] text-[#181818] font-bold" onClick={handleNavigateChat}>채팅 목록</button>
+            <button className="w-full h-[60px] flex justify-between items-center p-[24px] border-b-[2px] border-b-[#FAF9F9] text-[16px] text-[#181818] font-bold" onClick={() => setChatOn(prev => !prev)}>
               채팅 알림
-              <button className={`w-[48px] h-[24px] flex justify-center items-center gap-[6px] p-[2px] ${chatOn ? "pl-[8px] bg-[#FFF2CC]" : "pr-[8px] bg-[#FFFFFF]"} rounded-full shadow-sm`} onClick={() => setChatOn(prev => !prev)}>
+              <button className={`w-[48px] h-[24px] flex justify-center items-center gap-[6px] p-[2px] ${chatOn ? "pl-[8px] bg-[#FFF2CC]" : "pr-[8px] bg-[#FFFFFF]"} rounded-full shadow-sm`}>
                 {
                   chatOn
                     ? <>

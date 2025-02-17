@@ -12,10 +12,12 @@ import CheckBox from "../../../components/common/CheckBox";
 import TextArea from "../../../components/common/TextArea";
 import RadioButton from "../../../components/common/RadioButton";
 import TextButton from "../../../components/common/TextButton";
+import { useNavigate } from "react-router-dom";
+import Label from "../../../components/common/Label";
 
 
 function AddJob() {
-  const [step, setStep] = useState<number>(5);
+  const [step, setStep] = useState<number>(0);
   const [mealAssist, setMealAssist] = useState<boolean>(false);
   const [toiletAssist, setToiletAssist] = useState<boolean>(false);
   const [movingAssist, setMovingAssist] = useState<boolean>(false);
@@ -24,13 +26,15 @@ function AddJob() {
   const [mealAssistDetail, setMealAssistDetail] = useState<number | null>(null);
   const [toiletAssistDetail, setToiletAssistDetail] = useState<number | null>(null);
   const [movingAssistDetail, setMovingAssistDetail] = useState<number | null>(null);
-  const [livingAssistDetail, setLivingAssistDetail] = useState<number | null>(null);
-  const [bathingAssistDetail, setBathingAssistDetail] = useState<number | null>(null);
+  const [livingAssistDetail, setLivingAssistDetail] = useState<boolean[]>(Array(6).fill(false));
   const [caregiverCount, setCaregiverCount] = useState<number>(0);
   const [weeklyHours, setWeeklyHours] = useState<number>(0);
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
   const [hourlyWage, setHourlyWage] = useState<string>("");
   const [features, setFeatures] = useState<boolean[]>(Array(10).fill(false));
   const [requests, setRequests] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleChangeMealAssist = () => {
     setMealAssist(!mealAssist);
@@ -49,17 +53,40 @@ function AddJob() {
 
   const handleChangeLivingAssist = () => {
     setLivingAssist(!livingAssist);
-    setLivingAssistDetail(null);
+    setLivingAssistDetail(Array(6).fill(false));
+  }
+
+  const handleChangeLivingAssistDetail = (index: number) => {
+    setLivingAssistDetail(prev => prev.map((p, i) => index === i ? !p : p))
   }
 
   const handleChangeBathingAssist = () => {
     setBathingAssist(!bathingAssist);
-    setBathingAssistDetail(null);
   }
 
   const handleChangeHourlyWage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const wage = e.target.value.replace(/[^0-9]/g, "");
     setHourlyWage(wage.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+  }
+
+  const handleChangeStartDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const date = e.target.value.replace(/[^0-9]/g, "");
+    if (date.length <= 4) {
+      setStartDate(date.replace(/^(\d{2})(\d{1,2})$/, "$1.$2"));
+    }
+    else if (date.length <= 6) {
+      setStartDate(date.replace(/^(\d{2})(\d{2})(\d{1,2})$/, "$1.$2.$3"));
+    }
+  }
+
+  const handleChangeEndDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const date = e.target.value.replace(/[^0-9]/g, "");
+    if (date.length <= 4) {
+      setEndDate(date.replace(/^(\d{2})(\d{1,2})$/, "$1.$2"));
+    }
+    else if (date.length <= 6) {
+      setEndDate(date.replace(/^(\d{2})(\d{2})(\d{1,2})$/, "$1.$2.$3"));
+    }
   }
 
   const getMonthlyWage = () => {
@@ -85,7 +112,9 @@ function AddJob() {
   }
 
   const handleClickPrev = () => {
-    if (step <= 0) return;
+    if (step <= 0) {
+      navigate(-1);
+    }
     setStep(prev => prev - 1);
   }
 
@@ -96,6 +125,12 @@ function AddJob() {
       </button>
     );
   }
+
+  const handleNavigateJobDetail = () => {
+    navigate("/jobs/detail");
+  }
+
+
 
   const BodyComponent = () => {
     switch (step) {
@@ -122,10 +157,40 @@ function AddJob() {
               }
               <Space css={"h-[18px]"} />
               <CheckBox text="배변 보조가 필요해요" prefix={<img className="w-[24px] mr-[6px]" src="/assets/images/toilet.png" />} onClick={handleChangeToiletAssist} checked={toiletAssist} />
+              {
+                toiletAssist
+                  ? <div className="p-[10px]">
+                    <RadioButton text="가끔 대소변 실수 시 도와주세요" onClick={() => setToiletAssistDetail(0)} checked={toiletAssistDetail === 0} />
+                    <RadioButton text="기저귀 케어가 필요해요" onClick={() => setToiletAssistDetail(1)} checked={toiletAssistDetail === 1} />
+                    <RadioButton text="유치도뇨/방광루/장루 관리가 필요해요" onClick={() => setToiletAssistDetail(2)} checked={toiletAssistDetail === 2} />
+                  </div>
+                  : null
+              }
               <Space css={"h-[18px]"} />
               <CheckBox text="이동 보조가 필요해요" prefix={<img className="w-[24px] mr-[6px]" src="/assets/images/wheelchair.png" />} onClick={handleChangeMovingAssist} checked={movingAssist} />
+              {
+                movingAssist
+                  ? <div className="p-[10px]">
+                    <RadioButton text="이동 시 부축 도움이 필요해요" onClick={() => setMovingAssistDetail(0)} checked={movingAssistDetail === 0} />
+                    <RadioButton text="휠체어 이동 보조가 필요해요" onClick={() => setMovingAssistDetail(1)} checked={movingAssistDetail === 1} />
+                    <RadioButton text="거동이 불가해요" onClick={() => setMovingAssistDetail(2)} checked={movingAssistDetail === 2} />
+                  </div>
+                  : null
+              }
               <Space css={"h-[18px]"} />
               <CheckBox text="생활 보조가 필요해요" prefix={<img className="w-[24px] mr-[6px]" src="/assets/images/broom.png" />} onClick={handleChangeLivingAssist} checked={livingAssist} />
+              {
+                livingAssist
+                  ? <div className="p-[10px]">
+                    <RadioButton text="청소, 빨래를 도와주세요" onClick={() => handleChangeLivingAssistDetail(0)} checked={livingAssistDetail[0]} />
+                    <RadioButton text="어르신 목욕을 도와주세요" onClick={() => handleChangeLivingAssistDetail(1)} checked={livingAssistDetail[1]} />
+                    <RadioButton text="어르신 병원 동행이 필요해요" onClick={() => handleChangeLivingAssistDetail(2)} checked={livingAssistDetail[2]} />
+                    <RadioButton text="산책과 간단한 운동을 도와주세요" onClick={() => handleChangeLivingAssistDetail(3)} checked={livingAssistDetail[3]} />
+                    <RadioButton text="말벗 등 정서 지원이 필요해요" onClick={() => handleChangeLivingAssistDetail(4)} checked={livingAssistDetail[4]} />
+                    <RadioButton text="인지자극 활동이 필요해요" onClick={() => handleChangeLivingAssistDetail(5)} checked={livingAssistDetail[5]} />
+                  </div>
+                  : null
+              }
               <Space css={"h-[18px]"} />
               <CheckBox text="방문 목욕이 필요해요" prefix={<img className="w-[24px] mr-[6px]" src="/assets/images/soap.png" />} onClick={handleChangeBathingAssist} checked={bathingAssist} />
             </div>
@@ -181,11 +246,19 @@ function AddJob() {
             <div className="h-full flex flex-col flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/money.png" />
-              <FormTitle content={<>해당 돌봄의<br />지급 가능한 시급을 입력해주세요</>} />
+              <FormTitle content={<>근무 기간과<br />지급 가능 시급을 입력해주세요</>} />
               <Space css={"h-[14px]"} />
               <Explanation text="2025년 최저시급은 10,030원이에요" />
-              <Space css={"h-[46px]"} />
-              <Input type="tel" placeholder="예시 ) 20,000" value={hourlyWage} onChange={handleChangeHourlyWage} suffix={hourlyWage ? CloseButton(() => setHourlyWage("")) : null} />
+              <Space css={"h-[36px]"} />
+              <Label text="근무 기간" />
+              <Space css={"h-[18px]"} />
+              <div className="flex gap-[8px]">
+                <Input type="date" placeholder="YY.MM.DD" value={startDate} onChange={handleChangeStartDate} prefix={<img className="w-[24px] mr-[6px]" src={startDate ? "/assets/icons/calendar-bold.svg" : "/assets/icons/calendar.svg"} />} />
+                <img src="/assets/icons/wave.svg" />
+                <Input type="date" placeholder="YY.MM.DD" value={endDate} onChange={handleChangeEndDate} prefix={<img className="w-[24px] mr-[6px]" src={endDate ? "/assets/icons/calendar-bold.svg" : "/assets/icons/calendar.svg"} />} />
+              </div>
+              <Space css={"h-[30px]"} />
+              <Input label="급여" type="tel" placeholder="예시 ) 20,000" value={hourlyWage} onChange={handleChangeHourlyWage} suffix={hourlyWage ? CloseButton(() => setHourlyWage("")) : null} />
               <Space css={"h-[30px]"} />
               <div className={`flex items-center p-[20px] w-full h-[50px] bg-[#FFECC4] border border-[#FFAE00] rounded-[10px] text-[#3C3939] shadow-sm font-bold text-[16px]`} >
                 <div className="flex items-center flex-1">
@@ -237,7 +310,7 @@ function AddJob() {
               <Space css={"h-[36px]"} />
               <TextArea placeholder="예시 ) 거동 불가 어르신으로 욕창 관리에 특히나 신경써주시기 바랍니다." value={requests} onChange={handleChangeRequests} maxLength={100} rows={4} />
             </div>
-            <Button text="구인 정보 등록 완료" onClick={handleClickDone} disabled={false} textButton={
+            <Button text="구인 정보 등록 완료" onClick={handleNavigateJobDetail} disabled={false} textButton={
               <TextButton text="임시저장" onClick={() => { }} />
             } />
           </div>

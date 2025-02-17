@@ -5,52 +5,71 @@ import SeniorSearch from "../../../components/common/SeniorSearch";
 import Tab from "../../../components/common/Tab";
 import NavBar from "../../../components/common/NavBar";
 import SeniorItem from "../../../components/common/SeniorItem";
+import { useNavigate } from "react-router-dom";
 
 
 function SeniorManagement() {
   const [searchText, setSearchText] = useState<string>("");
-  const [tapIndex, setTapIndex] = useState<number>(0);
+  const [tabIndex, setTabIndex] = useState<number>(0);
+  const navigate = useNavigate();
 
   const handleChangeSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   }
 
   const handleClickTap = (index: number) => {
-    setTapIndex(index);
+    setTabIndex(index);
+  }
+
+  const handleNavigateAddSenior = () => {
+    navigate("/seniors/add");
   }
 
   return (
     <div className="flex flex-col justify-center font-pre select-none">
       <CenterHeader text="어르신 관리" prev={false} />
       <div className="flex flex-col justify-center p-[20px] items-center">
-        <Tab tabs={["대기", "진행 중", "매칭 완료"]} width="w-1/3" current={tapIndex} onClick={handleClickTap} />
+        <Tab tabs={["대기", "진행 중", "매칭 완료"]} width="w-1/3" current={tabIndex} onClick={handleClickTap} />
         <Space css="h-[24px]" />
         <SeniorSearch value={searchText} onChange={handleChangeSearchText} />
         <Space css="h-[30px]" />
         {
-          tapIndex === 0
-            ?
-            <>
-              <div className="flex w-full p-[16px] bg-[#FAF9F9] gap-[14px] rounded-[10px] shadow-sm">
+          tabIndex === 0
+            ? <>
+              <button className="flex w-full p-[16px] bg-[#FAF9F9] gap-[14px] rounded-[10px] shadow-sm" onClick={handleNavigateAddSenior}>
                 <img src="/assets/icons/plus_colored.svg" />
                 <p className="text-[18px] text-[#717171] font-bold">어르신 추가하기</p>
-              </div>
+              </button>
               <Space css="h-[14px]" />
             </>
             : null
         }
-        <SeniorItem state={0} />
-        <Space css="h-[14px]" />
-        <SeniorItem state={1} />
-        <Space css="h-[14px]" />
-        <SeniorItem state={2} />
-        <Space css="h-[14px]" />
-        <SeniorItem state={3} />
-        <Space css="h-[14px]" />
-        <SeniorItem state={4} />
+        {tabIndex === 0
+          ? <>
+            <SeniorItem state={0} />
+          </>
+          : null
+        }
+        {tabIndex === 1
+          ? <>
+            <SeniorItem state={2} />
+            <Space css="h-[14px]" />
+            <SeniorItem state={1} />
+          </>
+          : null
+        }
+        {
+          tabIndex === 2
+            ? <>
+              <SeniorItem state={3} />
+              <Space css="h-[14px]" />
+              <SeniorItem state={4} />
+            </>
+            : null
+        }
         <Space css="h-[80px]" />
       </div>
-      <NavBar center={true} />
+      <NavBar center={true} current={1} />
     </div>
   );
 }
