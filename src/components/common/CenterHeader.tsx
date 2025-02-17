@@ -21,8 +21,8 @@ const CenterHeader = ({ text, prev }: HeaderProps) => {
   }
 
   return (
-    <div className="mb-[90px] z-[1]">
-      <div className="fixed top-[0px] font-jal flex justify-between items-end w-full h-[90px] p-[24px] bg-[#FFFFFF] pb-[10px] border-b-[1px] border-[#D4D2D2]">
+    <div className="mb-[60px] z-[1]">
+      <div className="fixed top-[0px] font-jal flex justify-between items-end w-full h-[60px] p-[24px] bg-[#FFFFFF] pb-[10px] border-b-[1px] border-[#D4D2D2]">
         <div className="flex gap-[12px]">
           <button onClick={prev ? handleNavigatePrev : () => { }}>
             <img src={`/assets/icons/${prev ? "past" : "logo"}.svg`} />

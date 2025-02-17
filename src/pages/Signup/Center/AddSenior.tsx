@@ -11,7 +11,7 @@ import { useDaumPostcodePopup } from "react-daum-postcode";
 import Label from "../../../components/common/Label";
 import TextButton from "../../../components/common/TextButton";
 import { useNavigate } from "react-router-dom";
-import { createSenior } from "../../../apis/senior";
+import useSenior from "../../../apis/senior";
 
 
 function AddSenior() {
@@ -25,6 +25,7 @@ function AddSenior() {
   const [seniorAddressDetail, setSeniorAddressDetail] = useState<string>("");
   const navigate = useNavigate();
   const openSearchAddress = useDaumPostcodePopup();
+  const { createSenior } = useSenior();
 
   const handleChangeSeniorName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSeniorName(e.target.value);

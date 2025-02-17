@@ -43,7 +43,7 @@ function ChatList() {
         </div>
         <p className="text-[10px] text-[#9C9898] font-semibold">오전 09:00</p>
       </button>
-      <NavBar center={true} current={2} />
+      <NavBar current={2} />
     </div>
   );
 }

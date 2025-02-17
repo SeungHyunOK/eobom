@@ -78,7 +78,11 @@ function MyPage() {
           <p>거절 30건</p>
         </div>
       </div>
-      <p className="p-[20px] text-[#9C9898] text-[15px] text-center font-semibold underline underline-offset-4 cursor-pointer" onClick={handleNavigateLogin}>로그아웃</p>
+      <div className="flex justify-center p-[20px] text-[#9C9898] text-[15px] text-center font-semibold">
+        <button onClick={handleNavigateLogin}>로그아웃</button>
+        <p className="pl-[10px] pr-[10px]">|</p>
+        <button onClick={handleNavigateLogin}>회원탈퇴</button>
+      </div>
     </div >
   );
 }

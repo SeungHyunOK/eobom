@@ -9,3 +9,9 @@ export const accessTokenState = atom({
   default: "",
   effects_UNSTABLE: [persistAtom],
 });
+
+export const userTypeState = atom({
+  key: "userTypeState",
+  default: "",
+  effects_UNSTABLE: [persistAtom],
+});

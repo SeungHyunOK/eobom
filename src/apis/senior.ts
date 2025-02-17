@@ -1,3 +1,6 @@
+import { useRecoilValue } from "recoil";
+import { accessTokenState } from "../store/store";
+
 type CreateSeniorProps = {
   seniorName: string,
   seniorBirthday: string,
@@ -8,36 +11,45 @@ type CreateSeniorProps = {
   mimeType?: string,
 }
 
-export const createSenior = async ({ seniorName, seniorBirthday, seniorAddress, seniorGender, seniorRating, profileImage, mimeType }: CreateSeniorProps) => {
-  return await fetch("/api/manager/addSenior", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-      "Authorization": "`Bearer ${accessToken}`"
-    },
-    body: JSON.stringify(
-      {
-        seniorName: seniorName,
-        seniorBirth: seniorBirthday,
-        seniorAddress: seniorAddress,
-        seniorGender: seniorGender,
-        seniorGrade: seniorRating,
-        profileImage: profileImage,
-        mimeType: mimeType
-      }
-    ),
-  })
-    .then((response) => {
-      // if (!response.ok) {
-      //   throw new Error("Network response was not ok");
-      // }
-      return response.json();
+
+const useSenior = () => {
+  const accessToken = useRecoilValue(accessTokenState);
+
+  const createSenior = async ({ seniorName, seniorBirthday, seniorAddress, seniorGender, seniorRating, profileImage, mimeType }: CreateSeniorProps) => {
+    return await fetch("/api/manager/addSenior", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+        "Authorization": `Bearer ${accessToken}`
+      },
+      body: JSON.stringify(
+        {
+          seniorName: seniorName,
+          seniorBirth: seniorBirthday,
+          seniorAddress: seniorAddress,
+          seniorGender: seniorGender,
+          seniorGrade: seniorRating,
+          profileImage: profileImage,
+          mimeType: mimeType
+        }
+      ),
     })
-    .then((result) => {
-      console.log(result);
-      if (result.message !== "") {
-        return true;
-      }
-      return false;
-    });
+      .then((response) => {
+        // if (!response.ok) {
+        //   throw new Error("Network response was not ok");
+        // }
+        return response.json();
+      })
+      .then((result) => {
+        console.log(result);
+        if (result.message !== "") {
+          return true;
+        }
+        return false;
+      });
+  }
+
+  return { createSenior };
 }
+
+export default useSenior;

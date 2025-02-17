@@ -1,9 +1,13 @@
 import Space from "../../../components/common/Space";
 import CenterHeader from "../../../components/common/CenterHeader";
 import NavBar from "../../../components/common/NavBar";
+import { useRecoilState } from "recoil";
+import { userTypeState } from "../../../store/store";
 
 
 function Home() {
+  const [userType, setUserType] = useRecoilState(userTypeState);
+
   return (
     <div className="flex flex-col justify-center font-pre select-none">
       <CenterHeader prev={false} />
@@ -72,7 +76,7 @@ function Home() {
         <Space css="h-[12px]" />
         <p className="text-[14px] text-[#717171] font-bold">{"(주) 얼리어스"}</p>
       </div>
-      <NavBar center={true} current={0} />
+      <NavBar current={0} />
     </div>
   );
 }

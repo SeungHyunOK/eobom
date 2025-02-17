@@ -69,7 +69,7 @@ function SeniorManagement() {
         }
         <Space css="h-[80px]" />
       </div>
-      <NavBar center={true} current={1} />
+      <NavBar current={1} />
     </div>
   );
 }

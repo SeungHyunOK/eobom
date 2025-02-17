@@ -1,13 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import Space from "./Space";
+import { useRecoilValue } from "recoil";
+import { userTypeState } from "../../store/store";
 
 
 type NavBarProps = {
-  center: boolean,
   current?: number,
 }
 
-const NavBar = ({ center, current }: NavBarProps) => {
+const NavBar = ({ current }: NavBarProps) => {
+  const userType = useRecoilValue(userTypeState);
   const navigate = useNavigate();
 
   const handleNavigateHome = () => {
@@ -39,9 +41,9 @@ const NavBar = ({ center, current }: NavBarProps) => {
           <p className={`text-[10px] ${current === 0 ? "text-[#FF8411]" : "text-[#3C3939]"} font-semibold`}>홈</p>
         </button>
         <Space css="w-[40px]" />
-        <button className="flex flex-col items-center gap-[4px] w-[50px] h-[50px]" onClick={center ? handleNavigateSeniorManagement : handleNavigateMatching}>
-          <img src={`/assets/icons/${center ? "stats" : "target"}${current === 1 ? "-colored" : ""}.svg`} />
-          <p className={`text-[10px] ${current === 1 ? "text-[#FF8411]" : "text-[#3C3939]"} font-semibold`}>{center ? "어르신 관리" : "나의 매칭"}</p>
+        <button className="flex flex-col items-center gap-[4px] w-[50px] h-[50px]" onClick={userType === "관리사" ? handleNavigateSeniorManagement : handleNavigateMatching}>
+          <img src={`/assets/icons/${userType === "관리사" ? "stats" : "target"}${current === 1 ? "-colored" : ""}.svg`} />
+          <p className={`text-[10px] ${current === 1 ? "text-[#FF8411]" : "text-[#3C3939]"} font-semibold`}>{userType === "관리사" ? "어르신 관리" : "나의 매칭"}</p>
         </button>
         <Space css="w-[40px]" />
         <button className="flex flex-col items-center gap-[4px] w-[50px] h-[50px]" onClick={handleNavigateChat}>

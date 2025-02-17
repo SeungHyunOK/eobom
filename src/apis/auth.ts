@@ -1,11 +1,5 @@
-import { useSetRecoilState } from "recoil";
-import { accessTokenState } from "../store/store";
-
-type RegistrationNumberProps = {
-  regNumber: string,
-  repName: string,
-  startDate: string,
-}
+import { useRecoilState } from "recoil";
+import { accessTokenState, userTypeState } from "../store/store";
 
 type CheckUserIdProps = {
   userId: string,
@@ -37,7 +31,8 @@ type LoginProps = {
 }
 
 const useAuth = () => {
-  const setAccessToken = useSetRecoilState(accessTokenState);
+  const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+  const [userType, setUserType] = useRecoilState(userTypeState);
 
   const checkUserId = async ({ userId }: CheckUserIdProps) => {
     return await fetch("/api/user/login", {
@@ -123,13 +118,74 @@ const useAuth = () => {
       .then((result) => {
         if (result.accessToken) {
           setAccessToken(result.accessToken);
+          getUserInfo();
           return true
         }
         return false;
       });
   }
 
-  return { checkUserId, createManager, login }
+  const getUserInfo = async () => {
+    return await fetch("/api/user/getUserInfo", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${accessToken}`
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((result) => {
+        console.log(result);
+        if (result.userType) {
+          setUserType(result.userType);
+          return true
+        }
+        return false;
+      });
+  }
+
+  const deleteUser = async () => {
+    return await fetch("/api/user/withdrawal", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${accessToken}`
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((result) => {
+        if (result.message) {
+          return true
+        }
+        return false;
+      });
+  }
+
+  const getAccessToken = async () => {
+    return await fetch("/api/user/getAccessToken", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((result) => {
+        if (result.accessToken) {
+          setAccessToken(result.accessToken);
+          return true
+        }
+        return false;
+      });
+  }
+
+  return { checkUserId, createManager, login, getUserInfo, deleteUser, getAccessToken };
 }
 
 export default useAuth;
