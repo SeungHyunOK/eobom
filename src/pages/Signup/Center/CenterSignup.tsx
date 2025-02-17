@@ -16,6 +16,7 @@ import Delay from "../../../components/common/Delay";
 import TextArea from "../../../components/common/TextArea";
 import TextButton from "../../../components/common/TextButton";
 import { useNavigate } from "react-router-dom";
+import { checkUserId, createManager, login } from "../../../apis/auth";
 
 
 declare global {
@@ -152,11 +153,15 @@ function CenterSignup() {
     setStep(prev => prev - 1);
   }
 
-  const handleCheckValidation = () => {
+  const handleCheckValidation = async () => {
     const regex = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z\d]).+$/;
-    console.log(userPassword);
     if (!regex.test(userPassword)) {
       setUserPasswordValidation(false);
+      return;
+    }
+    const duplicated = await checkUserId({ userId: userId });
+    if (duplicated) {
+      setUserIdValidation(false);
       return;
     }
     handleClickDone();
@@ -172,6 +177,29 @@ function CenterSignup() {
 
   const handleNavigateLogin = () => {
     navigate("/");
+  }
+
+  const handleClickSignup = async () => {
+    const result = await createManager({
+      userId: userId,
+      userPassword: userPassword,
+      userName: userName,
+      phoneNumber: userPhoneNumber,
+      userGender: "남성",
+      profileImage: "",
+      centerName: centerName,
+      showerTruck: showerTruck,
+      centerAddress: centerAddress + centerAddressDetail,
+      centerRating: centerRating ? ["A등급", "B등급", "C등급", "D등급"][centerRating] : null,
+      centerIntro: centerIntroduction,
+      regNumber: registrationNumber,
+      repName: centerOwnerName,
+      openingDate: openingDate,
+    });
+    if (result.user) {
+      // const accessToken = await login({ userId: userId, userPassword: userPassword });
+      handleClickDone();
+    }
   }
 
   const BodyComponent = () => {
@@ -238,7 +266,8 @@ function CenterSignup() {
               <Input type="text" placeholder="예시 ) 010-1234-5678" value={userPhoneNumber} onChange={handleChangeUserPhoneNumber} />
             </div>
             <div ref={divRef} />
-            <Button text="인증번호 발송" onClick={() => handleSendAuthCode(true)} disabled={!userPhoneNumber} />
+            {/* <Button text="인증번호 발송" onClick={() => handleSendAuthCode(true)} disabled={!userPhoneNumber} /> */}
+            <Button text="인증번호 발송" onClick={handleClickDone} disabled={!userPhoneNumber} />
             {
               openBottomSheet
                 ? <BottomSheet start={Date.now()} handleSendAuthCode={handleSendAuthCode} handleClickDone={handleClickDone} />
@@ -346,8 +375,8 @@ function CenterSignup() {
               </div>
             </div>
             <Space css={"h-[56px]"} />
-            <Button text="회원가입 완료" onClick={() => { }} disabled={true} textButton={
-              <TextButton text="다음에 등록할게요" onClick={handleClickDone} />
+            <Button text="회원가입 완료" onClick={handleClickSignup} disabled={true} textButton={
+              <TextButton text="다음에 등록할게요" onClick={handleClickSignup} />
             } />
           </div>
         );
