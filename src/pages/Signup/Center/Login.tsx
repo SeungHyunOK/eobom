@@ -4,6 +4,7 @@ import Space from "../../../components/common/Space";
 import Button from "../../../components/common/Button";
 import Input from "../../../components/common/Input";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../../apis/auth";
 
 
 function Login() {
@@ -11,7 +12,9 @@ function Login() {
   const [step, setStep] = useState<number>(0);
   const [userId, setUserId] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
+  const [incorrect, setIncorrect] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleClickTab = (index: number) => {
     setTabIndex(index);
@@ -20,10 +23,12 @@ function Login() {
 
   const handleChangeUserId = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserId(e.target.value);
+    setIncorrect(false);
   }
 
   const handleChangeUserPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserPassword(e.target.value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g, ""));
+    setIncorrect(false);
   }
 
   const handleNavigateSignup = () => {
@@ -32,8 +37,15 @@ function Login() {
     }
   }
 
-  const handleNavigateHome = () => {
-    navigate("/");
+  const handleClickLogin = async () => {
+    const result = await login({ userId: userId, userPassword: userPassword });
+
+    if (result) {
+      navigate("/");
+    }
+    else {
+      setIncorrect(true);
+    }
   }
 
   switch (step) {
@@ -74,14 +86,14 @@ function Login() {
             <Input type="password" label="비밀번호" placeholder="비밀번호를 입력해주세요" value={userPassword} onChange={handleChangeUserPassword} />
             <Space css={"h-[6px]"} />
             {
-              false
+              incorrect
                 ? <p className="text-[13px] text-[#FF8411] font-semibold">
                   아이디 혹은 비밀번호를 다시 확인해주세요
                 </p>
                 : <Space css="h-[19px]" />
             }
           </div>
-          <Button text="로그인" onClick={handleNavigateHome} disabled={false} />
+          <Button text="로그인" onClick={handleClickLogin} disabled={incorrect} />
         </div>
       );
   }

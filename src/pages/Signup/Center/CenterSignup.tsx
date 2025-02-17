@@ -16,7 +16,7 @@ import Delay from "../../../components/common/Delay";
 import TextArea from "../../../components/common/TextArea";
 import TextButton from "../../../components/common/TextButton";
 import { useNavigate } from "react-router-dom";
-import { checkUserId, createManager, login } from "../../../apis/auth";
+import useAuth from "../../../apis/auth";
 
 
 declare global {
@@ -62,6 +62,7 @@ function CenterSignup() {
   const divRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const openSearchAddress = useDaumPostcodePopup();
+  const { checkUserId, createManager, login } = useAuth();
 
   const handleChangeUserId = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserId(e.target.value);
@@ -197,7 +198,7 @@ function CenterSignup() {
       openingDate: openingDate,
     });
     if (result.user) {
-      // const accessToken = await login({ userId: userId, userPassword: userPassword });
+      await login({ userId: userId, userPassword: userPassword });
       handleClickDone();
     }
   }
