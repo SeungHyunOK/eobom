@@ -11,6 +11,7 @@ import { useDaumPostcodePopup } from "react-daum-postcode";
 import Label from "../../../components/common/Label";
 import TextButton from "../../../components/common/TextButton";
 import { useNavigate } from "react-router-dom";
+import { createSenior } from "../../../apis/senior";
 
 
 function AddSenior() {
@@ -68,6 +69,17 @@ function AddSenior() {
 
   const handleNavigateAddJob = () => {
     navigate("/jobs/add");
+  }
+
+  const handleClickAddSenior = async () => {
+    const result = await createSenior({
+      seniorName: seniorName,
+      seniorBirthday: seniorBirthday,
+      seniorAddress: seniorAddress,
+      seniorGender: ["남성", "여성"][seniorGender ?? 0],
+      seniorRating: ["인지지원등급", "1등급", "2등급", "3등급", "4등급", "5등급"][seniorRating ?? 0],
+    });
+    console.log(result);
   }
 
   const BodyComponent = () => {
@@ -154,8 +166,8 @@ function AddSenior() {
               </div>
             </div>
             <Space css={"h-[56px]"} />
-            <Button text="어르신 정보 등록 완료" onClick={() => { }} disabled={true} textButton={
-              <TextButton text="다음에 등록할게요" onClick={handleClickDone} />
+            <Button text="어르신 정보 등록 완료" onClick={handleClickAddSenior} disabled={true} textButton={
+              <TextButton text="다음에 등록할게요" onClick={handleClickAddSenior} />
             } />
           </div>
         );
