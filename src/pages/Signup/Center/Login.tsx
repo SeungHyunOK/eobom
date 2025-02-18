@@ -40,10 +40,7 @@ function Login() {
   const handleClickLogin = async () => {
     const result = await login({ userId: userId, userPassword: userPassword });
 
-    if (result) {
-      navigate("/");
-    }
-    else {
+    if (!result) {
       setIncorrect(true);
     }
   }
@@ -55,7 +52,9 @@ function Login() {
         <div className="h-full flex flex-col items-center font-pre select-none p-[20px]">
           <Tab tabs={["요양보호사", "센터"]} width="w-1/2" current={tabIndex} onClick={handleClickTab} />
           <div className="w-full h-full flex flex-col justify-center items-center p-[20px]">
-            <img className="w-[190px]" src="/assets/icons/logo-full.svg" />
+            <object className="w-[190px]" data="/assets/icons/logo-full.svg" type="image/svg+xml">
+              <img className="w-[190px]" src="/assets/icons/logo-full.svg" />
+            </object>
             <Space css="h-[100px]" />
             <button className="w-full h-[48px] flex justify-center items-center bg-[#FF8411] rounded-full text-[16px] text-[#FFFFFF] font-extrabold" onClick={handleNavigateSignup}>
               <img className="mr-[6px]" src="/assets/icons/telephone.svg" />
@@ -77,7 +76,9 @@ function Login() {
           <div className="w-full h-full flex flex-col">
             <Space css={"h-[60px]"} />
             <div className="flex justify-center">
-              <img className="w-[140px]" src="/assets/icons/logo-login.svg" />
+              <object className="w-[140px]" data="/assets/icons/logo-login.svg" type="image/svg+xml">
+                <img className="w-[140px]" src="/assets/icons/logo-login.svg" />
+              </object>
             </div>
             <Space css={"h-[46px]"} />
             <Input type="id" label="아이디" placeholder="아이디를 입력해주세요" value={userId} onChange={handleChangeUserId} />

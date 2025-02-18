@@ -15,7 +15,6 @@ import useSenior from "../../../apis/senior";
 
 
 function AddSenior() {
-
   const [step, setStep] = useState<number>(0);
   const [seniorName, setSeniorName] = useState<string>("");
   const [seniorBirthday, setSeniorBirthday] = useState<string>("");
@@ -23,6 +22,8 @@ function AddSenior() {
   const [seniorRating, setSeniorRating] = useState<number | null>(null);
   const [seniorAddress, setSeniorAddress] = useState<string>("");
   const [seniorAddressDetail, setSeniorAddressDetail] = useState<string>("");
+  const [seniorId, setSeniorId] = useState<number | null>(null);
+
   const navigate = useNavigate();
   const openSearchAddress = useDaumPostcodePopup();
   const { createSenior } = useSenior();
@@ -69,7 +70,7 @@ function AddSenior() {
   }
 
   const handleNavigateAddJob = () => {
-    navigate("/jobs/add");
+    navigate(`/seniors/${seniorId}/jobs/add`);
   }
 
   const handleClickAddSenior = async () => {
@@ -80,7 +81,10 @@ function AddSenior() {
       seniorGender: ["남성", "여성"][seniorGender ?? 0],
       seniorRating: ["인지지원등급", "1등급", "2등급", "3등급", "4등급", "5등급"][seniorRating ?? 0],
     });
-    console.log(result);
+    if (result !== null) {
+      setSeniorId(result)
+      handleClickDone();
+    }
   }
 
   const BodyComponent = () => {
@@ -194,7 +198,11 @@ function AddSenior() {
 
   return (
     <div className="h-full flex flex-col font-pre p-[20px] select-none">
-      <div className="flex flex-col justify-center flex-1">
+      <div className="flex flex-col justify-center items-center flex-1">
+        <object className="w-[150px]" data="/assets/icons/link.svg" type="image/svg+xml">
+          <img className="w-[150px]" src="/assets/icons/link.svg" />
+        </object>
+        <Space css={"h-[60px]"} />
         <FormTitle content={<>구인 정보를 등록하면<br />즉시 매칭을 받을 수 있어요</>} align="text-center" />
       </div>
       <Space css={"h-[56px]"} />

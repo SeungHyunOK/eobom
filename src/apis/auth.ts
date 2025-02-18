@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { accessTokenState, userTypeState } from "../store/store";
+import { accessTokenState, userTypeState, userInfoState } from "../store/store";
 
 type CheckUserIdProps = {
   userId: string,
@@ -33,6 +33,7 @@ type LoginProps = {
 const useAuth = () => {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
   const [userType, setUserType] = useRecoilState(userTypeState);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
 
   const checkUserId = async ({ userId }: CheckUserIdProps) => {
     return await fetch("/api/user/login", {
@@ -118,19 +119,25 @@ const useAuth = () => {
       .then((result) => {
         if (result.accessToken) {
           setAccessToken(result.accessToken);
-          getUserInfo();
-          return true
+          getUserInfo(result.accessToken);
+          return true;
         }
         return false;
       });
   }
 
-  const getUserInfo = async () => {
+  const logout = () => {
+    setAccessToken("");
+    setUserType("");
+    setUserInfo({});
+  }
+
+  const getUserInfo = async (token?: string) => {
     return await fetch("/api/user/getUserInfo", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${accessToken}`
+        "Authorization": `Bearer ${token ?? accessToken}`
       },
     })
       .then((response) => {
@@ -139,8 +146,9 @@ const useAuth = () => {
       .then((result) => {
         console.log(result);
         if (result.userType) {
+          setUserInfo(result);
           setUserType(result.userType);
-          return true
+          return true;
         }
         return false;
       });
@@ -159,7 +167,8 @@ const useAuth = () => {
       })
       .then((result) => {
         if (result.message) {
-          return true
+          logout();
+          return true;
         }
         return false;
       });
@@ -172,6 +181,7 @@ const useAuth = () => {
         "Content-Type": "application/json",
       },
       credentials: "include",
+      body: JSON.stringify({}),
     })
       .then((response) => {
         return response.json();
@@ -179,13 +189,20 @@ const useAuth = () => {
       .then((result) => {
         if (result.accessToken) {
           setAccessToken(result.accessToken);
-          return true
+          return true;
         }
         return false;
       });
   }
 
-  return { checkUserId, createManager, login, getUserInfo, deleteUser, getAccessToken };
+  const getLoggedIn = () => {
+    if (accessToken && userType) {
+      return true;
+    }
+    return false;
+  }
+
+  return { checkUserId, createManager, login, logout, getUserInfo, deleteUser, getAccessToken, getLoggedIn };
 }
 
 export default useAuth;

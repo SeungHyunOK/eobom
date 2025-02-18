@@ -3,9 +3,14 @@ import { useEffect, useState } from "react";
 
 type TimeTableProps = {
   setWeeklyHours: React.Dispatch<React.SetStateAction<number>>,
+  setSchedule: React.Dispatch<React.SetStateAction<Map<string, { startTime: string; endTime: string }>>>,
 }
 
-const TimeTable = ({ setWeeklyHours }: TimeTableProps) => {
+type Schedule = {
+  [key: string]: { startTime: string, endTime: string };
+}
+
+const TimeTable = ({ setWeeklyHours, setSchedule }: TimeTableProps) => {
   const [selected, setSelected] = useState<boolean[][]>(Array.from(Array(12), () => Array(7).fill(false)));
   const [mouseDown, setMouseDown] = useState<boolean>(false);
   const [currentDiv, setCurrentDiv] = useState<HTMLDivElement | null>(null);
@@ -21,6 +26,41 @@ const TimeTable = ({ setWeeklyHours }: TimeTableProps) => {
       window.removeEventListener("mousedown", handleMouseDown);
     };
   }, []);
+
+  useEffect(() => {
+    // let times = new Set();
+    // let times: number[][] = [];
+    const schedule = new Map();
+
+    const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+    for (let j = 0; j < 7; j++) {
+      let times: number[][] = [];
+      let current = 900;
+      for (let i = 0; i < 12; i++) {
+        // weekdays
+        if (selected[i][j]) {
+          if (times.length > 0 && times[times.length - 1][1] == current) {
+            times[times.length - 1][1] = current + 100;
+          } else {
+            times.push([current, current + 100]);
+          }
+        }
+        current += 100;
+      }
+      if (times.length > 0) {
+        schedule.set(weekdays[j], times.map(time => {
+          return (
+            {
+              startTime: time[0].toString().padStart(4, "0"),
+              endTime: time[1].toString().padStart(4, "0"),
+            }
+          );
+        }));
+      }
+    }
+    // console.log(timeMap.entries());
+    setSchedule(Object.fromEntries(schedule));
+  }, [selected]);
 
   const table = () => {
     const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {

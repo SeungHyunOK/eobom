@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Space from "../../../components/common/Space";
 import CenterHeader from "../../../components/common/CenterHeader";
 import SeniorSearch from "../../../components/common/SeniorSearch";
@@ -6,12 +6,23 @@ import Tab from "../../../components/common/Tab";
 import NavBar from "../../../components/common/NavBar";
 import SeniorItem from "../../../components/common/SeniorItem";
 import { useNavigate } from "react-router-dom";
+import useMatching from "../../../apis/matching";
+import useAuth from "../../../apis/auth";
+import useSenior from "../../../apis/senior";
 
 
 function SeniorManagement() {
+  const [seniors, setSeniors] = useState<[]>([]);
   const [searchText, setSearchText] = useState<string>("");
   const [tabIndex, setTabIndex] = useState<number>(0);
   const navigate = useNavigate();
+  const { getManagerMatching } = useMatching();
+  const { getAccessToken } = useAuth();
+  const { getJobOffer } = useSenior();
+
+  useEffect(() => {
+
+  }, []);
 
   const handleChangeSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -44,7 +55,14 @@ function SeniorManagement() {
             </>
             : null
         }
-        {tabIndex === 0
+        <div className="w-full flex flex-col gap-[14px]">
+          {
+            seniors.map((senior) => {
+              return <SeniorItem senior={senior} state={0} />
+            })
+          }
+        </div>
+        {/* {tabIndex === 0
           ? <>
             <SeniorItem state={0} />
           </>
@@ -66,7 +84,7 @@ function SeniorManagement() {
               <SeniorItem state={4} />
             </>
             : null
-        }
+        } */}
         <Space css="h-[80px]" />
       </div>
       <NavBar current={1} />

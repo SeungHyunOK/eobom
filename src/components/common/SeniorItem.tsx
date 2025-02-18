@@ -3,10 +3,40 @@ import MatchingState from "./MatchingState";
 import Space from "./Space";
 
 type ItemProps = {
+  senior: SeniorProps
   state?: number,
 }
 
-const SeniorItem = ({ state }: ItemProps) => {
+type SeniorProps = {
+  seniorId: string,
+  seniorName: string,
+  seniorAddress: string,
+  seniorBirth: string,
+  seniorGender: string,
+  seniorGrade: string,
+}
+
+const getAge = (birthday: string) => {
+  const birth = new Date(birthday.replace(/[^0-9]/g, "").replace(/^(\d{2})(\d{2})(\d{2})$/, "19$1-$2-$3"));
+  const today = new Date();
+  const age = today.getFullYear() - birth.getFullYear();
+  if (
+    today.getMonth() < birth.getMonth() ||
+    (today.getMonth() === birth.getMonth() && today.getDate() < birth.getDate())
+  ) {
+    return age - 1;
+  }
+  return age;
+}
+
+const getGender = (gender: string) => {
+  if (gender === "남성") {
+    return "남";
+  }
+  return "여"
+}
+
+const SeniorItem = ({ senior, state }: ItemProps) => {
   const navigate = useNavigate();
 
   const handleNavigateAddJob = () => {
@@ -20,9 +50,9 @@ const SeniorItem = ({ state }: ItemProps) => {
         <div className="flex flex-col w-full p-[20px] border border-[2px] border-[#FAF9F9] gap-[14px] rounded-[10px] shadow-sm">
           <div className="flex items-center">
             <img className="w-[20px] mr-[6px]" src="assets/images/old-man.png" />
-            <p className="text-[18px] text-[#3C3939] font-bold">김누구 어르신 {"(만 82세, 남)"}</p>
+            <p className="text-[18px] text-[#3C3939] font-bold">{senior.seniorName} {`(만 ${getAge(senior.seniorBirth)}세, ${getGender(senior.seniorGender)})`}</p>
           </div>
-          <p className="text-[16px] text-[#717171] font-semibold">서울시 노원구 공릉동 화랑로 425-13</p>
+          <p className="text-[16px] text-[#717171] font-semibold">{senior.seniorAddress}</p>
           <button className={`w-full min-h-[48px] bg-[#FAF9F9] cursor-pointer rounded-[8px] text-[16px] text-[#717171] font-bold`} onClick={handleNavigateAddJob}>
             방문 요양 구인하기
           </button>

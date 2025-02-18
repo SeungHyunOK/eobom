@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../../components/common/Button";
 import Space from "../../../components/common/Space";
 import CenterHeader from "../../../components/common/CenterHeader";
@@ -9,9 +9,12 @@ function JobDetail() {
   const [seniorName, setSeniorName] = useState<string>("김ㅇㅇ");
   const navigate = useNavigate();
 
+  useEffect(() => {
+
+  }, []);
+
   const handleNavigateMatching = () => {
     navigate("/matching");
-
   }
 
   return (

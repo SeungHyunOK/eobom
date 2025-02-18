@@ -14,9 +14,13 @@ import RadioButton from "../../../components/common/RadioButton";
 import TextButton from "../../../components/common/TextButton";
 import { useNavigate } from "react-router-dom";
 import Label from "../../../components/common/Label";
+import useJob from "../../../apis/job";
+import { useParams } from "react-router-dom";
 
+type Schedule = Map<string, { startTime: string, endTime: string }>
 
 function AddJob() {
+  const { seniorId } = useParams<{ seniorId: string }>();
   const [step, setStep] = useState<number>(0);
   const [mealAssist, setMealAssist] = useState<boolean>(false);
   const [toiletAssist, setToiletAssist] = useState<boolean>(false);
@@ -29,12 +33,18 @@ function AddJob() {
   const [livingAssistDetail, setLivingAssistDetail] = useState<boolean[]>(Array(6).fill(false));
   const [caregiverCount, setCaregiverCount] = useState<number>(0);
   const [weeklyHours, setWeeklyHours] = useState<number>(0);
+  const [schedule, setSchedule] = useState<Schedule>(new Map());
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [hourlyWage, setHourlyWage] = useState<string>("");
   const [features, setFeatures] = useState<boolean[]>(Array(10).fill(false));
   const [requests, setRequests] = useState<string>("");
   const navigate = useNavigate();
+  const { createJobOffer } = useJob();
+
+  useEffect(() => {
+    console.log(schedule);
+  }, [schedule]);
 
   const handleChangeMealAssist = () => {
     setMealAssist(!mealAssist);
@@ -126,14 +136,28 @@ function AddJob() {
     );
   }
 
-  const handleNavigateJobDetail = () => {
-    navigate("/jobs/detail");
+  const handleClickAddJob = async () => {
+    const result = await createJobOffer({
+      seniorId: Number(seniorId),
+      hourlyWage: Number(hourlyWage.replace(/[^0-9]/g, "")),
+      caregiverCount,
+      schedule: schedule,
+      mealAssist: mealAssist,
+      toiletAssist: toiletAssist,
+      movingAssist: movingAssist,
+      bathingAssist: bathingAssist,
+      livingAssist: livingAssist,
+    });
+    if (result !== null) {
+      navigate(`/jobs/${result}`);
+    }
   }
 
 
 
   const BodyComponent = () => {
     switch (step) {
+      default:
       case 0:
         return (
           <div className="h-full flex flex-col">
@@ -232,7 +256,7 @@ function AddJob() {
               <Space css={"h-[14px]"} />
               <Explanation text="해당 시간 근무가 가능한 보호사님을 추천해드려요" />
               <Space css={"h-[36px]"} />
-              <TimeTable setWeeklyHours={setWeeklyHours} />
+              <TimeTable setWeeklyHours={setWeeklyHours} setSchedule={setSchedule} />
             </div>
             <Button text="선택 완료" onClick={handleClickDone} disabled={false} textButton={
               <TextButton text="임시저장" onClick={() => { }} />
@@ -310,7 +334,7 @@ function AddJob() {
               <Space css={"h-[36px]"} />
               <TextArea placeholder="예시 ) 거동 불가 어르신으로 욕창 관리에 특히나 신경써주시기 바랍니다." value={requests} onChange={handleChangeRequests} maxLength={100} rows={4} />
             </div>
-            <Button text="구인 정보 등록 완료" onClick={handleNavigateJobDetail} disabled={false} textButton={
+            <Button text="구인 정보 등록 완료" onClick={handleClickAddJob} disabled={false} textButton={
               <TextButton text="임시저장" onClick={() => { }} />
             } />
           </div>
@@ -318,33 +342,19 @@ function AddJob() {
     }
   }
 
-  if (step <= 5) {
-    return (
-      <div className="flex flex-col justify-center font-pre p-[20px] select-none">
-        <Space css={"h-[28px]"} />
-        <div className="flex justify-center">
-          <img className="absolute left-[20px] cursor-pointer" src="/assets/icons/past.svg" onClick={handleClickPrev} />
-          <Title text="요양보호사 모집 조건" />
-        </div>
-        <Space css={"h-[16px]"} />
-        {
-          BodyComponent()
-        }
-        <Space css={"h-[80px]"} />
-      </div>
-    );
-  }
-
   return (
-    <div className="h-full flex flex-col font-pre p-[20px] select-none">
-      <div className="flex flex-col justify-center flex-1">
-        <FormTitle content={<>구인 정보를 등록하면<br />즉시 매칭을 받을 수 있어요</>} align="text-center" />
+    <div className="flex flex-col justify-center font-pre p-[20px] select-none">
+      <Space css={"h-[28px]"} />
+      <div className="flex justify-center">
+        <img className="absolute left-[20px] cursor-pointer" src="/assets/icons/past.svg" onClick={handleClickPrev} />
+        <Title text="요양보호사 모집 조건" />
       </div>
-      <Space css={"h-[56px]"} />
-      <Button text="어르신 구인 정보 등록하기" onClick={() => { }} disabled={false} textButton={
-        <TextButton text="홈으로" onClick={() => { }} />
-      } />
-    </div >
+      <Space css={"h-[16px]"} />
+      {
+        BodyComponent()
+      }
+      <Space css={"h-[80px]"} />
+    </div>
   );
 }
 

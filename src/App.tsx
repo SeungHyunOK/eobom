@@ -12,24 +12,38 @@ import Chat from "./pages/Signup/Center/Chat";
 import MyPage from "./pages/Signup/Center/MyPage";
 import Menu from "./pages/Signup/Center/Menu";
 import Login from "./pages/Signup/Center/Login";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
+import useAuth from "./apis/auth";
+
 
 function App() {
+  const { getLoggedIn } = useAuth();
+
+  const PrivateRoute = () => {
+    return (
+      getLoggedIn()
+        ? <Outlet />
+        : <Navigate replace to="/login" />
+    );
+  }
+
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup/center" element={<CenterSignup />} />
-        <Route path="/jobs/add" element={<AddJob />} />
-        <Route path="/jobs/detail" element={<JobDetail />} />
-        <Route path="/matching" element={<Matching />} />
-        <Route path="/seniors" element={<SeniorManagement />} />
-        <Route path="/seniors/add" element={<AddSenior />} />
-        <Route path="/chats" element={<ChatList />} />
-        <Route path="/chats/detail" element={<Chat />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/Menu" element={<Menu />} />
+        <Route path="/login" element={getLoggedIn() ? <Navigate replace to="/" /> : <Login />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/signup/center" element={<CenterSignup />} />
+          <Route path="/seniors/:seniorId/jobs/add" element={<AddJob />} />
+          <Route path="/jobs/:jobId" element={<JobDetail />} />
+          <Route path="/matching" element={<Matching />} />
+          <Route path="/seniors" element={<SeniorManagement />} />
+          <Route path="/seniors/add" element={<AddSenior />} />
+          <Route path="/chats" element={<ChatList />} />
+          <Route path="/chats/detail" element={<Chat />} />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/Menu" element={<Menu />} />
+        </Route>
       </Routes>
     </>
   );

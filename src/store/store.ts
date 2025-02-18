@@ -15,3 +15,15 @@ export const userTypeState = atom({
   default: "",
   effects_UNSTABLE: [persistAtom],
 });
+
+export const userInfoState = atom({
+  key: "userInfoState",
+  default: {},
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const centerInfoState = atom({
+  key: "centerInfoState",
+  default: {},
+  effects_UNSTABLE: [persistAtom],
+});

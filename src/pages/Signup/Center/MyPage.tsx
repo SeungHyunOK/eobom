@@ -1,22 +1,32 @@
-import { useState } from "react";
 import CenterHeader from "../../../components/common/CenterHeader";
-import ChatInput from "../../../components/common/ChatInput";
-import ChatMessage from "../../../components/common/ChatMessage";
 import Space from "../../../components/common/Space";
-import { useNavigate } from "react-router-dom";
+import useAuth from "../../../apis/auth";
+import { useRecoilValue } from "recoil";
+import { centerInfoState, userInfoState } from "../../../store/store";
+import { useEffect } from "react";
+import useMatching from "../../../apis/matching";
 
 
 function MyPage() {
-  const [text, setText] = useState<string>("");
-  const navigate = useNavigate();
+  const { logout, deleteUser } = useAuth();
+  const userInfo = useRecoilValue(userInfoState);
+  const centerInfo = useRecoilValue(centerInfoState);
+  const { getManagerMatching } = useMatching();
 
-  const handleChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(e.target.value);
+  useEffect(() => {
+    getManagerMatching();
+    console.log(userInfo);
+  }, []);
+
+
+  const handleClickLogout = () => {
+    logout();
   }
 
-  const handleNavigateLogin = () => {
-    navigate("/login");
+  const handleClickWithdrawal = () => {
+    deleteUser();
   }
+
 
   return (
     <div className="h-full flex flex-col font-pre select-none">
@@ -28,18 +38,18 @@ function MyPage() {
         <Space css="h-[12px]" />
         <div className="w-full border border-[2px] shadow-sm p-[20px] rounded-[10px] border-[#FAF9F9]">
           <div className="flex justify-between">
-            <p className="text-[18px] text-[3C3939] font-bold">이어봄 요양센터</p>
+            <p className="text-[18px] text-[3C3939] font-bold">{centerInfo.centerName}</p>
             <p className="text-[#9C9898] text-[12px] font-medium underline underline-offset-2 cursor-pointer">수정</p>
           </div>
           <Space css="h-[24px]" />
           <div className="flex">
             <img className="w-[24px] mr-[6px]" src="/assets/icons/location-disabled.svg" />
-            <p className="font-semibold text-[16px] text-[#717171]">서울시 노원구 화랑로 125-13</p>
+            <p className="font-semibold text-[16px] text-[#717171]">{centerInfo.centerAddress}</p>
           </div>
           <Space css="h-[20px]" />
           <div className="flex">
             <img className="w-[24px] mr-[6px]" src="/assets/icons/certification-disabled.svg" />
-            <p className="font-semibold text-[16px] text-[#717171]">A등급</p>
+            <p className="font-semibold text-[16px] text-[#717171]">{centerInfo.centerGrade}</p>
           </div>
         </div>
       </div>
@@ -79,9 +89,9 @@ function MyPage() {
         </div>
       </div>
       <div className="flex justify-center p-[20px] text-[#9C9898] text-[15px] text-center font-semibold">
-        <button onClick={handleNavigateLogin}>로그아웃</button>
+        <button onClick={handleClickLogout}>로그아웃</button>
         <p className="pl-[10px] pr-[10px]">|</p>
-        <button onClick={handleNavigateLogin}>회원탈퇴</button>
+        <button onClick={handleClickWithdrawal}>회원탈퇴</button>
       </div>
     </div >
   );
