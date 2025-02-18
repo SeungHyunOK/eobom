@@ -3,7 +3,7 @@ import CenterHeader from "../../../components/common/CenterHeader";
 import NavBar from "../../../components/common/NavBar";
 import { useRecoilValue } from "recoil";
 import { centerInfoState, userInfoState } from "../../../store/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useMatching from "../../../apis/matching";
 
 
@@ -11,11 +11,27 @@ function Home() {
   const userInfo = useRecoilValue(userInfoState);
   const centerInfo = useRecoilValue(centerInfoState);
   const { getManagerMatching } = useMatching();
+  const [imageURL, setImageURL] = useState<string>();
 
   useEffect(() => {
     getManagerMatching();
     console.log(userInfo);
+    getImage(userInfo.profileImage.data ?? null);
+    console.log(userInfo.profileImage.data)
   }, []);
+
+  const getImage = (image: number[]) => {
+    if (!image) return;
+
+    const uint8Array = new Uint8Array(image);
+    const blob = new Blob([uint8Array], { type: "image/jpeg" });
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImageURL(reader.result as string);
+      console.log(reader.result as string);
+    };
+    reader.readAsDataURL(blob);
+  }
 
   return (
     <div className="flex flex-col justify-center font-pre select-none">
@@ -62,7 +78,7 @@ function Home() {
         <Space css="h-[24px]" />
         <div className="flex justify-between border border-[#FAF9F9] p-[20px] rounded-[10px] shadow-sm">
           <div className="flex items-center gap-[26px]">
-            <div className="w-[60px] h-[60px] bg-[#D9D9D9] rounded-full" />
+            <img className="w-[60px] h-[60px] bg-[#D9D9D9] rounded-full" src={imageURL} />
             <div className="flex flex-col">
               <p className="text-[#181818] text-[15px] font-bold">{userInfo.name}</p>
               <p className="text-[#9C9898] text-[12px] font-semibold">{centerInfo.centerName} · {userInfo.userType}</p>

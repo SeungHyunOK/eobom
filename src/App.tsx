@@ -31,9 +31,9 @@ function App() {
     <>
       <Routes>
         <Route path="/login" element={getLoggedIn() ? <Navigate replace to="/" /> : <Login />} />
+        <Route path="/signup/center" element={<CenterSignup />} />
         <Route element={<PrivateRoute />}>
           <Route path="/" element={<Home />} />
-          <Route path="/signup/center" element={<CenterSignup />} />
           <Route path="/seniors/:seniorId/jobs/add" element={<AddJob />} />
           <Route path="/jobs/:jobId" element={<JobDetail />} />
           <Route path="/matching" element={<Matching />} />
@@ -42,7 +42,7 @@ function App() {
           <Route path="/chats" element={<ChatList />} />
           <Route path="/chats/detail" element={<Chat />} />
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/Menu" element={<Menu />} />
+          <Route path="/menu" element={<Menu />} />
         </Route>
       </Routes>
     </>

@@ -11,7 +11,7 @@ type CreateManagerProps = {
   userName: string,
   phoneNumber: string,
   userGender: string,
-  profileImage: string,
+  profileImage: Blob | null,
   mimeType?: string,
   centerName: string,
   showerTruck?: boolean | null,
@@ -59,7 +59,22 @@ const useAuth = () => {
       });
   }
 
+  const blobToByteArray = (blob: Blob): Promise<number[]> => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (reader.result instanceof ArrayBuffer) {
+          resolve(Array.from(new Uint8Array(reader.result)));
+        }
+      };
+      reader.readAsArrayBuffer(blob);
+    });
+  };
+
   const createManager = async ({ userId, userPassword, userName, phoneNumber, userGender, profileImage, centerName, showerTruck, centerAddress, centerRating, centerIntro, regNumber, repName, openingDate }: CreateManagerProps) => {
+    const image = profileImage ? await blobToByteArray(profileImage) : null;
+
+
     return await fetch("/api/manager/sign_up", {
       method: "POST",
       headers: {
@@ -73,8 +88,8 @@ const useAuth = () => {
           phone: phoneNumber,
           userType: "관리사",
           gender: "남성",
-          // profileImage: profileImage,
-          // mimeType: "j",
+          profileImage: { "type": "Buffer", "data": image },
+          mimeType: "image/jpeg",
           centerName: centerName,
           hasBathVehicle: showerTruck ?? false,
           centerAddress: centerAddress,

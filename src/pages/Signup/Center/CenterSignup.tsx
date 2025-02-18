@@ -17,6 +17,7 @@ import TextArea from "../../../components/common/TextArea";
 import TextButton from "../../../components/common/TextButton";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../apis/auth";
+import ProfileInput from "../../../components/common/ProfileInput";
 
 
 declare global {
@@ -42,7 +43,7 @@ const auth = getAuth();
 auth.languageCode = "ko";
 
 function CenterSignup() {
-  const [step, setStep] = useState<number>(0);
+  const [step, setStep] = useState<number>(6);
   const [userId, setUserId] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
   const [userIdValidation, setUserIdValidation] = useState<boolean | null>(null);
@@ -59,6 +60,8 @@ function CenterSignup() {
   const [showerTruck, setShowerTruck] = useState<boolean | null>(null);
   const [centerRating, setCenterRating] = useState<number | null>(null);
   const [centerIntroduction, setCenterIntroduction] = useState<string>("");
+  const [imageURL, setImageURL] = useState<string>("");
+  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const divRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const openSearchAddress = useDaumPostcodePopup();
@@ -143,6 +146,11 @@ function CenterSignup() {
     setCenterIntroduction(e.target.value);
   }
 
+  const handleChangeProfileImage = (url: string, blob: Blob) => {
+    setImageURL(url);
+    setImageBlob(blob);
+  }
+
   const handleClickDone = () => {
     setStep(prev => prev + 1);
   }
@@ -180,14 +188,18 @@ function CenterSignup() {
     navigate("/");
   }
 
-  const handleClickSignup = async () => {
+  const handleNavigateAddSenior = () => {
+    navigate("/seniors/add");
+  }
+
+  const handleClickSignup = async (image: Blob | null) => {
     const result = await createManager({
       userId: userId,
       userPassword: userPassword,
       userName: userName,
       phoneNumber: userPhoneNumber,
       userGender: "남성",
-      profileImage: "",
+      profileImage: image,
       centerName: centerName,
       showerTruck: showerTruck,
       centerAddress: centerAddress + centerAddressDetail,
@@ -367,17 +379,18 @@ function CenterSignup() {
               <Explanation text="매칭 요청 시 신뢰도를 높일 수 있어요" />
               <Space css={"h-[46px]"} />
               <Space css={"h-[80px]"} />
-              <div className="flex w-full justify-center cursor-pointer">
+              <ProfileInput onChange={handleChangeProfileImage} />
+              {/* <div className="flex w-full justify-center cursor-pointer">
                 <div className="w-[180px] h-[180px] bg-[#D4D2D2] rounded-[30px]">
                   <div className="relative top-[157px] left-[157px] flex justify-center items-center w-[46px] h-[46px] bg-[#FAF9F9] rounded-[50%] shadow-md">
                     <img src="/assets/icons/camera.svg"></img>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
             <Space css={"h-[56px]"} />
-            <Button text="회원가입 완료" onClick={handleClickSignup} disabled={true} textButton={
-              <TextButton text="다음에 등록할게요" onClick={handleClickSignup} />
+            <Button text="회원가입 완료" onClick={() => handleClickSignup(imageBlob)} disabled={!imageURL} textButton={
+              <TextButton text="다음에 등록할게요" onClick={() => handleClickSignup(null)} />
             } />
           </div>
         );
@@ -415,7 +428,7 @@ function CenterSignup() {
             <FormTitle content={<>이제 어르신 정보를 등록하고<br />보호사 구인을 할 수 있어요</>} align="text-center" />
           </div>
           <Space css={"h-[56px]"} />
-          <Button text="어르신 정보 등록하기" onClick={() => { }} disabled={false} textButton={
+          <Button text="어르신 정보 등록하기" onClick={handleNavigateAddSenior} disabled={false} textButton={
             <TextButton text="다음에 입력할게요" onClick={handleNavigateLogin} />
           } />
         </>
