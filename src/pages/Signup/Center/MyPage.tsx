@@ -38,7 +38,7 @@ function MyPage() {
         <Space css="h-[12px]" />
         <div className="w-full border border-[2px] shadow-sm p-[20px] rounded-[10px] border-[#FAF9F9]">
           <div className="flex justify-between">
-            <p className="text-[18px] text-[3C3939] font-bold">{centerInfo.centerName}</p>
+            <p className="text-[18px] text-[#3C3939] font-bold">{centerInfo.centerName}</p>
             <p className="text-[#9C9898] text-[12px] font-medium underline underline-offset-2 cursor-pointer">수정</p>
           </div>
           <Space css="h-[24px]" />

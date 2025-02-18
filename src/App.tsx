@@ -14,10 +14,17 @@ import Menu from "./pages/Signup/Center/Menu";
 import Login from "./pages/Signup/Center/Login";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import useAuth from "./apis/auth";
+import CareHome from "./pages/Caregiver/CareHome";
+import CareMatching from "./pages/Caregiver/CareMatching";
+import CareJobDetail from "./pages/Caregiver/CareJobDetail";
+import CareChat from "./pages/Caregiver/CareChat";
+import CareChatList from "./pages/Caregiver/CareChatList";
+import CareMenu from "./pages/Caregiver/CareMenu";
+import CareMyPage from "./pages/Caregiver/CareMyPage";
 
 
 function App() {
-  const { getLoggedIn } = useAuth();
+  const { getLoggedIn, getUserType } = useAuth();
 
   const PrivateRoute = () => {
     return (
@@ -33,16 +40,17 @@ function App() {
         <Route path="/login" element={getLoggedIn() ? <Navigate replace to="/" /> : <Login />} />
         <Route path="/signup/center" element={<CenterSignup />} />
         <Route element={<PrivateRoute />}>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={getUserType() === 1 ? <CareHome /> : <Home />} />
           <Route path="/seniors/:seniorId/jobs/add" element={<AddJob />} />
-          <Route path="/jobs/:jobId" element={<JobDetail />} />
-          <Route path="/matching" element={<Matching />} />
+          <Route path="/jobs/:jobId" element={getUserType() === 1 ? <CareJobDetail /> : <JobDetail />} />
+          <Route path="/recommend" element={<Matching />} />
+          <Route path="/matching" element={<CareMatching />} />
           <Route path="/seniors" element={<SeniorManagement />} />
           <Route path="/seniors/add" element={<AddSenior />} />
-          <Route path="/chats" element={<ChatList />} />
-          <Route path="/chats/detail" element={<Chat />} />
-          <Route path="/mypage" element={<MyPage />} />
-          <Route path="/menu" element={<Menu />} />
+          <Route path="/chats" element={getUserType() === 1 ? <CareChatList /> : <ChatList />} />
+          <Route path="/chats/detail" element={getUserType() === 1 ? <CareChat /> : <Chat />} />
+          <Route path="/mypage" element={getUserType() === 1 ? <CareMyPage /> : <MyPage />} />
+          <Route path="/menu" element={getUserType() === 1 ? <CareMenu /> : <Menu />} />
         </Route>
       </Routes>
     </>

@@ -217,7 +217,16 @@ const useAuth = () => {
     return false;
   }
 
-  return { checkUserId, createManager, login, logout, getUserInfo, deleteUser, getAccessToken, getLoggedIn };
+  const getUserType = () => {
+    if (userType === "요양사") {
+      return 1;
+    } else if (userType === "관리사") {
+      return 2;
+    }
+    return null;
+  }
+
+  return { checkUserId, createManager, login, logout, getUserInfo, deleteUser, getAccessToken, getLoggedIn, getUserType };
 }
 
 export default useAuth;

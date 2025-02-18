@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import CenterHeader from "../../../components/common/CenterHeader";
-import NavBar from "../../../components/common/NavBar";
+import CenterHeader from "../../components/common/CenterHeader";
+import NavBar from "../../components/common/NavBar";
 
 
-function ChatList() {
+function CareChatList() {
   const navigate = useNavigate();
 
   const handleNavigateChatDetail = () => {
@@ -25,7 +25,7 @@ function ChatList() {
             <img src={"/assets/icons/profile.svg"} />
           </div>
           <div className="flex flex-col items-start">
-            <p className="text-[15px] text-[#181818] font-bold">김누구 보호사</p>
+            <p className="text-[15px] text-[#181818] font-bold">김누구 담당자</p>
             <p className="text-[10px] text-[#717171] font-semibold">김누구 어르신 {"(이어봄방문요양센터)"}</p>
             <p className="text-[13px] text-[#181818] font-semibold">문자 내용</p>
             <p className="text-[13px] text-[#2e2d2d] font-semibold">문자 내용</p>
@@ -39,7 +39,7 @@ function ChatList() {
             <img src={"/assets/icons/profile.svg"} />
           </div>
           <div className="flex flex-col items-start">
-            <p className="text-[15px] text-[#181818] font-bold">김누구 보호사</p>
+            <p className="text-[15px] text-[#181818] font-bold">김누구 담당자</p>
             <p className="text-[10px] text-[#717171] font-semibold">김누구 어르신 {"(이어봄방문요양센터)"}</p>
             <p className="text-[13px] text-[#181818] font-semibold">문자 내용</p>
             <p className="text-[13px] text-[#181818] font-semibold">문자 내용</p>
@@ -52,4 +52,4 @@ function ChatList() {
   );
 }
 
-export default ChatList;
+export default CareChatList;

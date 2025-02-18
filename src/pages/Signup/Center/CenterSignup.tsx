@@ -380,13 +380,6 @@ function CenterSignup() {
               <Space css={"h-[46px]"} />
               <Space css={"h-[80px]"} />
               <ProfileInput onChange={handleChangeProfileImage} />
-              {/* <div className="flex w-full justify-center cursor-pointer">
-                <div className="w-[180px] h-[180px] bg-[#D4D2D2] rounded-[30px]">
-                  <div className="relative top-[157px] left-[157px] flex justify-center items-center w-[46px] h-[46px] bg-[#FAF9F9] rounded-[50%] shadow-md">
-                    <img src="/assets/icons/camera.svg"></img>
-                  </div>
-                </div>
-              </div> */}
             </div>
             <Space css={"h-[56px]"} />
             <Button text="회원가입 완료" onClick={() => handleClickSignup(imageBlob)} disabled={!imageURL} textButton={

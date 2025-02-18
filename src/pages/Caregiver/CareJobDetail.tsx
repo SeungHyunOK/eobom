@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import Button from "../../../components/common/Button";
-import Space from "../../../components/common/Space";
-import CenterHeader from "../../../components/common/CenterHeader";
+import Button from "../../components/common/Button";
+import Space from "../../components/common/Space";
+import CenterHeader from "../../components/common/CenterHeader";
 import { useNavigate } from "react-router-dom";
+import MatchingButton from "../../components/common/MatchingButton";
 
 
-function JobDetail() {
+function CareJobDetail() {
   const [seniorName, setSeniorName] = useState<string>("김ㅇㅇ");
+  const [imageURL, setImageURL] = useState<string>("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,17 +23,6 @@ function JobDetail() {
     <div className="flex flex-col justify-center font-pre select-none">
       <CenterHeader text="구인 정보 확인" prev={true} />
       <div className="flex flex-col justify-center p-[20px]">
-        <Space css="h-[40px]" />
-        <div className="flex w-full justify-center cursor-pointer">
-          <div className="w-[130px] h-[130px] bg-[#D9D9D9] rounded-full">
-            <div className="relative top-[98px] left-[98px] flex justify-center items-center w-[32px] h-[32px] bg-[#FAF9F9] rounded-full shadow-md">
-              <img className="w-[16px]" src="/assets/icons/camera.svg" />
-            </div>
-          </div>
-        </div>
-        <Space css="h-[8px]" />
-        <p className="text-[24px] font-bold text-center">{seniorName} 어르신</p>
-        <Space css="h-[40px]" />
         <div className="flex flex-col">
           <p className="text-[20px] text-[#181818] font-bold inline underline decoration-8 underline-offset-[-2px] decoration-[#FFF2CC]">근무 정보</p>
         </div>
@@ -52,7 +43,7 @@ function JobDetail() {
             </div>
             <div>
               <p className="text-[18px] font-bold">서울 노원구 공릉동 화랑로 425-13</p>
-              <p className="text-[18px] font-bold">한신아파트 102동 501호</p>
+              <p className="text-[13px] text-[#9C9898] font-bold">매칭을 수락하면 정확한 주소를 알 수 있어요</p>
             </div>
           </div>
         </div>
@@ -176,11 +167,30 @@ function JobDetail() {
         <div className="flex flex-col p-[12px] text-[#3C3939]">
           <p className="text-[18px] font-semibold">심금경색 질환이 있는 어르신으로, 응급상황 발생 시 CPR 대처 가능하신 보호사님이면 좋겠습니다.</p>
         </div>
+        <Space css="h-[40px]" />
+        <div className="flex justify-between">
+          <p className="text-[20px] text-[#181818] font-bold inline underline decoration-8 underline-offset-[-2px] decoration-[#FFF2CC]">
+            담당자 정보
+          </p>
+          <p className="text-[#9C9898] text-[14px] font-bold underline underline-offset-2 cursor-pointer">자세히 보기</p>
+        </div>
+        <div className="flex justify-between items-end p-[20px]">
+          <div className="flex items-center gap-[26px]">
+            {
+              imageURL === ""
+                ? <div className="w-[60px] h-[60px] bg-[#D9D9D9] rounded-full" />
+                : <img className="w-[60px] h-[60px] bg-[#D9D9D9] rounded-full" src={imageURL} />
+            }
+            <div className="flex flex-col gap-[6px]">
+              <p className="text-[#3C3939] text-[18px] font-bold">이어봄 방문요양센터</p>
+              <p className="text-[#3C3939] text-[16px] font-bold">사회복지사 이누구</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <Space css={"h-[80px]"} />
-      <Button text="추천 매칭 확인하기" onClick={handleNavigateMatching} disabled={false} />
+      <MatchingButton onClickAccept={() => { }} onClickCoordinate={() => { }} onClickRefuse={() => { }} />
     </div>
   );
 }
 
-export default JobDetail;
+export default CareJobDetail;

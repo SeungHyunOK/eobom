@@ -1,23 +1,19 @@
-import Space from "../../../components/common/Space";
-import CenterHeader from "../../../components/common/CenterHeader";
-import NavBar from "../../../components/common/NavBar";
+import Space from "../../components/common/Space";
+import CenterHeader from "../../components/common/CenterHeader";
+import NavBar from "../../components/common/NavBar";
 import { useRecoilValue } from "recoil";
-import { centerInfoState, userInfoState } from "../../../store/store";
+import { centerInfoState, userInfoState } from "../../store/store";
 import { useEffect, useState } from "react";
-import useMatching from "../../../apis/matching";
+import Resume from "../../components/common/Resume";
 
 
-function Home() {
+function CareHome() {
   const userInfo = useRecoilValue(userInfoState);
   const centerInfo = useRecoilValue(centerInfoState);
-  const { getManagerMatching } = useMatching();
   const [imageURL, setImageURL] = useState<string>("");
 
   useEffect(() => {
-    getManagerMatching();
-    console.log(userInfo);
-    getImage(userInfo.profileImage.data ?? null);
-    console.log(userInfo.profileImage.data)
+    getImage(userInfo.profileImage?.data ?? null);
   }, []);
 
   const getImage = (image: number[]) => {
@@ -40,19 +36,19 @@ function Home() {
         <img src="/assets/images/ad.png" />
       </div>
       <div className="flex flex-col justify-center p-[20px]">
-        <p className="text-[19px] font-bold">우리 센터 현황</p>
+        <p className="text-[19px] font-bold">나의 매칭</p>
         <Space css="h-[24px]" />
         <div className="flex gap-[16px] items-center">
-          <object className="w-[70px]" data="/assets/icons/chart.svg" type="image/svg+xml">
-            <img className="w-[70px]" src="/assets/icons/chart.svg" />
+          <object className="w-[70px]" data="/assets/icons/matching.svg" type="image/svg+xml">
+            <img className="w-[70px]" src="/assets/icons/matching.svg" />
           </object>
           <div className="flex flex-col gap-[2px]">
-            <p className="text-[#717171] text-[12px]">{centerInfo.centerName}</p>
+            <p className="text-[#717171] text-[12px]"></p>
             <p className="text-[16px] font-medium cursor-pointer">
               <p className="text-[#FF8411] inline">
-                {centerInfo.jobOffers.length}명
-              </p>의 어르신이<br />
-              매칭을 진행하고 있어요
+                { }건
+              </p>의 매칭 요청이<br />
+              도착했어요
               <img className="inline ml-[8px]" src="/assets/icons/next.svg" />
             </p>
           </div>
@@ -60,25 +56,23 @@ function Home() {
         <Space css="h-[30px]" />
         <div className="flex border border-[#FAF9F9] p-[20px] justify-around rounded-[10px] shadow-sm">
           <div className="flex flex-col items-center gap-[12px]">
-            <p className="text-[12px] text-[#3C3939] font-bold">전체</p>
-            <p className="text-[15px] text-[#FF8411] font-extrabold">{centerInfo.jobOffers.length}</p>
+            <p className="text-[12px] text-[#3C3939] font-bold">매칭 요청</p>
+            <p className="text-[15px] text-[#FF8411] font-extrabold">2</p>
           </div>
           <div className="flex flex-col items-center gap-[12px]">
-            <p className="text-[12px] text-[#3C3939] font-bold">매칭 진행 중</p>
-            <p className="text-[15px] text-[#FF8411] font-extrabold">92</p>
-          </div>
-          <div className="flex flex-col items-center gap-[12px]">
-            <p className="text-[12px] text-[#3C3939] font-bold">매칭 완료</p>
+            <p className="text-[12px] text-[#3C3939] font-bold">급구 매칭</p>
             <p className="text-[15px] text-[#FF8411] font-extrabold">8</p>
           </div>
         </div>
         <Space css="h-[40px]" />
-        <p className="text-[19px] font-bold">내 프로필 관리</p>
+        <p className="text-[19px] font-bold">이력서 관리</p>
         <Space css="h-[24px]" />
-        <div className="flex justify-between border border-[#FAF9F9] p-[20px] rounded-[10px] shadow-sm">
+        <Resume name="홍길동" birthday={Date.now()} gender="여" address="서울시 노원구 화랑로 125-13" experience="1년 8개월" recommended={false} />
+
+        {/* <div className="flex justify-between border border-[#FAF9F9] p-[20px] rounded-[10px] shadow-sm">
           <div className="flex items-center gap-[26px]">
             {
-              imageURL === ""
+              imageURL === null
                 ? <div className="w-[60px] h-[60px] bg-[#D9D9D9] rounded-full" />
                 : <img className="w-[60px] h-[60px] bg-[#D9D9D9] rounded-full" src={imageURL} />
             }
@@ -88,7 +82,7 @@ function Home() {
             </div>
           </div>
           <p className="text-[#9C9898] text-[10px] font-medium underline underline-offset-2 cursor-pointer">수정</p>
-        </div>
+        </div> */}
       </div>
       <Space css="h-[12px]" />
       <div className="flex flex-col bg-[#FAF9F9] h-[200px] justify-center p-[30px]">
@@ -112,4 +106,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default CareHome;

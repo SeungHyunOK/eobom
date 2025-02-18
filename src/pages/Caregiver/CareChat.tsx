@@ -1,10 +1,10 @@
 import { useState } from "react";
-import CenterHeader from "../../../components/common/CenterHeader";
-import ChatInput from "../../../components/common/ChatInput";
-import ChatMessage from "../../../components/common/ChatMessage";
+import CenterHeader from "../../components/common/CenterHeader";
+import ChatInput from "../../components/common/ChatInput";
+import ChatMessage from "../../components/common/ChatMessage";
 
 
-function Chat() {
+function CareChat() {
   const [text, setText] = useState<string>("");
 
   const handleChangeTextArea = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -13,7 +13,7 @@ function Chat() {
 
   return (
     <div className="h-full flex flex-col font-pre select-none">
-      <CenterHeader text="김누구 보호사" prev={true} />
+      <CenterHeader text="김누구 담당자" prev={true} />
       <div>
         <div className="mb-[90px]" />
         <div className="fixed top-[60px] w-full flex justify-between p-[20px] bg-[#FFFFFF] border-b border-b-[#D4D2D2] z-0">
@@ -23,9 +23,6 @@ function Chat() {
             </div>
             <div className="flex flex-col gap-[6px]">
               <p className="text-[14px] text-[#181818] font-semibold">김누구 어르신 {"(만 82세, 남)"}</p>
-              <button className="w-[90px] h-[22px] flex justify-center items-center bg-[#FAF9F9] border border-[#D4D2D2] text-[11px] text-[#3C3939] font-bold rounded-full leading-none">
-                매칭 요청 취소
-              </button>
             </div>
           </div>
         </div>
@@ -48,4 +45,4 @@ function Chat() {
   );
 }
 
-export default Chat;
+export default CareChat;
