@@ -5,7 +5,7 @@ import SeniorSearch from "../../../components/common/SeniorSearch";
 import Tab from "../../../components/common/Tab";
 import NavBar from "../../../components/common/NavBar";
 import SeniorItem from "../../../components/common/SeniorItem";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useMatching from "../../../apis/matching";
 import useAuth from "../../../apis/auth";
 import useSenior from "../../../apis/senior";
@@ -19,9 +19,11 @@ function SeniorManagement() {
   const { getManagerMatching } = useMatching();
   const { getAccessToken } = useAuth();
   const { getJobOffer } = useSenior();
+  const location = useLocation();
 
   useEffect(() => {
-
+    const { index } = location.state || { index: 0 };
+    setTabIndex(index);
   }, []);
 
   const handleChangeSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +59,7 @@ function SeniorManagement() {
         }
         <div className="w-full flex flex-col gap-[14px]">
           {
-            seniors.map((senior) => {
+            seniors.map((senior, index) => {
               return <SeniorItem senior={senior} state={0} />
             })
           }

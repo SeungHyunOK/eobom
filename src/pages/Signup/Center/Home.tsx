@@ -16,11 +16,11 @@ function Home() {
   useEffect(() => {
     getManagerMatching();
     console.log(userInfo);
-    getImage(userInfo.profileImage.data ?? null);
-    console.log(userInfo.profileImage.data)
+    getImage(userInfo.profileImage?.data ?? null);
+    console.log(userInfo.profileImage?.data)
   }, []);
 
-  const getImage = (image: number[]) => {
+  const getImage = (image: number[] | null) => {
     if (!image) return;
 
     const uint8Array = new Uint8Array(image);
@@ -48,13 +48,13 @@ function Home() {
           </object>
           <div className="flex flex-col gap-[2px]">
             <p className="text-[#717171] text-[12px]">{centerInfo.centerName}</p>
-            <p className="text-[16px] font-medium cursor-pointer">
+            <div className="text-[16px] font-medium cursor-pointer">
               <p className="text-[#FF8411] inline">
                 {centerInfo.jobOffers.length}명
               </p>의 어르신이<br />
               매칭을 진행하고 있어요
               <img className="inline ml-[8px]" src="/assets/icons/next.svg" />
-            </p>
+            </div>
           </div>
         </div>
         <Space css="h-[30px]" />

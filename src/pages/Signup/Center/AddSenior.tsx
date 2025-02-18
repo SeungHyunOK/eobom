@@ -12,10 +12,11 @@ import Label from "../../../components/common/Label";
 import TextButton from "../../../components/common/TextButton";
 import { useNavigate } from "react-router-dom";
 import useSenior from "../../../apis/senior";
+import Animation from "../../../components/common/Animation";
 
 
 function AddSenior() {
-  const [step, setStep] = useState<number>(0);
+  const [step, setStep] = useState<number>(3);
   const [seniorName, setSeniorName] = useState<string>("");
   const [seniorBirthday, setSeniorBirthday] = useState<string>("");
   const [seniorGender, setSeniorGender] = useState<number | null>(null);
@@ -199,17 +200,25 @@ function AddSenior() {
   return (
     <div className="h-full flex flex-col font-pre p-[20px] select-none">
       <div className="flex flex-col justify-center items-center flex-1">
-        <object className="w-[150px]" data="/assets/icons/link.svg" type="image/svg+xml">
-          <img className="w-[150px]" src="/assets/icons/link.svg" />
-        </object>
-        <Space css={"h-[60px]"} />
-        <FormTitle content={<>구인 정보를 등록하면<br />즉시 매칭을 받을 수 있어요</>} align="text-center" />
+        <Animation delay={0} y={30} step={step} component={
+          <div className="flex flex-col items-center">
+            <object className="w-[150px]" data="/assets/icons/link.svg" type="image/svg+xml">
+              <img className="w-[150px]" src="/assets/icons/link.svg" />
+            </object>
+            <Space css={"h-[60px]"} />
+            <Animation delay={0} y={30} step={step} component={
+              <FormTitle content={<>구인 정보를 등록하면<br />즉시 매칭을 받을 수 있어요</>} align="text-center" />
+            } />
+          </div>
+        } />
       </div>
       <Space css={"h-[56px]"} />
-      <Button text="어르신 구인 정보 등록하기" onClick={handleNavigateAddJob} disabled={false} textButton={
-        <TextButton text="홈으로" onClick={handleNavigateHome} />
+      <Animation delay={1} y={0} step={step} component={
+        <Button text="어르신 구인 정보 등록하기" onClick={handleNavigateAddJob} disabled={false} textButton={
+          <TextButton text="홈으로" onClick={handleNavigateHome} />
+        } />
       } />
-    </div >
+    </div>
   );
 }
 

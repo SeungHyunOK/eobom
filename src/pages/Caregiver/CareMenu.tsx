@@ -35,7 +35,7 @@ function CareMenu() {
             <button className="w-full h-[60px] flex items-center p-[24px] border-b-[2px] border-b-[#FAF9F9] text-[16px] text-[#181818] font-bold" onClick={() => handleNavigateMatching(1)}>급구 매칭</button>
             <button className="w-full h-[60px] flex justify-between items-center p-[24px] border-b-[2px] border-b-[#FAF9F9] text-[16px] text-[#181818] font-bold" onClick={() => setMatchingOn(prev => !prev)}>
               매칭 받기 설정
-              <button className={`w-[48px] h-[24px] flex justify-center items-center gap-[6px] p-[2px] ${matchingOn ? "pl-[8px] bg-[#FFF2CC]" : "pr-[8px] bg-[#FFFFFF]"} rounded-full shadow-sm`}>
+              <div className={`w-[48px] h-[24px] flex justify-center items-center gap-[6px] p-[2px] ${matchingOn ? "pl-[8px] bg-[#FFF2CC]" : "pr-[8px] bg-[#FFFFFF]"} rounded-full shadow-sm`}>
                 {
                   matchingOn
                     ? <>
@@ -47,7 +47,7 @@ function CareMenu() {
                       <p className="text-[14px] text-[#3C3939] font-bold">끔</p>
                     </>
                 }
-              </button>
+              </div>
             </button>
           </div>
         );

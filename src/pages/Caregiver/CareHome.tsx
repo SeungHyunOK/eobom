@@ -44,13 +44,13 @@ function CareHome() {
           </object>
           <div className="flex flex-col gap-[2px]">
             <p className="text-[#717171] text-[12px]"></p>
-            <p className="text-[16px] font-medium cursor-pointer">
+            <div className="text-[16px] font-medium cursor-pointer">
               <p className="text-[#FF8411] inline">
                 { }건
               </p>의 매칭 요청이<br />
               도착했어요
               <img className="inline ml-[8px]" src="/assets/icons/next.svg" />
-            </p>
+            </div>
           </div>
         </div>
         <Space css="h-[30px]" />

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import ProgressBar from "../../../components/common/ProgressBar";
 import Button from "../../../components/common/Button";
 import Title from "../../../components/common/Title";
@@ -12,12 +12,13 @@ import { useDaumPostcodePopup } from "react-daum-postcode";
 import Label from "../../../components/common/Label";
 import { initializeApp } from "firebase/app";
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import Delay from "../../../components/common/Delay";
 import TextArea from "../../../components/common/TextArea";
 import TextButton from "../../../components/common/TextButton";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../apis/auth";
 import ProfileInput from "../../../components/common/ProfileInput";
+import Animation from "../../../components/common/Animation";
+import { runAfterDelay } from "../../../utils/delay";
 
 
 declare global {
@@ -43,7 +44,7 @@ const auth = getAuth();
 auth.languageCode = "ko";
 
 function CenterSignup() {
-  const [step, setStep] = useState<number>(6);
+  const [step, setStep] = useState<number>(0);
   const [userId, setUserId] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
   const [userIdValidation, setUserIdValidation] = useState<boolean | null>(null);
@@ -66,6 +67,12 @@ function CenterSignup() {
   const navigate = useNavigate();
   const openSearchAddress = useDaumPostcodePopup();
   const { checkUserId, createManager, login } = useAuth();
+
+  useEffect(() => {
+    if (step === 7) {
+      runAfterDelay(2, handleClickDone);
+    }
+  }, [step]);
 
   const handleChangeUserId = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserId(e.target.value);
@@ -390,44 +397,66 @@ function CenterSignup() {
     }
   }
 
-  if (step <= 6) {
-    return (
-      <div className="flex flex-col justify-center font-pre p-[20px] select-none">
-        <Space css={"h-[28px]"} />
-        <div className="flex justify-center">
-          <img className="absolute left-[20px] cursor-pointer" src="/assets/icons/past.svg" onClick={handleClickPrev} />
-          <Title text="회원가입" />
+  switch (step) {
+    default:
+      return (
+        <div className="flex flex-col justify-center font-pre p-[20px] select-none">
+          <Space css={"h-[28px]"} />
+          <div className="flex justify-center">
+            <img className="absolute left-[20px] cursor-pointer" src="/assets/icons/past.svg" onClick={handleClickPrev} />
+            <Title text="회원가입" />
+          </div>
+          <Space css={"h-[16px]"} />
+          {
+            BodyComponent()
+          }
+          <Space css={"h-[80px]"} />
         </div>
-        <Space css={"h-[16px]"} />
-        {
-          BodyComponent()
-        }
-        <Space css={"h-[80px]"} />
-      </div>
-    );
-  }
-
-  return (
-    <div className="h-full flex flex-col font-pre p-[20px] select-none">
-      <Delay start={Date.now()} seconds={2} components={[
-        <>
-          <div className="flex flex-col justify-center flex-1 ">
-            <FormTitle content={<>이어봄 회원가입이<br />완료되었어요!</>} align="text-center" />
+      );
+    case 7:
+      return (
+        <div className="h-full flex flex-col font-pre p-[20px] select-none">
+          <div className="flex flex-col justify-center items-center flex-1">
+            <Animation delay={0} y={30} step={step} component={
+              <div className="flex flex-col items-center">
+                <object className="w-[150px]" data="/assets/icons/confetti-ball.svg" type="image/svg+xml">
+                  <img className="w-[150px]" src="/assets/icons/confetti-ball.svg" />
+                </object>
+                <Space css={"h-[60px]"} />
+                <Animation delay={0} y={30} step={step} component={
+                  <FormTitle content={<>이어봄 회원가입이<br />완료되었어요!</>} align="text-center" />
+                } />
+              </div>
+            } />
           </div>
           <Space css={"h-[76px]"} />
-        </>,
-        <>
-          <div className="flex flex-col justify-center flex-1 ">
-            <FormTitle content={<>이제 어르신 정보를 등록하고<br />보호사 구인을 할 수 있어요</>} align="text-center" />
+        </div>
+      );
+    case 8:
+      return (
+        <div className="h-full flex flex-col font-pre p-[20px] select-none">
+          <div className="flex flex-col justify-center items-center flex-1">
+            <Animation delay={0} y={30} step={step} component={
+              <div className="flex flex-col items-center">
+                <object className="w-[150px]" data="/assets/icons/memo.svg" type="image/svg+xml">
+                  <img className="w-[150px]" src="/assets/icons/memo.svg" />
+                </object>
+                <Space css={"h-[60px]"} />
+                <Animation delay={0} y={30} step={step} component={
+                  <FormTitle content={<>이제 어르신 정보를 등록하고<br />보호사 구인을 할 수 있어요</>} align="text-center" />
+                } />
+              </div>
+            } />
           </div>
           <Space css={"h-[56px]"} />
-          <Button text="어르신 정보 등록하기" onClick={handleNavigateAddSenior} disabled={false} textButton={
-            <TextButton text="다음에 입력할게요" onClick={handleNavigateLogin} />
+          <Animation delay={1} y={0} step={step} component={
+            <Button text="어르신 정보 등록하기" onClick={handleNavigateAddSenior} disabled={false} textButton={
+              <TextButton text="다음에 입력할게요" onClick={handleNavigateLogin} />
+            } />
           } />
-        </>
-      ]} />
-    </div >
-  );
+        </div>
+      );
+  }
 }
 
 export default CenterSignup;

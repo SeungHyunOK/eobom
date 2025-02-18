@@ -9,7 +9,7 @@ function Chat() {
   const navigate = useNavigate();
 
   const handleNavigateSeniorManagement = (index: number) => {
-    navigate("/seniors");
+    navigate("/seniors", { state: { index: index } });
   }
 
   const handleNavigateChat = () => {
@@ -45,7 +45,7 @@ function Chat() {
             <button className="w-full h-[60px] flex items-center p-[24px] border-b-[2px] border-b-[#FAF9F9] text-[16px] text-[#181818] font-bold" onClick={handleNavigateChat}>채팅 목록</button>
             <button className="w-full h-[60px] flex justify-between items-center p-[24px] border-b-[2px] border-b-[#FAF9F9] text-[16px] text-[#181818] font-bold" onClick={() => setChatOn(prev => !prev)}>
               채팅 알림
-              <button className={`w-[48px] h-[24px] flex justify-center items-center gap-[6px] p-[2px] ${chatOn ? "pl-[8px] bg-[#FFF2CC]" : "pr-[8px] bg-[#FFFFFF]"} rounded-full shadow-sm`}>
+              <div className={`w-[48px] h-[24px] flex justify-center items-center gap-[6px] p-[2px] ${chatOn ? "pl-[8px] bg-[#FFF2CC]" : "pr-[8px] bg-[#FFFFFF]"} rounded-full shadow-sm`}>
                 {
                   chatOn
                     ? <>
@@ -57,7 +57,7 @@ function Chat() {
                       <p className="text-[14px] text-[#3C3939] font-bold">끔</p>
                     </>
                 }
-              </button>
+              </div>
             </button>
           </div>
         );
