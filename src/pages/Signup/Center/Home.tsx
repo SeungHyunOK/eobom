@@ -10,16 +10,16 @@ import useMatching from "../../../apis/matching";
 function Home() {
   const userInfo = useRecoilValue(userInfoState);
   const centerInfo = useRecoilValue(centerInfoState);
-  const { getManagerMatching } = useMatching();
+  // const { getManagerMatching } = useMatching();
   const [imageURL, setImageURL] = useState<string>("");
   const [matchingCount, setMatchingCount] = useState<number>(0);
   const [totalMatchingCount, setTotalMatchingCount] = useState<number>(0);
 
   useEffect(() => {
-    getManagerMatching();
+    // getManagerMatching();
     getImage(userInfo.profileImage?.data ?? null);
-    setTotalMatchingCount(centerInfo.jobOffers?.length);
-    setMatchingCount(centerInfo.jobOffers?.filter((offer: any) => { return offer.jobOfferState === "매칭중" }).length);
+    setTotalMatchingCount(centerInfo?.jobOffers?.length);
+    setMatchingCount(centerInfo?.jobOffers?.filter((offer: any) => { return offer.jobOfferState === "매칭중" }).length);
   }, []);
 
   const getImage = (image: number[] | null) => {
@@ -48,10 +48,10 @@ function Home() {
             <img className="w-[70px]" src="/assets/icons/chart.svg" />
           </object>
           <div className="flex flex-col gap-[2px]">
-            <p className="text-[#717171] text-[12px]">{centerInfo.centerName}</p>
+            <p className="text-[#717171] text-[12px]">{centerInfo?.centerName}</p>
             <div className="text-[16px] font-medium cursor-pointer">
               <p className="text-[#FF8411] inline">
-                {centerInfo.jobOffers?.length}명
+                {centerInfo?.jobOffers?.length}명
               </p>의 어르신이<br />
               매칭을 진행하고 있어요
               <img className="inline ml-[8px]" src="/assets/icons/next.svg" />
@@ -85,7 +85,7 @@ function Home() {
             }
             <div className="flex flex-col">
               <p className="text-[#181818] text-[15px] font-bold">{userInfo.name}</p>
-              <p className="text-[#9C9898] text-[12px] font-semibold">{centerInfo.centerName} · {userInfo.userType}</p>
+              <p className="text-[#9C9898] text-[12px] font-semibold">{centerInfo?.centerName} · {userInfo.userType}</p>
             </div>
           </div>
           <p className="text-[#9C9898] text-[10px] font-medium underline underline-offset-2 cursor-pointer">수정</p>

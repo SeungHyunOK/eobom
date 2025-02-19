@@ -138,6 +138,12 @@ function AddJob() {
       startTime: startDate,
       endTime: endDate,
     });
+    let stringFeatures: string[] = [];
+    features.map((feature, index) => {
+      if (feature) {
+        stringFeatures.push(["친절해요", "위생 관리 철저해요", "근무 경험이 많아요", "성실해요", "차분해요", "밝고 긍정적이에요", "소통을 잘해요", "믿음직해요", "응급대처가 가능해요", "꼼꼼해요"][index]);
+      }
+    });
     console.log(scheduleWithStart);
     const result = await createJobOffer({
       seniorId: Number(seniorId),
@@ -150,7 +156,7 @@ function AddJob() {
       bathingAssist: bathingAssist,
       livingAssist: livingAssist,
       requests: requests,
-      features: features.map(String),
+      features: stringFeatures,
     });
     if (result !== null) {
       navigate(`/jobs/${result}`);

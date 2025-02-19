@@ -18,8 +18,8 @@ function MyPage() {
 
   useEffect(() => {
     getManagerMatching();
-    setTotalMatchingCount(centerInfo.jobOffers?.length);
-    setMatchingCount(centerInfo.jobOffers?.filter((offer: any) => { return offer.jobOfferState === "매칭중" }).length);
+    setTotalMatchingCount(centerInfo?.jobOffers?.length);
+    setMatchingCount(centerInfo?.jobOffers?.filter((offer: any) => { return offer.jobOfferState === "매칭중" }).length);
   }, []);
 
 
@@ -97,18 +97,18 @@ function MyPage() {
         <Space css="h-[12px]" />
         <div className="w-full border border-[2px] shadow-sm p-[20px] rounded-[10px] border-[#FAF9F9]">
           <div className="flex justify-between">
-            <p className="text-[18px] text-[#3C3939] font-bold">{centerInfo.centerName}</p>
+            <p className="text-[18px] text-[#3C3939] font-bold">{centerInfo?.centerName}</p>
             <p className="text-[#9C9898] text-[12px] font-medium underline underline-offset-2 cursor-pointer">수정</p>
           </div>
           <Space css="h-[24px]" />
           <div className="flex">
             <img className="w-[24px] mr-[6px]" src="/assets/icons/location-disabled.svg" />
-            <p className="font-semibold text-[16px] text-[#717171]">{centerInfo.centerAddress}</p>
+            <p className="font-semibold text-[16px] text-[#717171]">{centerInfo?.centerAddress}</p>
           </div>
           <Space css="h-[20px]" />
           <div className="flex">
             <img className="w-[24px] mr-[6px]" src="/assets/icons/certification-disabled.svg" />
-            <p className="font-semibold text-[16px] text-[#717171]">{centerInfo.centerGrade}</p>
+            <p className="font-semibold text-[16px] text-[#717171]">{centerInfo?.centerGrade}</p>
           </div>
         </div>
       </div>

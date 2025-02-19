@@ -9,7 +9,7 @@ import Resume from "../../components/common/Resume";
 
 function CareHome() {
   const userInfo = useRecoilValue(userInfoState);
-  const centerInfo = useRecoilValue(centerInfoState);
+  // const centerInfo = useRecoilValue(centerInfoState);
   const [imageURL, setImageURL] = useState<string>("");
 
   useEffect(() => {
@@ -24,7 +24,7 @@ function CareHome() {
     const reader = new FileReader();
     reader.onloadend = () => {
       setImageURL(reader.result as string);
-      console.log(reader.result as string);
+      // console.log(reader.result as string);
     };
     reader.readAsDataURL(blob);
   }
@@ -67,22 +67,7 @@ function CareHome() {
         <Space css="h-[40px]" />
         <p className="text-[19px] font-bold">이력서 관리</p>
         <Space css="h-[24px]" />
-        <Resume name="홍길동" birthday={Date.now()} gender="여" address="서울시 노원구 화랑로 125-13" experience="1년 8개월" recommended={false} />
-
-        {/* <div className="flex justify-between border border-[#FAF9F9] p-[20px] rounded-[10px] shadow-sm">
-          <div className="flex items-center gap-[26px]">
-            {
-              imageURL === null
-                ? <div className="w-[60px] h-[60px] bg-[#D9D9D9] rounded-full" />
-                : <img className="w-[60px] h-[60px] bg-[#D9D9D9] rounded-full" src={imageURL} />
-            }
-            <div className="flex flex-col">
-              <p className="text-[#181818] text-[15px] font-bold">{userInfo.name}</p>
-              <p className="text-[#9C9898] text-[12px] font-semibold">{centerInfo.centerName} · {userInfo.userType}</p>
-            </div>
-          </div>
-          <p className="text-[#9C9898] text-[10px] font-medium underline underline-offset-2 cursor-pointer">수정</p>
-        </div> */}
+        <Resume name={userInfo?.name} gender={userInfo.gender[0]} address={userInfo.caregiver.caregiverAddress.split("@").join(", ")} experience="1년 8개월" recommended={false} />
       </div>
       <Space css="h-[12px]" />
       <div className="flex flex-col bg-[#FAF9F9] h-[200px] justify-center p-[30px]">

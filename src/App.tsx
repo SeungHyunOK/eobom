@@ -22,6 +22,7 @@ import CareChatList from "./pages/Caregiver/CareChatList";
 import CareMenu from "./pages/Caregiver/CareMenu";
 import CareMyPage from "./pages/Caregiver/CareMyPage";
 import CareSignup from "./pages/Caregiver/CareSignup";
+import CareAddResume from "./pages/Caregiver/CareAddResume";
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
           <Route path="/seniors/:seniorId/jobs/add" element={<AddJob />} />
           <Route path="/jobs/:jobId" element={getUserType() === 1 ? <CareJobDetail /> : <JobDetail />} />
           <Route path="/jobs/:jobId/recommend" element={<Recommend />} />
+          <Route path="/resume" element={<CareAddResume />} />
           <Route path="/matching" element={<CareMatching />} />
           <Route path="/seniors" element={<SeniorManagement />} />
           <Route path="/seniors/add" element={<AddSenior />} />

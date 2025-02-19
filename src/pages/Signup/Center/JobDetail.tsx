@@ -149,7 +149,7 @@ function JobDetail() {
             </div>
             <div>
               {
-                jobOffer?.senior?.seniorAddress.split("/").map((address, index) => {
+                jobOffer?.senior?.seniorAddress.split("@").map((address, index) => {
                   return <p key={index} className="text-[18px] font-bold">{address}</p>;
                 })
               }

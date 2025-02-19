@@ -185,8 +185,8 @@ function CareSignup() {
   }
 
 
-  const handleNavigateAddJobSearch = () => {
-    navigate("/jobs/add");
+  const handleNavigateAddResume = () => {
+    navigate("/resume");
   }
 
   const handleChangeQualificationNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -218,19 +218,19 @@ function CareSignup() {
 
   const handleClickSignup = async () => {
     let certifications = [{
-      number: qualificationNumber,
-      type: "요양보호사",
+      certiNumber: qualificationNumber,
+      certiType: "요양보호사",
     }];
     if (nursingAssistant) {
       certifications.push({
-        number: "",
-        type: "간호조무사",
+        certiNumber: "",
+        certiType: "간호조무사",
       })
     };
     if (socialWorker) {
       certifications.push({
-        number: "",
-        type: "요양보호사",
+        certiNumber: "",
+        certiType: "요양보호사",
       })
     };
     const result = await createCaregiver({
@@ -242,7 +242,7 @@ function CareSignup() {
       certifications: certifications,
       userIntro: "",
       userGender: ["남성", "여성"][userGender ?? 0],
-      userAddress: userAddress + userAddressDetail,
+      userAddress: userAddress + "@" + userAddressDetail,
       hasCar: hasCar,
       driversLicense: driversLicense,
       dementiaEducation: dementiaEducation,
@@ -456,7 +456,7 @@ function CareSignup() {
           </div>
           <Space css={"h-[56px]"} />
           <Animation delay={1} y={0} step={step} component={
-            <Button text="간편 이력서 작성하기" onClick={handleNavigateAddJobSearch} disabled={false} textButton={
+            <Button text="간편 이력서 작성하기" onClick={handleNavigateAddResume} disabled={false} textButton={
               <TextButton text="다음에 입력할게요" onClick={handleNavigateHome} />
             } />
           } />

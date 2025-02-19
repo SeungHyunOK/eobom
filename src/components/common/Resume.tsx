@@ -6,11 +6,11 @@ type ResumeProps = {
   gender: string,
   address: string,
   experience: string,
-  birthday: number,
+  // birthday: number,
   recommended: boolean,
 }
 
-const Resume = ({ name, gender, address, experience, birthday, recommended }: ResumeProps) => {
+const Resume = ({ name, gender, address, experience, recommended }: ResumeProps) => {
   return (
     <div className="flex flex-col items-end">
       {
@@ -25,7 +25,7 @@ const Resume = ({ name, gender, address, experience, birthday, recommended }: Re
       }
       <div className={`w-full border border-[2px] shadow-sm p-[20px] rounded-[10px] ${recommended ? " border-[#FF8411]" : "border-[#FAF9F9]"}`}>
         <div className="flex justify-between">
-          <p className="font-bold text-[18px]">{`${name} (만 0세, ${gender})`}</p>
+          <p className="font-bold text-[18px]">{`${name} (${gender})`}</p>
           <img className="cursor-pointer" src={`/assets/icons/${recommended ? "ellipsis-colored" : "ellipsis-disabled"}.svg`} onClick={() => { }} />
         </div>
         <Space css="h-[24px]" />

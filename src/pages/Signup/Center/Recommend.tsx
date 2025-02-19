@@ -30,9 +30,9 @@ function Recommend() {
         </div>
         <Space css="h-[18px]" />
         <div className="flex flex-col gap-[16px] w-full">
-          <Resume name="홍길동" birthday={Date.now()} gender="여" address="서울시 노원구 화랑로 125-13" experience="1년 8개월" recommended={true} />
-          <Resume name="홍길동" birthday={Date.now()} gender="여" address="서울시 노원구 화랑로 125-13" experience="1년 8개월" recommended={false} />
-          <Resume name="홍길동" birthday={Date.now()} gender="여" address="서울시 노원구 화랑로 125-13" experience="1년 8개월" recommended={false} />
+          <Resume name="홍길동" gender="여" address="서울시 노원구 화랑로 125-13" experience="1년 8개월" recommended={true} />
+          <Resume name="홍길동" gender="여" address="서울시 노원구 화랑로 125-13" experience="1년 8개월" recommended={false} />
+          <Resume name="홍길동" gender="여" address="서울시 노원구 화랑로 125-13" experience="1년 8개월" recommended={false} />
         </div>
       </div>
     </div>

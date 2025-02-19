@@ -32,7 +32,9 @@ function Login() {
   }
 
   const handleNavigateSignup = () => {
-    if (tabIndex === 1) {
+    if (tabIndex === 0) {
+      navigate("/signup/caregiver");
+    } else {
       navigate("/signup/center");
     }
   }

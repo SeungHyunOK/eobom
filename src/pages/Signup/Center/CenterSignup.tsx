@@ -215,7 +215,7 @@ function CenterSignup() {
       profileImage: image,
       centerName: centerName,
       showerTruck: showerTruck,
-      centerAddress: centerAddress + centerAddressDetail,
+      centerAddress: centerAddress + "@" + centerAddressDetail,
       centerRating: centerRating ? ["A등급", "B등급", "C등급", "D등급"][centerRating] : null,
       centerIntro: centerIntroduction,
       regNumber: registrationNumber,

@@ -2,12 +2,12 @@ import { useRecoilState } from "recoil";
 import { accessTokenState, userTypeState, userInfoState } from "../store/store";
 
 type Certification = {
-  number: string,
-  type: string,
+  certiNumber: string,
+  certiType: string,
 }
 
 type Career = {
-  campany: string,
+  company: string,
   period: string,
   contents: string,
 }
@@ -49,7 +49,22 @@ type CreateCaregiverProps = {
   hasCar: boolean,
   driversLicense: boolean,
   dementiaEducation: boolean,
-  career?: Career[],
+  careers?: Career[],
+  userIntro: string,
+}
+
+type UpdateCaregiverProps = {
+  userName: string,
+  phoneNumber: string,
+  userGender: string,
+  profileImage: Blob | null,
+  mimeType?: string,
+  userAddress: string,
+  certifications: Certification[],
+  hasCar: boolean,
+  driversLicense: boolean,
+  dementiaEducation: boolean,
+  careers?: Career[],
   userIntro: string,
 }
 
@@ -162,6 +177,7 @@ const useAuth = () => {
           hasCar: hasCar,
           hasDrivingLicense: driversLicense,
           isDmentialTrained: dementiaEducation,
+          career: [],
           intro: "",
         }
       ),
@@ -172,6 +188,48 @@ const useAuth = () => {
       .then((result) => {
         return result;
       }).catch(error => console.log(error));
+  }
+
+  const updateCaregiver = async ({ userName, phoneNumber, userGender, profileImage, certifications, userAddress, hasCar, driversLicense, dementiaEducation, careers, userIntro }: UpdateCaregiverProps) => {
+    const image = profileImage ? await blobToByteArray(profileImage) : null;
+    console.log(careers);
+
+    // for (let i = 0; i < 2; i++) {
+    return await fetch(`${apiURL}/caregiver/editCaregiverInfo`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${accessToken}`
+      },
+      body: JSON.stringify(
+        {
+          name: userName,
+          phone: phoneNumber,
+          gender: userGender,
+          profileImage: image ? { "type": "Buffer", "data": image } : null,
+          mimeType: "image/jpeg",
+          certifications: certifications,
+          caregiverAddress: userAddress,
+          hasCar: hasCar,
+          hasDrivingLicense: driversLicense,
+          isDmentialTrained: dementiaEducation,
+          career: careers,
+          intro: userIntro,
+        }
+      ),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((result) => {
+        return result;
+      }).catch((error) => {
+        console.log(error);
+        // getAccessToken();
+        // return null;
+      });
+    // if (!result) return result;
+    // }
   }
 
   const login = async ({ userId, userPassword }: LoginProps) => {
@@ -192,8 +250,9 @@ const useAuth = () => {
       })
       .then((result) => {
         if (result.accessToken) {
+          // console.log(result);
           setAccessToken(result.accessToken);
-          // getUserInfo(result.accessToken);
+          (async () => setUserInfo(await getUserInfo(result.accessToken)))();
           return true;
         }
         return false;
@@ -264,22 +323,23 @@ const useAuth = () => {
   }
 
   const getLoggedIn = () => {
-    if (accessToken && userType) {
+    if (accessToken) {
       return true;
     }
     return false;
   }
 
   const getUserType = () => {
-    if (userType === "요양사") {
+    // console.log(userInfo);
+    if (userInfo.userType === "요양사") {
       return 1;
-    } else if (userType === "관리사") {
+    } else if (userInfo.userType === "관리사") {
       return 2;
     }
     return null;
   }
 
-  return { checkUserId, createManager, createCaregiver, login, logout, getUserInfo, deleteUser, getAccessToken, getLoggedIn, getUserType };
+  return { checkUserId, createManager, createCaregiver, updateCaregiver, login, logout, getUserInfo, deleteUser, getAccessToken, getLoggedIn, getUserType };
 }
 
 export default useAuth;

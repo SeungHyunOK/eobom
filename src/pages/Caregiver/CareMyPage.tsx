@@ -2,9 +2,12 @@ import CenterHeader from "../../components/common/CenterHeader";
 import Space from "../../components/common/Space";
 import useAuth from "../../apis/auth";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { userInfoState } from "../../store/store";
 
 
 function CareMyPage() {
+  const userInfo = useRecoilValue(userInfoState);
   const { logout, deleteUser } = useAuth();
   const [imageURL, setImageURL] = useState<string>("");
 
@@ -81,13 +84,13 @@ function CareMyPage() {
         <Space css="h-[12px]" />
         <div className="w-full border border-[2px] shadow-sm p-[20px] rounded-[10px] border-[#FAF9F9]">
           <div className="flex justify-between">
-            <p className="text-[18px] text-[#3C3939] font-bold">홍길동 {"(만 22세, 여)"}</p>
+            <p className="text-[18px] text-[#3C3939] font-bold">{`${userInfo.name} (${userInfo.gender[0]})`}</p>
             <p className="text-[#9C9898] text-[12px] font-medium underline underline-offset-2 cursor-pointer">수정</p>
           </div>
           <Space css="h-[24px]" />
           <div className="flex">
             <img className="w-[24px] mr-[6px]" src="/assets/icons/location-colored.svg" />
-            <p className="font-semibold text-[16px] text-[#717171]">서울시 노원구 화랑로 125-13</p>
+            <p className="font-semibold text-[16px] text-[#717171]">{userInfo.caregiver.caregiverAddress}</p>
           </div>
           <Space css="h-[20px]" />
           <div className="flex">

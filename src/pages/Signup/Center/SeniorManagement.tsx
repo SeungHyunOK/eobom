@@ -99,7 +99,7 @@ function SeniorManagement() {
         {
           tabIndex === 0
             ? <>
-              <button className="flex w-full p-[16px] bg-[#FAF9F9] gap-[14px] rounded-[10px] shadow-sm" onClick={handleNavigateAddSenior}>
+              <button className="flex items-center w-full p-[16px] bg-[#FAF9F9] gap-[14px] rounded-[10px] shadow-sm" onClick={handleNavigateAddSenior}>
                 <img src="/assets/icons/plus_colored.svg" />
                 <p className="text-[18px] text-[#717171] font-bold">어르신 추가하기</p>
               </button>
