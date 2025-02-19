@@ -9,13 +9,14 @@ type RequestMatchingProps = {
 
 
 const useMatching = () => {
+  const apiURL = process.env.REACT_APP_API_URL;
   const accessToken = useRecoilValue(accessTokenState);
   const [centerInfo, setCenterInfo] = useRecoilState(centerInfoState);
   const { getAccessToken } = useAuth();
 
   const requestMatching = async ({ jobSearchId, jobOfferId }: RequestMatchingProps) => {
     await getAccessToken();
-    return await fetch("/api/manager/sendMatching", {
+    return await fetch(`${apiURL}/manager/sendMatching`, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
@@ -40,7 +41,7 @@ const useMatching = () => {
   }
 
   const getManagerMatching = async () => {
-    return await fetch("/api/manager/myMatching", {
+    return await fetch(`${apiURL}/manager/myMatching`, {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${accessToken}`
@@ -61,7 +62,7 @@ const useMatching = () => {
 
   const getRecommendedMatching = async () => {
     await getAccessToken();
-    return await fetch("/api/manager/myMatching", {
+    return await fetch(`${apiURL}/manager/myMatching`, {
       method: "GET",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",

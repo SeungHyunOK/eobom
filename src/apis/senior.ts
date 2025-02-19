@@ -22,11 +22,12 @@ type SeniorProps = {
 
 
 const useSenior = () => {
+  const apiURL = process.env.REACT_APP_API_URL;
   const accessToken = useRecoilValue(accessTokenState);
   const userInfo = useRecoilValue(userInfoState);
 
   const createSenior = async ({ seniorName, seniorBirthday, seniorAddress, seniorGender, seniorRating, profileImage, mimeType }: CreateSeniorProps) => {
-    return await fetch("/api/manager/addSenior", {
+    return await fetch(`${apiURL}/manager/addSenior`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -60,7 +61,7 @@ const useSenior = () => {
   }
 
   const getSenior = async (seniorId: string) => {
-    return await fetch("/api/manager/getSeniorInfo" + new URLSearchParams({
+    return await fetch(`${apiURL}/manager/getSeniorInfo` + new URLSearchParams({
       seniorId: seniorId
     }), {
       method: "GET",
@@ -85,7 +86,7 @@ const useSenior = () => {
   }
 
   const getJobOffer = async (seniorId: string) => {
-    return await fetch("/api/manager/myJobOffer" + new URLSearchParams({
+    return await fetch(`${apiURL}/manager/myJobOffer` + new URLSearchParams({
       seniorId: seniorId,
     }), {
       method: "GET",

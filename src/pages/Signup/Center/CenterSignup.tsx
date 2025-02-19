@@ -286,8 +286,8 @@ function CenterSignup() {
               <Input type="text" placeholder="예시 ) 010-1234-5678" value={userPhoneNumber} onChange={handleChangeUserPhoneNumber} />
             </div>
             <div ref={divRef} />
-            {/* <Button text="인증번호 발송" onClick={() => handleSendAuthCode(true)} disabled={!userPhoneNumber} /> */}
-            <Button text="인증번호 발송" onClick={handleClickDone} disabled={!userPhoneNumber} />
+            <Button text="인증번호 발송" onClick={() => handleSendAuthCode(true)} disabled={!userPhoneNumber} />
+            {/* <Button text="인증번호 발송" onClick={handleClickDone} disabled={!userPhoneNumber} /> */}
             {
               openBottomSheet
                 ? <BottomSheet start={Date.now()} handleSendAuthCode={handleSendAuthCode} handleClickDone={handleClickDone} />

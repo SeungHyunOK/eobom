@@ -15,11 +15,12 @@ type CreateJobProps = {
 
 
 const useJob = () => {
+  const apiURL = process.env.REACT_APP_API_URL;
   const accessToken = useRecoilValue(accessTokenState);
 
   const createJobOffer = async ({ seniorId, hourlyWage, caregiverCount, schedule, mealAssist, toiletAssist, movingAssist, bathingAssist, livingAssist }: CreateJobProps) => {
     // console.log(JSON.stringify(Object.fromEntries(schedule)));
-    return await fetch("/api/manager/createJobOffer", {
+    return await fetch(`${apiURL}/manager/createJobOffer`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

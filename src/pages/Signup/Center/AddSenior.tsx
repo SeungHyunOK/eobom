@@ -16,7 +16,7 @@ import Animation from "../../../components/common/Animation";
 
 
 function AddSenior() {
-  const [step, setStep] = useState<number>(3);
+  const [step, setStep] = useState<number>(0);
   const [seniorName, setSeniorName] = useState<string>("");
   const [seniorBirthday, setSeniorBirthday] = useState<string>("");
   const [seniorGender, setSeniorGender] = useState<number | null>(null);

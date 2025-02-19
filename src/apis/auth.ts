@@ -31,12 +31,13 @@ type LoginProps = {
 }
 
 const useAuth = () => {
+  const apiURL = process.env.REACT_APP_API_URL;
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
   const [userType, setUserType] = useRecoilState(userTypeState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
 
   const checkUserId = async ({ userId }: CheckUserIdProps) => {
-    return await fetch("/api/user/login", {
+    return await fetch(`${apiURL}/user/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,8 +75,7 @@ const useAuth = () => {
   const createManager = async ({ userId, userPassword, userName, phoneNumber, userGender, profileImage, centerName, showerTruck, centerAddress, centerRating, centerIntro, regNumber, repName, openingDate }: CreateManagerProps) => {
     const image = profileImage ? await blobToByteArray(profileImage) : null;
 
-
-    return await fetch("/api/manager/sign_up", {
+    return await fetch(`${apiURL}/manager/sign_up`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -88,7 +88,7 @@ const useAuth = () => {
           phone: phoneNumber,
           userType: "관리사",
           gender: "남성",
-          profileImage: { "type": "Buffer", "data": image },
+          profileImage: image ? { "type": "Buffer", "data": image } : null,
           mimeType: "image/jpeg",
           centerName: centerName,
           hasBathVehicle: showerTruck ?? false,
@@ -104,19 +104,19 @@ const useAuth = () => {
       ),
     })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+        // if (!response.ok) {
+        //   throw new Error("Network response was not ok");
+        // }
         return response.json();
       })
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         return result;
       });
   }
 
   const login = async ({ userId, userPassword }: LoginProps) => {
-    return await fetch("/api/user/login", {
+    return await fetch(`${apiURL}/user/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -148,7 +148,7 @@ const useAuth = () => {
   }
 
   const getUserInfo = async (token?: string) => {
-    return await fetch("/api/user/getUserInfo", {
+    return await fetch(`${apiURL}/user/getUserInfo`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -170,7 +170,7 @@ const useAuth = () => {
   }
 
   const deleteUser = async () => {
-    return await fetch("/api/user/withdrawal", {
+    return await fetch(`${apiURL}/user/withdrawal`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -190,7 +190,7 @@ const useAuth = () => {
   }
 
   const getAccessToken = async () => {
-    return await fetch("/api/user/getAccessToken", {
+    return await fetch(`${apiURL}/user/getAccessToken`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

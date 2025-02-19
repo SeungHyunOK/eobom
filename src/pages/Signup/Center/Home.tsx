@@ -12,12 +12,17 @@ function Home() {
   const centerInfo = useRecoilValue(centerInfoState);
   const { getManagerMatching } = useMatching();
   const [imageURL, setImageURL] = useState<string>("");
+  const [matchingCount, setMatchingCount] = useState<number>(0);
+  const [totalMatchingCount, setTotalMatchingCount] = useState<number>(0);
 
   useEffect(() => {
     getManagerMatching();
     console.log(userInfo);
     getImage(userInfo.profileImage?.data ?? null);
-    console.log(userInfo.profileImage?.data)
+    console.log(userInfo.profileImage?.data);
+    setTotalMatchingCount(centerInfo.jobOffers?.length);
+    setMatchingCount(centerInfo.jobOffers?.filter((offer: any) => { return offer.jobOfferState === "매칭중" }).length);
+    // console.log(centerInfo.jobOffers?.filter((offer: any) => { return offer.jobOfferState === "매칭중" }).length);
   }, []);
 
   const getImage = (image: number[] | null) => {
@@ -50,7 +55,7 @@ function Home() {
             <p className="text-[#717171] text-[12px]">{centerInfo.centerName}</p>
             <div className="text-[16px] font-medium cursor-pointer">
               <p className="text-[#FF8411] inline">
-                {centerInfo.jobOffers.length}명
+                {centerInfo.jobOffers?.length}명
               </p>의 어르신이<br />
               매칭을 진행하고 있어요
               <img className="inline ml-[8px]" src="/assets/icons/next.svg" />
@@ -61,15 +66,15 @@ function Home() {
         <div className="flex border border-[#FAF9F9] p-[20px] justify-around rounded-[10px] shadow-sm">
           <div className="flex flex-col items-center gap-[12px]">
             <p className="text-[12px] text-[#3C3939] font-bold">전체</p>
-            <p className="text-[15px] text-[#FF8411] font-extrabold">{centerInfo.jobOffers.length}</p>
+            <p className="text-[15px] text-[#FF8411] font-extrabold">{totalMatchingCount}</p>
           </div>
           <div className="flex flex-col items-center gap-[12px]">
             <p className="text-[12px] text-[#3C3939] font-bold">매칭 진행 중</p>
-            <p className="text-[15px] text-[#FF8411] font-extrabold">92</p>
+            <p className="text-[15px] text-[#FF8411] font-extrabold">{matchingCount}</p>
           </div>
           <div className="flex flex-col items-center gap-[12px]">
             <p className="text-[12px] text-[#3C3939] font-bold">매칭 완료</p>
-            <p className="text-[15px] text-[#FF8411] font-extrabold">8</p>
+            <p className="text-[15px] text-[#FF8411] font-extrabold">{totalMatchingCount - matchingCount}</p>
           </div>
         </div>
         <Space css="h-[40px]" />

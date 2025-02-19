@@ -6,6 +6,7 @@ import { useState } from "react";
 
 function CareMyPage() {
   const { logout, deleteUser } = useAuth();
+  const [imageURL, setImageURL] = useState<string>("");
 
   const handleClickLogout = () => {
     logout();
@@ -14,8 +15,6 @@ function CareMyPage() {
   const handleClickWithdrawal = () => {
     deleteUser();
   }
-
-  const [imageURL, setImageURL] = useState<string>("");
 
   const handleChangeImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
