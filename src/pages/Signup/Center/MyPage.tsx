@@ -72,19 +72,22 @@ function MyPage() {
         <div className="flex justify-between">
           <div className="flex items-center gap-[20px]">
             <div className="flex justify-center">
-              <label htmlFor='file'>
-                <div className="w-[80px] h-[80px] bg-[#FAF9F9] rounded-full cursor-pointer">
-                  <img className=" rounded-[30px]" src={imageURL === "" ? "/assets/icons/profile.svg" : imageURL} />
-                  <div className="relative top-[-20px] left-[60px] flex justify-center items-center w-[24px] h-[24px] bg-[#FAF9F9] rounded-full shadow-md">
+              {/* <label htmlFor='file'> */}
+              <div className="w-[80px] h-[80px] bg-[#FAF9F9] rounded-full cursor-pointer">
+                <img className=" rounded-[30px]" src={imageURL === "" ? "/assets/icons/profile.svg" : imageURL} />
+                {/* <div className="relative top-[-20px] left-[60px] flex justify-center items-center w-[24px] h-[24px] bg-[#FAF9F9] rounded-full shadow-md">
                     <img className="w-[14px]" src="/assets/icons/camera.svg" />
-                  </div>
-                </div>
-              </label>
-              <input className="hidden" id="file" type="file" accept="image/*" onChange={handleChangeImage} />
+                  </div> */}
+              </div>
+              {/* </label> */}
+              {/* <input className="hidden" id="file" type="file" accept="image/*" onChange={handleChangeImage} /> */}
             </div >
-            <p className="font-jal text-[18px] font-[#181818]">김누구 보호사</p>
+            <div className="flex flex-col">
+              <p className="font-jal text-[18px] font-[#181818]">{userInfo.name}</p>
+              <p className="text-[12px] text-[#9C9898]">{centerInfo?.centerName}</p>
+            </div>
           </div>
-          <p className="text-[#9C9898] text-[12px] font-medium underline underline-offset-2 cursor-pointer">내 정보 수정하기</p>
+          <p className="text-[12px] text-[#9C9898] font-medium underline underline-offset-2 cursor-pointer">내 정보 수정하기</p>
         </div>
       </div>
       <div className="flex flex-col p-[20px] border-b-[2px] border-b-[#FAF9F9]">

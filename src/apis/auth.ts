@@ -1,6 +1,17 @@
 import { useRecoilState } from "recoil";
 import { accessTokenState, userTypeState, userInfoState } from "../store/store";
 
+type Certification = {
+  number: string,
+  type: string,
+}
+
+type Career = {
+  campany: string,
+  period: string,
+  contents: string,
+}
+
 type CheckUserIdProps = {
   userId: string,
 }
@@ -23,6 +34,23 @@ type CreateManagerProps = {
   regNumber: string,
   repName: string,
   openingDate: string,
+}
+
+type CreateCaregiverProps = {
+  userId: string,
+  userPassword: string,
+  userName: string,
+  phoneNumber: string,
+  userGender: string,
+  profileImage: Blob | null,
+  mimeType?: string,
+  userAddress: string,
+  certifications: Certification[],
+  hasCar: boolean,
+  driversLicense: boolean,
+  dementiaEducation: boolean,
+  career?: Career[],
+  userIntro: string,
 }
 
 type LoginProps = {
@@ -115,6 +143,37 @@ const useAuth = () => {
       });
   }
 
+  const createCaregiver = async ({ userId, userPassword, userName, phoneNumber, userGender, certifications, userAddress, hasCar, driversLicense, dementiaEducation }: CreateCaregiverProps) => {
+    return await fetch(`${apiURL}/caregiver/sign_up`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(
+        {
+          id: userId,
+          pw: userPassword,
+          name: userName,
+          phone: phoneNumber,
+          userType: "요양사",
+          gender: userGender,
+          certifications: certifications,
+          caregiverAddress: userAddress,
+          hasCar: hasCar,
+          hasDrivingLicense: driversLicense,
+          isDmentialTrained: dementiaEducation,
+          intro: "",
+        }
+      ),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((result) => {
+        return result;
+      }).catch(error => console.log(error));
+  }
+
   const login = async ({ userId, userPassword }: LoginProps) => {
     return await fetch(`${apiURL}/user/login`, {
       method: "POST",
@@ -134,7 +193,7 @@ const useAuth = () => {
       .then((result) => {
         if (result.accessToken) {
           setAccessToken(result.accessToken);
-          getUserInfo(result.accessToken);
+          // getUserInfo(result.accessToken);
           return true;
         }
         return false;
@@ -159,13 +218,7 @@ const useAuth = () => {
         return response.json();
       })
       .then((result) => {
-        console.log(result);
-        if (result.userType) {
-          setUserInfo(result);
-          setUserType(result.userType);
-          return true;
-        }
-        return false;
+        return result;
       });
   }
 
@@ -226,7 +279,7 @@ const useAuth = () => {
     return null;
   }
 
-  return { checkUserId, createManager, login, logout, getUserInfo, deleteUser, getAccessToken, getLoggedIn, getUserType };
+  return { checkUserId, createManager, createCaregiver, login, logout, getUserInfo, deleteUser, getAccessToken, getLoggedIn, getUserType };
 }
 
 export default useAuth;

@@ -4,7 +4,7 @@ import CenterSignup from "./pages/Signup/Center/CenterSignup";
 import AddSenior from "./pages/Signup/Center/AddSenior";
 import AddJob from "./pages/Signup/Center/AddJob";
 import JobDetail from "./pages/Signup/Center/JobDetail";
-import Matching from "./pages/Signup/Center/Matching";
+import Recommend from "./pages/Signup/Center/Recommend";
 import Home from "./pages/Signup/Center/Home";
 import SeniorManagement from "./pages/Signup/Center/SeniorManagement";
 import ChatList from "./pages/Signup/Center/ChatList";
@@ -21,6 +21,7 @@ import CareChat from "./pages/Caregiver/CareChat";
 import CareChatList from "./pages/Caregiver/CareChatList";
 import CareMenu from "./pages/Caregiver/CareMenu";
 import CareMyPage from "./pages/Caregiver/CareMyPage";
+import CareSignup from "./pages/Caregiver/CareSignup";
 
 
 function App() {
@@ -39,11 +40,12 @@ function App() {
       <Routes>
         <Route path="/login" element={getLoggedIn() ? <Navigate replace to="/" /> : <Login />} />
         <Route path="/signup/center" element={<CenterSignup />} />
+        <Route path="/signup/caregiver" element={<CareSignup />} />
         <Route element={<PrivateRoute />}>
           <Route path="/" element={getUserType() === 1 ? <CareHome /> : <Home />} />
           <Route path="/seniors/:seniorId/jobs/add" element={<AddJob />} />
           <Route path="/jobs/:jobId" element={getUserType() === 1 ? <CareJobDetail /> : <JobDetail />} />
-          <Route path="/recommend" element={<Matching />} />
+          <Route path="/jobs/:jobId/recommend" element={<Recommend />} />
           <Route path="/matching" element={<CareMatching />} />
           <Route path="/seniors" element={<SeniorManagement />} />
           <Route path="/seniors/add" element={<AddSenior />} />

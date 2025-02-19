@@ -85,7 +85,7 @@ const useSenior = () => {
       });
   }
 
-  const getJobOffer = async (seniorId: string) => {
+  const getJobOffers = async (seniorId: string) => {
     return await fetch(`${apiURL}/manager/myJobOffer` + new URLSearchParams({
       seniorId: seniorId,
     }), {
@@ -120,7 +120,7 @@ const useSenior = () => {
   //   return [];
   // }
 
-  return { createSenior, getJobOffer };
+  return { createSenior, getJobOffers };
 }
 
 export default useSenior;

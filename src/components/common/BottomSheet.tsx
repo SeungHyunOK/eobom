@@ -6,10 +6,10 @@ import Button from "./Button";
 type BottomSheetProps = {
   start: number,
   handleSendAuthCode: (value: boolean) => void,
-  handleClickDone: () => void,
+  handleConfirmAuthCode: () => void,
 }
 
-const BottomSheet = ({ start, handleSendAuthCode, handleClickDone }: BottomSheetProps) => {
+const BottomSheet = ({ start, handleSendAuthCode, handleConfirmAuthCode }: BottomSheetProps) => {
   const [authCode, setAuthCode] = useState<string>("");
   const [time, setTime] = useState<number>(180);
   const [expectedTime, setExpectedTime] = useState<number>(Date.now());
@@ -45,12 +45,12 @@ const BottomSheet = ({ start, handleSendAuthCode, handleClickDone }: BottomSheet
     );
   }
 
-  const handleAuthCode = () => {
+  const handleClickAuthCode = () => {
     window.confirmationResult.confirm(authCode)
       .then(() => {
         setValidCode(true);
         handleSendAuthCode(false);
-        handleClickDone();
+        handleConfirmAuthCode();
       }).catch(() => {
         setValidCode(false);
       });
@@ -81,7 +81,7 @@ const BottomSheet = ({ start, handleSendAuthCode, handleClickDone }: BottomSheet
             인증번호 재전송
           </p>
         </div>
-        <Button text="입력 완료" onClick={handleAuthCode} disabled={!authCode} />
+        <Button text="입력 완료" onClick={handleClickAuthCode} disabled={!authCode} />
       </div>
     </div>
   );

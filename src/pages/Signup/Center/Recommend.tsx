@@ -1,12 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Space from "../../../components/common/Space";
 import CheckButton from "../../../components/common/CheckButton";
 import Resume from "../../../components/common/Resume";
 import CenterHeader from "../../../components/common/CenterHeader";
+import { useParams } from "react-router-dom";
+import useMatching from "../../../apis/matching";
 
 
-function JobDetail() {
+function Recommend() {
+  const { jobId } = useParams<{ jobId: string }>();
   const [sortBy, setSortBy] = useState<number>(0);
+  const { getRecommendedMatching } = useMatching();
+
+  useEffect(() => {
+    // if (jobId) {
+    //   getRecommendedMatching(jobId);
+    // }
+    getRecommendedMatching(jobId ?? "1");
+  }, []);
 
   return (
     <div className="flex flex-col justify-center font-pre select-none">
@@ -28,4 +39,4 @@ function JobDetail() {
   );
 }
 
-export default JobDetail;
+export default Recommend;

@@ -1,24 +1,25 @@
 import { useState, useRef, useEffect } from "react";
-import ProgressBar from "../../../components/common/ProgressBar";
-import Button from "../../../components/common/Button";
-import Title from "../../../components/common/Title";
-import FormTitle from "../../../components/common/FormTitle";
-import Explanation from "../../../components/common/Explanation";
-import Input from "../../../components/common/Input";
-import Space from "../../../components/common/Space";
-import CheckButton from "../../../components/common/CheckButton";
-import BottomSheet from "../../../components/common/BottomSheet";
+import ProgressBar from "../../components/common/ProgressBar";
+import Button from "../../components/common/Button";
+import Title from "../../components/common/Title";
+import FormTitle from "../../components/common/FormTitle";
+import Explanation from "../../components/common/Explanation";
+import Input from "../../components/common/Input";
+import Space from "../../components/common/Space";
+import CheckButton from "../../components/common/CheckButton";
+import BottomSheet from "../../components/common/BottomSheet";
 import { useDaumPostcodePopup } from "react-daum-postcode";
-import Label from "../../../components/common/Label";
+import Label from "../../components/common/Label";
 import { initializeApp } from "firebase/app";
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import TextArea from "../../../components/common/TextArea";
-import TextButton from "../../../components/common/TextButton";
+import TextArea from "../../components/common/TextArea";
+import TextButton from "../../components/common/TextButton";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../../apis/auth";
-import ProfileInput from "../../../components/common/ProfileInput";
-import Animation from "../../../components/common/Animation";
-import { runAfterDelay } from "../../../utils/delay";
+import useAuth from "../../apis/auth";
+import ProfileInput from "../../components/common/ProfileInput";
+import Animation from "../../components/common/Animation";
+import { runAfterDelay } from "../../utils/delay";
+import CheckBox from "../../components/common/CheckBox";
 
 
 declare global {
@@ -43,34 +44,36 @@ initializeApp(firebaseConfig);
 const auth = getAuth();
 auth.languageCode = "ko";
 
-function CenterSignup() {
+function CareSignup() {
   const [step, setStep] = useState<number>(0);
   const [userId, setUserId] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
   const [userIdValidation, setUserIdValidation] = useState<boolean | null>(null);
   const [userPasswordValidation, setUserPasswordValidation] = useState<boolean | null>(null);
   const [userName, setUserName] = useState<string>("");
+  const [userBirthday, setUserBirthday] = useState<string>("");
+  const [userGender, setUserGender] = useState<number | null>(null);
+
   const [userPhoneNumber, setUserPhoneNumber] = useState<string>("");
   const [authPhoneNumber, setAuthPhoneNumber] = useState<boolean>(false);
-  const [centerAddress, setCenterAddress] = useState<string>("");
-  const [centerAddressDetail, setCenterAddressDetail] = useState<string>("");
-  const [centerName, setCenterName] = useState<string>("");
-  const [centerOwnerName, setCenterOwnerName] = useState<string>("");
-  const [registrationNumber, setRegistrationNumber] = useState<string>("");
-  const [openingDate, setOpeningDate] = useState<string>("");
+  const [userAddress, setUserAddress] = useState<string>("");
+  const [userAddressDetail, setUserAddressDetail] = useState<string>("");
+  const [qualificationNumber, setQualificationNumber] = useState<string>("");
+
+  const [driversLicense, setDriversLicense] = useState<boolean>(false);
+  const [hasCar, setHasCar] = useState<boolean>(false);
+  const [dementiaEducation, setDementiaEducation] = useState<boolean>(false);
+  const [nursingAssistant, setNursingAssistant] = useState<boolean>(false);
+  const [socialWorker, setSocialWorker] = useState<boolean>(false);
+
   const [openBottomSheet, setOpenBottomSheet] = useState<boolean>(false);
-  const [showerTruck, setShowerTruck] = useState<boolean | null>(null);
-  const [centerRating, setCenterRating] = useState<number | null>(null);
-  const [centerIntroduction, setCenterIntroduction] = useState<string>("");
-  const [imageURL, setImageURL] = useState<string>("");
-  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
   const divRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const openSearchAddress = useDaumPostcodePopup();
-  const { checkUserId, createManager, login } = useAuth();
+  const { checkUserId, createCaregiver, login } = useAuth();
 
   useEffect(() => {
-    if (step === 7) {
+    if (step === 6) {
       runAfterDelay(2, handleClickDone);
     }
   }, [step]);
@@ -90,6 +93,7 @@ function CenterSignup() {
   }
 
   const handleChangeUserPhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAuthPhoneNumber(false);
     const phone = e.target.value.replace(/[^0-9]/g, "");
     if (phone.length <= 7) {
       setUserPhoneNumber(phone.replace(/^(\d{3})(\d{1,4})$/, "$1-$2"));
@@ -129,39 +133,18 @@ function CenterSignup() {
     handleClickDone();
   }
 
-  const handleChangeCenterAddressDetail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCenterAddressDetail(e.target.value);
+  const handleChangeUserAddressDetail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserAddressDetail(e.target.value);
   }
 
-  const handleChangeCenterName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCenterName(e.target.value);
-  }
-
-  const handleChangeRegistrationNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRegistrationNumber(e.target.value);
-  }
-
-  const handleChangeCenterOwnerName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCenterOwnerName(e.target.value);
-  }
-
-  const handleChangeOpeningDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeUserBirthday = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = e.target.value.replace(/[^0-9]/g, "");
     if (date.length <= 4) {
-      setOpeningDate(date.replace(/^(\d{2})(\d{1,2})$/, "$1.$2"));
+      setUserBirthday(date.replace(/^(\d{2})(\d{1,2})$/, "$1.$2"));
     }
     else if (date.length <= 6) {
-      setOpeningDate(date.replace(/^(\d{2})(\d{2})(\d{1,2})$/, "$1.$2.$3"));
+      setUserBirthday(date.replace(/^(\d{2})(\d{2})(\d{1,2})$/, "$1.$2.$3"));
     }
-  }
-
-  const handleChangeVenterIntroduction = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setCenterIntroduction(e.target.value);
-  }
-
-  const handleChangeProfileImage = (url: string, blob: Blob) => {
-    setImageURL(url);
-    setImageBlob(blob);
   }
 
   const handleClickDone = () => {
@@ -197,30 +180,72 @@ function CenterSignup() {
     );
   }
 
-  const handleNavigateLogin = () => {
+  const handleNavigateHome = () => {
     navigate("/");
   }
 
-  const handleNavigateAddSenior = () => {
-    navigate("/seniors/add");
+
+  const handleNavigateAddJobSearch = () => {
+    navigate("/jobs/add");
   }
 
-  const handleClickSignup = async (image: Blob | null) => {
-    const result = await createManager({
+  const handleChangeQualificationNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const qualification = e.target.value.replace(/[^0-9]/g, "");
+    if (qualification.length <= 11) {
+      setQualificationNumber(qualification.replace(/^(\d{4})(\d{1,7})$/, "$1-$2"));
+    }
+  }
+
+  const handleChangeDriversLicense = () => {
+    setDriversLicense(!driversLicense);
+  }
+
+  const handleChangeHasCar = () => {
+    setHasCar(!hasCar);
+  }
+
+  const handleChangeDementiaEducation = () => {
+    setDementiaEducation(!dementiaEducation);
+  }
+
+  const handleChangeNursingAssistant = () => {
+    setNursingAssistant(!nursingAssistant);
+  }
+
+  const handleChangeSocialWorker = () => {
+    setSocialWorker(!socialWorker);
+  }
+
+  const handleClickSignup = async () => {
+    let certifications = [{
+      number: qualificationNumber,
+      type: "요양보호사",
+    }];
+    if (nursingAssistant) {
+      certifications.push({
+        number: "",
+        type: "간호조무사",
+      })
+    };
+    if (socialWorker) {
+      certifications.push({
+        number: "",
+        type: "요양보호사",
+      })
+    };
+    const result = await createCaregiver({
       userId: userId,
       userPassword: userPassword,
       userName: userName,
       phoneNumber: userPhoneNumber,
-      userGender: "남성",
-      profileImage: image,
-      centerName: centerName,
-      showerTruck: showerTruck,
-      centerAddress: centerAddress + centerAddressDetail,
-      centerRating: centerRating ? ["A등급", "B등급", "C등급", "D등급"][centerRating] : null,
-      centerIntro: centerIntroduction,
-      regNumber: registrationNumber,
-      repName: centerOwnerName,
-      openingDate: openingDate,
+      profileImage: null,
+      certifications: certifications,
+      userIntro: "",
+      userGender: ["남성", "여성"][userGender ?? 0],
+      userAddress: userAddress + userAddressDetail,
+      hasCar: hasCar,
+      driversLicense: driversLicense,
+      dementiaEducation: dementiaEducation,
     });
     if (result.user) {
       await login({ userId: userId, userPassword: userPassword });
@@ -269,11 +294,20 @@ function CenterSignup() {
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/waving-hand.png" />
-              <FormTitle content={<>반갑습니다, 관리자님!<br />관리자님의 성함을 입력해주세요</>} />
+              <FormTitle content={<>활동을 위해 보호사님의<br />기본 인적사항이 필요해요</>} />
               <Space css={"h-[14px]"} />
-              <Explanation text="가입을 위해서 관리자님의 기본 인적사항이 필요해요" />
+              <Explanation text="본인 확인을 위해 인적사항을 작성해주세요" />
               <Space css={"h-[46px]"} />
-              <Input type="text" placeholder="예시 ) 홍길동" value={userName} onChange={handleChangeUserName} />
+              <Input type="text" label="이름" placeholder="예시 ) 홍길동" value={userName} onChange={handleChangeUserName} />
+              <Space css={"h-[28px]"} />
+              <Input type="tel" label="생년월일" placeholder="예시 ) 01.01.01" value={userBirthday} onChange={handleChangeUserBirthday} />
+              <Space css={"h-[28px]"} />
+              <Label text="성별" />
+              <Space css={"h-[18px]"} />
+              <div className="flex gap-[8px] flex-wrap">
+                <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/man.png" />} text="남성" width="w-[88px]" height="h-[50px]" onClick={() => setUserGender(0)} checked={userGender === 0} />
+                <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/person.png" />} text="여성" width="w-[88px]" height="h-[50px]" onClick={() => setUserGender(1)} checked={userGender === 1} />
+              </div>
             </div>
             <Button text="입력 완료" onClick={handleClickDone} disabled={!userName} />
           </div >
@@ -308,23 +342,21 @@ function CenterSignup() {
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/house.png" />
-              <FormTitle content={<>소속 확인을 위해<br />센터의 주소를 입력해주세요</>} />
+              <FormTitle content={<>근무지 추천을 위해<br />주소를 입력해주세요</>} />
               <Space css={"h-[14px]"} />
-              <Explanation text="1개의 센터로 여러 명이 가입할 수 있어요" />
+              <Explanation text="주소지는 언제든 수정할 수 있어요" />
               <Space css={"h-[46px]"} />
-              <Input type="text" placeholder="예시 ) 효자로 12, 세종로 1-57" value={centerAddress} onClick={() => openSearchAddress({ onComplete: (data) => setCenterAddress(data.address) })} suffix={centerAddress ? CloseButton(() => setCenterAddress("")) : null} />
+              <Input type="text" placeholder="예시 ) 효자로 12, 세종로 1-57" value={userAddress} onClick={() => openSearchAddress({ onComplete: (data) => setUserAddress(data.address) })} suffix={userAddress ? CloseButton(() => setUserAddress("")) : null} />
               {
-                centerAddress ?
+                userAddress ?
                   <>
                     <Space css={"h-[28px]"} />
-                    <Input type="text" placeholder="동, 호수 등 상세주소 입력" value={centerAddressDetail} onChange={handleChangeCenterAddressDetail} suffix={centerAddressDetail ? CloseButton(() => setCenterAddressDetail("")) : null} />
-                    <Space css={"h-[28px]"} />
-                    <Input type="text" placeholder="센터 이름 입력" value={centerName} onChange={handleChangeCenterName} suffix={centerName ? CloseButton(() => setCenterName("")) : null} />
+                    <Input type="text" placeholder="동, 호수 등 상세주소 입력" value={userAddressDetail} onChange={handleChangeUserAddressDetail} suffix={userAddressDetail ? CloseButton(() => setUserAddressDetail("")) : null} />
                   </>
                   : null
               }
             </div>
-            <Button text="입력 완료" onClick={handleClickDone} disabled={!centerAddress} />
+            <Button text="입력 완료" onClick={handleClickDone} disabled={!userAddress} />
           </div>
         );
       case 4:
@@ -334,15 +366,11 @@ function CenterSignup() {
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/check-mark.png" />
-              <FormTitle content={<>소속 센터 검증을 위해<br />몇 가지 정보가 필요해요</>} />
+              <FormTitle content={<>요양보호사 자격증의<br />문서확인번호를 입력해주세요</>} />
               <Space css={"h-[14px]"} />
-              <Explanation text="안전한 구인구직을 위해 사업자 여부를 확인할게요" />
+              <Explanation text="요양보호사 자격증이 없으면 활동이 어려워요" />
               <Space css={"h-[24px]"} />
-              <Input type="text" label="사업자등록번호" placeholder="예시 ) 1234567890" value={registrationNumber} onChange={handleChangeRegistrationNumber} suffix={centerAddress ? CloseButton(() => setRegistrationNumber("")) : null} />
-              <Space css={"h-[28px]"} />
-              <Input type="text" label="대표자 성명" placeholder="예시 ) 홍길동" value={centerOwnerName} onChange={handleChangeCenterOwnerName} suffix={centerOwnerName ? CloseButton(() => setCenterOwnerName("")) : null} />
-              <Space css={"h-[28px]"} />
-              <Input type="date" label="개원 일자" placeholder="YY.MM.DD" value={openingDate} onChange={handleChangeOpeningDate} prefix={<img className="w-[24px] mr-[6px]" src={openingDate ? "/assets/icons/calendar-bold.svg" : "/assets/icons/calendar.svg"} />} />
+              <Input type="text" placeholder="예시 ) 2025-1234567" value={qualificationNumber} onChange={handleChangeQualificationNumber} suffix={qualificationNumber ? CloseButton(() => setQualificationNumber("")) : null} />
             </div>
             <Button text="입력 완료" onClick={handleClickDone} disabled={false} />
           </div>
@@ -354,50 +382,22 @@ function CenterSignup() {
             <div className="h-full flex flex-col flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/memo.png" />
-              <FormTitle content={<>매칭 확률을 높이기 위하여<br />추가 정보를 입력해주세요</>} />
+              <FormTitle content={<>일자리 추천을 위해<br />해당 사항을 모두 체크해주세요</>} />
               <Space css={"h-[14px]"} />
-              <Explanation text="구직자가 궁금해하는 정보예요" />
+              <Explanation text="해당 사항이 많을수록 일자리 매칭 확률이 높아져요" />
               <Space css={"h-[46px]"} />
-              <Label text="센터 등급" />
+              <CheckBox text="운전면허가 있어요" prefix={<img className="w-[24px] mr-[6px]" src="/assets/images/identification-card.png" />} onClick={handleChangeDriversLicense} checked={driversLicense} />
               <Space css={"h-[18px]"} />
-              <div className="flex gap-[8px] flex-wrap">
-                <CheckButton text="A등급" width="w-[70px]" height="h-[34px]" onClick={() => setCenterRating(0)} checked={centerRating === 0} />
-                <CheckButton text="B등급" width="w-[70px]" height="h-[34px]" onClick={() => setCenterRating(1)} checked={centerRating === 1} />
-                <CheckButton text="C등급" width="w-[70px]" height="h-[34px]" onClick={() => setCenterRating(2)} checked={centerRating === 2} />
-                <CheckButton text="D등급" width="w-[70px]" height="h-[34px]" onClick={() => setCenterRating(3)} checked={centerRating === 3} />
-              </div>
-              <Space css={"h-[34px]"} />
-              <Label text="목욕 차량 소유 여부" />
+              <CheckBox text="자차가 있어요" prefix={<img className="w-[24px] mr-[6px]" src="/assets/images/car.png" />} onClick={handleChangeHasCar} checked={hasCar} />
               <Space css={"h-[18px]"} />
-              <div className="flex gap-[8px] flex-wrap">
-                <CheckButton text="네" width="w-[110px]" height="h-[34px]" onClick={() => setShowerTruck(true)} checked={showerTruck === true} />
-                <CheckButton text="아니오" width="w-[110px]" height="h-[34px]" onClick={() => setShowerTruck(false)} checked={showerTruck === false} />
-              </div>
-              <Label text="한줄 소개" />
+              <CheckBox text="치매교육을 이수했어요" prefix={<img className="w-[24px] mr-[6px]" src="/assets/images/book.png" />} onClick={handleChangeDementiaEducation} checked={dementiaEducation} />
               <Space css={"h-[18px]"} />
-              <TextArea placeholder="예시 ) 5년 연속 A등급, 이어봄 재가방문요양센터입니다." value={centerIntroduction} onChange={handleChangeVenterIntroduction} maxLength={30} rows={2} />
-            </div>
-            <Button text="입력 완료" onClick={handleClickDone} disabled={showerTruck === null || centerRating === null} />
-          </div>
-        );
-      case 6:
-        return (
-          <div className="h-full flex flex-col">
-            <ProgressBar width={"w-6/6"} />
-            <div className="h-full flex flex-col flex-1">
-              <Space css={"h-[36px]"} />
-              <img className="w-[24px]" src="/assets/images/camera.png" />
-              <FormTitle content={<>마지막으로,<br />프로필 사진을 등록해주세요</>} />
-              <Space css={"h-[14px]"} />
-              <Explanation text="매칭 요청 시 신뢰도를 높일 수 있어요" />
-              <Space css={"h-[46px]"} />
-              <Space css={"h-[80px]"} />
-              <ProfileInput onChange={handleChangeProfileImage} />
+              <CheckBox text="간호조무사 자격증이 있어요" prefix={<img className="w-[24px] mr-[6px]" src="/assets/images/hospital.png" />} onClick={handleChangeNursingAssistant} checked={nursingAssistant} />
+              <Space css={"h-[18px]"} />
+              <CheckBox text="사회복지사 자격증이 있어요" prefix={<img className="w-[24px] mr-[6px]" src="/assets/images/office-worker.png" />} onClick={handleChangeSocialWorker} checked={socialWorker} />
             </div>
             <Space css={"h-[56px]"} />
-            <Button text="회원가입 완료" onClick={() => handleClickSignup(imageBlob)} disabled={!imageURL} textButton={
-              <TextButton text="다음에 등록할게요" onClick={() => handleClickSignup(null)} />
-            } />
+            <Button text="회원가입 완료" onClick={handleClickSignup} disabled={false} />
           </div>
         );
     }
@@ -419,7 +419,7 @@ function CenterSignup() {
           <Space css={"h-[80px]"} />
         </div>
       );
-    case 7:
+    case 6:
       return (
         <div className="h-full flex flex-col font-pre p-[20px] select-none">
           <div className="flex flex-col justify-center items-center flex-1">
@@ -438,7 +438,7 @@ function CenterSignup() {
           <Space css={"h-[76px]"} />
         </div>
       );
-    case 8:
+    case 7:
       return (
         <div className="h-full flex flex-col font-pre p-[20px] select-none">
           <div className="flex flex-col justify-center items-center flex-1">
@@ -449,15 +449,15 @@ function CenterSignup() {
                 </object>
                 <Space css={"h-[60px]"} />
                 <Animation delay={0} y={30} step={step} component={
-                  <FormTitle content={<>이제 어르신 정보를 등록하고<br />보호사 구인을 할 수 있어요</>} align="text-center" />
+                  <FormTitle content={<>몇 가지 추가 정보를 입력하면<br />간편 이력서를 작성할 수 있어요</>} align="text-center" />
                 } />
               </div>
             } />
           </div>
           <Space css={"h-[56px]"} />
           <Animation delay={1} y={0} step={step} component={
-            <Button text="어르신 정보 등록하기" onClick={handleNavigateAddSenior} disabled={false} textButton={
-              <TextButton text="다음에 입력할게요" onClick={handleNavigateLogin} />
+            <Button text="간편 이력서 작성하기" onClick={handleNavigateAddJobSearch} disabled={false} textButton={
+              <TextButton text="다음에 입력할게요" onClick={handleNavigateHome} />
             } />
           } />
         </div>
@@ -465,4 +465,4 @@ function CenterSignup() {
   }
 }
 
-export default CenterSignup;
+export default CareSignup;

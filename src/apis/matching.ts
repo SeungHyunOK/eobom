@@ -57,18 +57,21 @@ const useMatching = () => {
         console.log('result', result.myMatchings);
         console.log(result);
         setCenterInfo(result.myMatchings);
+        return result.myMatchings;
       });
   }
 
-  const getRecommendedMatching = async () => {
-    await getAccessToken();
-    return await fetch(`${apiURL}/manager/myMatching`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-        "Authorization": `Bearer ${accessToken}`
-      },
-    })
+  const getRecommendedMatching = async (jobOfferId: string) => {
+    return await fetch(`${apiURL}/manager/matchingRecommend?` + new URLSearchParams({
+      jobOfferId: jobOfferId,
+    }),
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+          "Authorization": `Bearer ${accessToken}`
+        },
+      })
       .then((response) => {
         // if (!response.ok) {
         //   throw new Error("Network response was not ok");
@@ -79,6 +82,26 @@ const useMatching = () => {
         console.log(result);
       });
   }
+
+  // const getRecommendedMatching = async () => {
+  //   await getAccessToken();
+  //   return await fetch(`${apiURL}/manager/myMatching`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+  //       "Authorization": `Bearer ${accessToken}`
+  //     },
+  //   })
+  //     .then((response) => {
+  //       // if (!response.ok) {
+  //       //   throw new Error("Network response was not ok");
+  //       // }
+  //       return response.json();
+  //     })
+  //     .then((result) => {
+  //       console.log(result);
+  //     });
+  // }
 
   return { requestMatching, getManagerMatching, getRecommendedMatching };
 }

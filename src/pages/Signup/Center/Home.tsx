@@ -17,12 +17,9 @@ function Home() {
 
   useEffect(() => {
     getManagerMatching();
-    console.log(userInfo);
     getImage(userInfo.profileImage?.data ?? null);
-    console.log(userInfo.profileImage?.data);
     setTotalMatchingCount(centerInfo.jobOffers?.length);
     setMatchingCount(centerInfo.jobOffers?.filter((offer: any) => { return offer.jobOfferState === "매칭중" }).length);
-    // console.log(centerInfo.jobOffers?.filter((offer: any) => { return offer.jobOfferState === "매칭중" }).length);
   }, []);
 
   const getImage = (image: number[] | null) => {
@@ -33,7 +30,6 @@ function Home() {
     const reader = new FileReader();
     reader.onloadend = () => {
       setImageURL(reader.result as string);
-      console.log(reader.result as string);
     };
     reader.readAsDataURL(blob);
   }

@@ -42,10 +42,6 @@ function AddJob() {
   const navigate = useNavigate();
   const { createJobOffer } = useJob();
 
-  useEffect(() => {
-    console.log(schedule);
-  }, [schedule]);
-
   const handleChangeMealAssist = () => {
     setMealAssist(!mealAssist);
     setMealAssistDetail(null);
@@ -137,23 +133,29 @@ function AddJob() {
   }
 
   const handleClickAddJob = async () => {
+    const scheduleWithStart = new Map(Object.entries(schedule));
+    scheduleWithStart.set("근무일", {
+      startTime: startDate,
+      endTime: endDate,
+    });
+    console.log(scheduleWithStart);
     const result = await createJobOffer({
       seniorId: Number(seniorId),
       hourlyWage: Number(hourlyWage.replace(/[^0-9]/g, "")),
       caregiverCount,
-      schedule: schedule,
+      schedule: scheduleWithStart,
       mealAssist: mealAssist,
       toiletAssist: toiletAssist,
       movingAssist: movingAssist,
       bathingAssist: bathingAssist,
       livingAssist: livingAssist,
+      requests: requests,
+      features: features.map(String),
     });
     if (result !== null) {
       navigate(`/jobs/${result}`);
     }
   }
-
-
 
   const BodyComponent = () => {
     switch (step) {
