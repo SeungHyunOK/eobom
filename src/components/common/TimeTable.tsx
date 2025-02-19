@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useEffect, useState } from "react";
 
 
@@ -28,8 +29,6 @@ const TimeTable = ({ setWeeklyHours, setSchedule }: TimeTableProps) => {
   }, []);
 
   useEffect(() => {
-    // let times = new Set();
-    // let times: number[][] = [];
     const schedule = new Map();
 
     const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
@@ -37,7 +36,6 @@ const TimeTable = ({ setWeeklyHours, setSchedule }: TimeTableProps) => {
       let times: number[][] = [];
       let current = 900;
       for (let i = 0; i < 12; i++) {
-        // weekdays
         if (selected[i][j]) {
           if (times.length > 0 && times[times.length - 1][1] == current) {
             times[times.length - 1][1] = current + 100;
@@ -58,7 +56,6 @@ const TimeTable = ({ setWeeklyHours, setSchedule }: TimeTableProps) => {
         }));
       }
     }
-    // console.log(timeMap.entries());
     setSchedule(Object.fromEntries(schedule));
   }, [selected]);
 
@@ -193,7 +190,7 @@ const TimeTable = ({ setWeeklyHours, setSchedule }: TimeTableProps) => {
     return (
       [...Array(12)].map((_, rowNum) => {
         return (
-          <>
+          <React.Fragment key={rowNum}>
             <div key={rowNum} className="relative bottom-[-15px] flex justify-center items-center leading-[0px] text-[11px] text-[#9C9898] font-bold" >
               {rowNum + 10}
             </div>
@@ -210,7 +207,7 @@ const TimeTable = ({ setWeeklyHours, setSchedule }: TimeTableProps) => {
                 />
               })
             }
-          </>
+          </React.Fragment>
         );
       })
     );

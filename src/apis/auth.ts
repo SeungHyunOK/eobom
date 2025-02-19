@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { accessTokenState, userTypeState, userInfoState } from "../store/store";
+import { accessTokenState, userTypeState, userInfoState, centerInfoState } from "../store/store";
 
 type Certification = {
   certiNumber: string,
@@ -76,6 +76,7 @@ type LoginProps = {
 const useAuth = () => {
   const apiURL = process.env.REACT_APP_API_URL;
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+  const [centerInfo, setCenterInfo] = useRecoilState(centerInfoState);
   const [userType, setUserType] = useRecoilState(userTypeState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
 
@@ -263,6 +264,7 @@ const useAuth = () => {
     setAccessToken("");
     setUserType("");
     setUserInfo({});
+    setCenterInfo({});
   }
 
   const getUserInfo = async (token?: string) => {

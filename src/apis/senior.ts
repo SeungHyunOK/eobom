@@ -7,7 +7,7 @@ type CreateSeniorProps = {
   seniorAddress: string,
   seniorGender: string,
   seniorRating: string,
-  profileImage?: string,
+  profileImage: Blob | null,
   mimeType?: string,
 }
 
@@ -26,7 +26,21 @@ const useSenior = () => {
   const accessToken = useRecoilValue(accessTokenState);
   const userInfo = useRecoilValue(userInfoState);
 
-  const createSenior = async ({ seniorName, seniorBirthday, seniorAddress, seniorGender, seniorRating, profileImage, mimeType }: CreateSeniorProps) => {
+  const blobToByteArray = (blob: Blob): Promise<number[]> => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (reader.result instanceof ArrayBuffer) {
+          resolve(Array.from(new Uint8Array(reader.result)));
+        }
+      };
+      reader.readAsArrayBuffer(blob);
+    });
+  };
+
+  const createSenior = async ({ seniorName, seniorBirthday, seniorAddress, seniorGender, seniorRating, profileImage }: CreateSeniorProps) => {
+    const image = profileImage ? await blobToByteArray(profileImage) : null;
+
     return await fetch(`${apiURL}/manager/addSenior`, {
       method: "POST",
       headers: {
@@ -40,8 +54,8 @@ const useSenior = () => {
           seniorAddress: seniorAddress,
           seniorGender: seniorGender,
           seniorGrade: seniorRating,
-          profileImage: profileImage,
-          mimeType: mimeType
+          profileImage: image ? { "type": "Buffer", "data": image } : null,
+          mimeType: "image/jpeg",
         }
       ),
     })

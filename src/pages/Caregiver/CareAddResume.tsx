@@ -1,18 +1,11 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import ProgressBar from "../../components/common/ProgressBar";
 import Button from "../../components/common/Button";
 import Title from "../../components/common/Title";
 import FormTitle from "../../components/common/FormTitle";
 import Explanation from "../../components/common/Explanation";
-import Input from "../../components/common/Input";
 import Space from "../../components/common/Space";
 import CheckButton from "../../components/common/CheckButton";
-import BottomSheet from "../../components/common/BottomSheet";
-import { useDaumPostcodePopup } from "react-daum-postcode";
-import Label from "../../components/common/Label";
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import TextArea from "../../components/common/TextArea";
 import TextButton from "../../components/common/TextButton";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../apis/auth";
@@ -22,28 +15,6 @@ import CareerSheet from "../../components/common/CareerSheet";
 import { useRecoilValue } from "recoil";
 import { userInfoState } from "../../store/store";
 
-
-declare global {
-  interface Window {
-    recaptchaVerifier: any;
-    confirmationResult: any;
-  }
-}
-
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
-  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
-};
-
-initializeApp(firebaseConfig);
-
-const auth = getAuth();
-auth.languageCode = "ko";
 
 type Career = {
   company: string,
@@ -141,7 +112,8 @@ function CareAddResume() {
   }
 
   const handleNavigateAddJobSearch = () => {
-    // navigate("/seniors/add");
+    console.log('/jobs/add');
+    navigate("/jobs/add");
   }
 
   const BodyComponent = () => {
@@ -248,7 +220,7 @@ function CareAddResume() {
       );
     case 3:
       return (
-        <div className="h-full flex flex-col font-pre p-[20px] select-none">
+        <div className="h-full flex flex-col font-pre select-none">
           <div className="flex flex-col justify-center items-center flex-1">
             <Animation delay={0} y={30} step={step} component={
               <div className="flex flex-col items-center">

@@ -13,6 +13,7 @@ import TextButton from "../../../components/common/TextButton";
 import { useNavigate } from "react-router-dom";
 import useSenior from "../../../apis/senior";
 import Animation from "../../../components/common/Animation";
+import ProfileInput from "../../../components/common/ProfileInput";
 
 
 function AddSenior() {
@@ -24,6 +25,8 @@ function AddSenior() {
   const [seniorAddress, setSeniorAddress] = useState<string>("");
   const [seniorAddressDetail, setSeniorAddressDetail] = useState<string>("");
   const [seniorId, setSeniorId] = useState<number | null>(null);
+  const [imageURL, setImageURL] = useState<string>("");
+  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
 
   const navigate = useNavigate();
   const openSearchAddress = useDaumPostcodePopup();
@@ -58,6 +61,11 @@ function AddSenior() {
     setStep(prev => prev - 1);
   }
 
+  const handleChangeProfileImage = (url: string, blob: Blob) => {
+    setImageURL(url);
+    setImageBlob(blob);
+  }
+
   const CloseButton = (resetData: () => void) => {
     return (
       <button onClickCapture={(e) => { e.stopPropagation(); e.preventDefault(); resetData(); }}>
@@ -74,11 +82,12 @@ function AddSenior() {
     navigate(`/seniors/${seniorId}/jobs/add`);
   }
 
-  const handleClickAddSenior = async () => {
+  const handleClickAddSenior = async (image: Blob | null) => {
     const result = await createSenior({
       seniorName: seniorName,
       seniorBirthday: seniorBirthday,
       seniorAddress: seniorAddress,
+      profileImage: image,
       seniorGender: ["남성", "여성"][seniorGender ?? 0],
       seniorRating: ["인지지원등급", "1등급", "2등급", "3등급", "4등급", "5등급"][seniorRating ?? 0],
     });
@@ -163,17 +172,11 @@ function AddSenior() {
               <img className="w-[24px]" src="/assets/images/camera.png" />
               <FormTitle content={<>어르신 사진을 등록해주세요</>} />
               <Space css={"h-[80px]"} />
-              <div className="flex w-full justify-center cursor-pointer">
-                <div className="w-[180px] h-[180px] bg-[#D4D2D2] rounded-[30px]">
-                  <div className="relative top-[157px] left-[157px] flex justify-center items-center w-[46px] h-[46px] bg-[#FAF9F9] rounded-[50%] shadow-md">
-                    <img src="/assets/icons/camera.svg" />
-                  </div>
-                </div>
-              </div>
+              <ProfileInput onChange={handleChangeProfileImage} />
             </div>
             <Space css={"h-[56px]"} />
-            <Button text="어르신 정보 등록 완료" onClick={handleClickAddSenior} disabled={true} textButton={
-              <TextButton text="다음에 등록할게요" onClick={handleClickAddSenior} />
+            <Button text="어르신 정보 등록 완료" onClick={() => handleClickAddSenior(imageBlob)} disabled={true} textButton={
+              <TextButton text="다음에 등록할게요" onClick={() => handleClickAddSenior(null)} />
             } />
           </div>
         );
@@ -198,7 +201,7 @@ function AddSenior() {
   }
 
   return (
-    <div className="h-full flex flex-col font-pre p-[20px] select-none">
+    <div className="h-full flex flex-col font-pre select-none">
       <div className="flex flex-col justify-center items-center flex-1">
         <Animation delay={0} y={30} step={step} component={
           <div className="flex flex-col items-center">

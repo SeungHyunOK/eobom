@@ -290,7 +290,7 @@ function CareSignup() {
       case 1:
         return (
           <div className="h-full flex flex-col">
-            <ProgressBar width={"w-1/6"} />
+            <ProgressBar width={"w-1/5"} />
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/waving-hand.png" />
@@ -315,7 +315,7 @@ function CareSignup() {
       case 2:
         return (
           <div className="h-full flex flex-col">
-            <ProgressBar width={"w-2/6"} />
+            <ProgressBar width={"w-2/5"} />
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/telephone.png" />
@@ -338,7 +338,7 @@ function CareSignup() {
       case 3:
         return (
           <div className="h-full flex flex-col">
-            <ProgressBar width={"w-3/6"} />
+            <ProgressBar width={"w-3/5"} />
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/house.png" />
@@ -362,7 +362,7 @@ function CareSignup() {
       case 4:
         return (
           <div className="h-full flex flex-col">
-            <ProgressBar width={"w-4/6"} />
+            <ProgressBar width={"w-4/5"} />
             <div className="flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/check-mark.png" />
@@ -378,7 +378,7 @@ function CareSignup() {
       case 5:
         return (
           <div className="h-full flex flex-col">
-            <ProgressBar width={"w-5/6"} />
+            <ProgressBar width={"w-5/5"} />
             <div className="h-full flex flex-col flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/memo.png" />
@@ -421,7 +421,7 @@ function CareSignup() {
       );
     case 6:
       return (
-        <div className="h-full flex flex-col font-pre p-[20px] select-none">
+        <div className="h-full flex flex-col font-pre select-none">
           <div className="flex flex-col justify-center items-center flex-1">
             <Animation delay={0} y={30} step={step} component={
               <div className="flex flex-col items-center">
@@ -440,7 +440,7 @@ function CareSignup() {
       );
     case 7:
       return (
-        <div className="h-full flex flex-col font-pre p-[20px] select-none">
+        <div className="h-full flex flex-col font-pre select-none">
           <div className="flex flex-col justify-center items-center flex-1">
             <Animation delay={0} y={30} step={step} component={
               <div className="flex flex-col items-center">

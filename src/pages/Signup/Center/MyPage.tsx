@@ -2,24 +2,20 @@ import CenterHeader from "../../../components/common/CenterHeader";
 import Space from "../../../components/common/Space";
 import useAuth from "../../../apis/auth";
 import { useRecoilValue } from "recoil";
-import { centerInfoState, userInfoState } from "../../../store/store";
+import { userInfoState } from "../../../store/store";
 import { useEffect, useState } from "react";
-import useMatching from "../../../apis/matching";
 
 
 function MyPage() {
   const { logout, deleteUser } = useAuth();
   const userInfo = useRecoilValue(userInfoState);
-  const centerInfo = useRecoilValue(centerInfoState);
   const [matchingCount, setMatchingCount] = useState<number>(0);
   const [totalMatchingCount, setTotalMatchingCount] = useState<number>(0);
   const [imageURL, setImageURL] = useState<string>("");
-  const { getManagerMatching } = useMatching();
 
   useEffect(() => {
-    getManagerMatching();
-    setTotalMatchingCount(centerInfo?.jobOffers?.length);
-    setMatchingCount(centerInfo?.jobOffers?.filter((offer: any) => { return offer.jobOfferState === "매칭중" }).length);
+    setTotalMatchingCount(userInfo.manager?.jobOffers?.length);
+    setMatchingCount(userInfo.manager?.jobOffers?.filter((offer: any) => { return offer.jobOfferState === "매칭중" }).length);
   }, []);
 
 
@@ -84,7 +80,7 @@ function MyPage() {
             </div >
             <div className="flex flex-col">
               <p className="font-jal text-[18px] font-[#181818]">{userInfo.name}</p>
-              <p className="text-[12px] text-[#9C9898]">{centerInfo?.centerName}</p>
+              <p className="text-[12px] text-[#9C9898]">{userInfo.manager?.centerName}</p>
             </div>
           </div>
           <p className="text-[12px] text-[#9C9898] font-medium underline underline-offset-2 cursor-pointer">내 정보 수정하기</p>
@@ -97,18 +93,18 @@ function MyPage() {
         <Space css="h-[12px]" />
         <div className="w-full border border-[2px] shadow-sm p-[20px] rounded-[10px] border-[#FAF9F9]">
           <div className="flex justify-between">
-            <p className="text-[18px] text-[#3C3939] font-bold">{centerInfo?.centerName}</p>
+            <p className="text-[18px] text-[#3C3939] font-bold">{userInfo.manager?.centerName}</p>
             <p className="text-[#9C9898] text-[12px] font-medium underline underline-offset-2 cursor-pointer">수정</p>
           </div>
           <Space css="h-[24px]" />
           <div className="flex">
             <img className="w-[24px] mr-[6px]" src="/assets/icons/location-disabled.svg" />
-            <p className="font-semibold text-[16px] text-[#717171]">{centerInfo?.centerAddress}</p>
+            <p className="font-semibold text-[16px] text-[#717171]">{userInfo.manager?.centerAddress}</p>
           </div>
           <Space css="h-[20px]" />
           <div className="flex">
             <img className="w-[24px] mr-[6px]" src="/assets/icons/certification-disabled.svg" />
-            <p className="font-semibold text-[16px] text-[#717171]">{centerInfo?.centerGrade}</p>
+            <p className="font-semibold text-[16px] text-[#717171]">{userInfo.manager?.centerGrade}</p>
           </div>
         </div>
       </div>

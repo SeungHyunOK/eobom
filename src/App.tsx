@@ -23,6 +23,7 @@ import CareMenu from "./pages/Caregiver/CareMenu";
 import CareMyPage from "./pages/Caregiver/CareMyPage";
 import CareSignup from "./pages/Caregiver/CareSignup";
 import CareAddResume from "./pages/Caregiver/CareAddResume";
+import CareAddJobSearch from "./pages/Caregiver/CareAddJobSearch";
 
 
 function App() {
@@ -44,13 +45,14 @@ function App() {
         <Route path="/signup/caregiver" element={<CareSignup />} />
         <Route element={<PrivateRoute />}>
           <Route path="/" element={getUserType() === 1 ? <CareHome /> : <Home />} />
-          <Route path="/seniors/:seniorId/jobs/add" element={<AddJob />} />
+          <Route path="/jobs/add" element={getUserType() === 1 ? <CareAddJobSearch /> : <Navigate replace to="/" />} />
+          <Route path="/seniors/:seniorId/jobs/add" element={getUserType() === 1 ? <Navigate replace to="/" /> : <AddJob />} />
           <Route path="/jobs/:jobId" element={getUserType() === 1 ? <CareJobDetail /> : <JobDetail />} />
-          <Route path="/jobs/:jobId/recommend" element={<Recommend />} />
-          <Route path="/resume" element={<CareAddResume />} />
-          <Route path="/matching" element={<CareMatching />} />
-          <Route path="/seniors" element={<SeniorManagement />} />
-          <Route path="/seniors/add" element={<AddSenior />} />
+          <Route path="/jobs/:jobId/recommend" element={getUserType() === 1 ? <Navigate replace to="/" /> : <Recommend />} />
+          <Route path="/resume" element={getUserType() === 1 ? <CareAddResume /> : <Navigate replace to="/" />} />
+          <Route path="/matching" element={getUserType() === 1 ? <CareMatching /> : <Navigate replace to="/" />} />
+          <Route path="/seniors" element={getUserType() === 1 ? <Navigate replace to="/" /> : <SeniorManagement />} />
+          <Route path="/seniors/add" element={getUserType() === 1 ? <Navigate replace to="/" /> : <AddSenior />} />
           <Route path="/chats" element={getUserType() === 1 ? <CareChatList /> : <ChatList />} />
           <Route path="/chats/detail" element={getUserType() === 1 ? <CareChat /> : <Chat />} />
           <Route path="/mypage" element={getUserType() === 1 ? <CareMyPage /> : <MyPage />} />

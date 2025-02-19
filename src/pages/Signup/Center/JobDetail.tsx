@@ -41,9 +41,9 @@ type JobOfferProps = {
   isMobilityAssistanceNeeded: boolean, // 어르신 병원 동행이 필요해요
   isOralCareAssistanceNeeded: boolean, // 산책과 간단한 운동을 도와주세요
   isPersonalActivitySupportNeeded: boolean, // 말벗 등 정서 지원이 필요해요
-  isPhysicalFunctionSupportNeeded: boolean, // 인지자극 활동이 필요해요
+  isPositionChangeAssistanceNeeded: boolean, // 인지자극 활동이 필요해요
 
-  isPositionChangeAssistanceNeeded: boolean, // X
+  isPhysicalFunctionSupportNeeded: boolean, // X
   isToiletingAssistanceNeeded: boolean, // X
 
   senior: SeniorProps,
@@ -235,7 +235,7 @@ function JobDetail() {
                 : null
             }
             {
-              jobOffer?.isHousekeepingSupportNeeded || jobOffer?.isHairWashingAssistanceNeeded || jobOffer?.isMobilityAssistanceNeeded || jobOffer?.isOralCareAssistanceNeeded || jobOffer?.isPersonalActivitySupportNeeded || jobOffer?.isPhysicalFunctionSupportNeeded
+              jobOffer?.isHousekeepingSupportNeeded || jobOffer?.isHairWashingAssistanceNeeded || jobOffer?.isMobilityAssistanceNeeded || jobOffer?.isOralCareAssistanceNeeded || jobOffer?.isPersonalActivitySupportNeeded || jobOffer?.isPositionChangeAssistanceNeeded
                 ? <div className={`w-[106px] h-[34px] flex justify-center items-center bg-[#FAF9F9] rounded-full text-[#3C3939] shadow-sm font-bold text-[16px]`}>
                   <img className="w-[16px] mr-[4px]" src="/assets/images/broom.png" />
                   생활보조
@@ -361,7 +361,7 @@ function JobDetail() {
                 : null
             }
             {
-              jobOffer?.isPhysicalFunctionSupportNeeded
+              jobOffer?.isPositionChangeAssistanceNeeded
                 ? <div className={`w-full h-[36px] flex items-center cursor-pointer font-bold text-[18px] text-[#181818]`}>
                   <img className="w-[18px] mr-[8px]" src="/assets/images/check-mark.png" />
                   인지자극 활동이 필요해요

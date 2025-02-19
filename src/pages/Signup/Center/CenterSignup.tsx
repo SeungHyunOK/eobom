@@ -421,7 +421,7 @@ function CenterSignup() {
       );
     case 7:
       return (
-        <div className="h-full flex flex-col font-pre p-[20px] select-none">
+        <div className="h-full flex flex-col font-pre select-none">
           <div className="flex flex-col justify-center items-center flex-1">
             <Animation delay={0} y={30} step={step} component={
               <div className="flex flex-col items-center">
@@ -440,7 +440,7 @@ function CenterSignup() {
       );
     case 8:
       return (
-        <div className="h-full flex flex-col font-pre p-[20px] select-none">
+        <div className="h-full flex flex-col font-pre select-none">
           <div className="flex flex-col justify-center items-center flex-1">
             <Animation delay={0} y={30} step={step} component={
               <div className="flex flex-col items-center">

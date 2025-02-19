@@ -24,7 +24,6 @@ function CareHome() {
     const reader = new FileReader();
     reader.onloadend = () => {
       setImageURL(reader.result as string);
-      // console.log(reader.result as string);
     };
     reader.readAsDataURL(blob);
   }
@@ -46,7 +45,7 @@ function CareHome() {
             <p className="text-[#717171] text-[12px]"></p>
             <div className="text-[16px] font-medium cursor-pointer">
               <p className="text-[#FF8411] inline">
-                { }건
+                {2}건
               </p>의 매칭 요청이<br />
               도착했어요
               <img className="inline ml-[8px]" src="/assets/icons/next.svg" />
@@ -57,11 +56,11 @@ function CareHome() {
         <div className="flex border border-[#FAF9F9] p-[20px] justify-around rounded-[10px] shadow-sm">
           <div className="flex flex-col items-center gap-[12px]">
             <p className="text-[12px] text-[#3C3939] font-bold">매칭 요청</p>
-            <p className="text-[15px] text-[#FF8411] font-extrabold">2</p>
+            <p className="text-[15px] text-[#FF8411] font-extrabold">1</p>
           </div>
           <div className="flex flex-col items-center gap-[12px]">
             <p className="text-[12px] text-[#3C3939] font-bold">급구 매칭</p>
-            <p className="text-[15px] text-[#FF8411] font-extrabold">8</p>
+            <p className="text-[15px] text-[#FF8411] font-extrabold">1</p>
           </div>
         </div>
         <Space css="h-[40px]" />
