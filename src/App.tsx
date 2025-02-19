@@ -1,10 +1,10 @@
 import "./global.css";
-import Signup from "./pages/Signup/Signup";
+import Caregiver from "./pages/Signup/Caregiver/Caregiver";
 
 function App() {
   return (
     <>
-      <Signup />
+      <Caregiver />
     </>
   );
 }

@@ -1,5 +1,10 @@
 {
   "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@assets/*": ["assets/*"],
+      "@components/*": ["components/*"]
+    },
     "target": "ES5",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     // JS 허용 여부 (JS/TS 혼용할 경우 true)
@@ -20,5 +25,5 @@
     // React 18 사용 시: "jsx": "react-jsx" (CRA 5+)
     "jsx": "react-jsx"
   },
-  "include": ["src"]
+  "include": ["src", "svg.d.ts"]
 }
