@@ -10,9 +10,9 @@ import PasswordInput from "../../../../components/common/Caregiver/Inputs/Passwo
 interface Step0Props {
   formData: {
     id: string;
-    password: string;
+    pw: string;
   };
-  updateFormData: (field: "id" | "password", value: string) => void;
+  updateFormData: (field: "id" | "pw", value: string) => void;
   goBack: () => void;
   onNext: () => void;
   currentStep: number;
@@ -58,8 +58,8 @@ const Step0: React.FC<Step0Props> = React.memo(
             />
             <PasswordInput
               label="비밀번호"
-              value={formData.password}
-              onChange={(val) => updateFormData("password", val)}
+              value={formData.pw}
+              onChange={(val) => updateFormData("pw", val)}
             />
             <Button type="submit">입력완료</Button>
           </form>

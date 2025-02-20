@@ -13,10 +13,13 @@ import Step8 from "./Steps/Step8";
 import Step9 from "./Steps/Step9";
 import Step10 from "./Steps/Step10";
 import Step11 from "./Steps/Step11";
+import Step12 from "./Steps/Step12";
+import Step13 from "./Steps/Step13";
+import Step14 from "./Steps/Step14";
 
 interface FormData {
   id: string;
-  password: string;
+  pw: string;
   name: string;
   birthday: string;
   gender: string;
@@ -36,11 +39,12 @@ interface FormData {
 export default function Caregiver() {
   const [step, setStep] = React.useState(0);
   const [showStep, setShowStep] = React.useState(0);
+  // 총 15단계가 있으므로 초기 totalStep를 15로 설정
   const [totalStep, setTotalStep] = React.useState(6);
   const navigate = useNavigate();
   const [formData, setFormData] = React.useState<FormData>({
     id: "",
-    password: "",
+    pw: "", // 수정: "password" -> "pw"
     name: "",
     birthday: "",
     gender: "",
@@ -84,6 +88,32 @@ export default function Caregiver() {
     setShowStep((prev) => prev + 1);
   }, []);
 
+  const Done = React.useCallback(async () => {
+    // try {
+    //   const response = await fetch(
+    //     "http://localhost:4000/api/caregiver/sign_up",
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify(formData),
+    //     }
+    //   );
+    //   if (!response.ok) {
+    //     throw new Error(`API 오류: ${response.status}`);
+    //   }
+    //   const result = await response.json();
+    // console.log("회원가입 성공", result);
+    // 성공 시 후속 처리 (예: 페이지 이동 등)
+    // } catch (error) {
+    //   console.error("회원가입 전송 중 오류 발생", error);
+    //   alert("회원가입 전송 중 오류가 발생했습니다.");
+    // }
+    console.log("회원가입 성공");
+    navigate("/");
+  }, []);
+
   const stepsComponents = React.useMemo(() => {
     return [
       Step0,
@@ -98,12 +128,16 @@ export default function Caregiver() {
       Step9,
       Step10,
       Step11,
+      Step12,
+      Step13,
+      Step14,
     ];
   }, []);
 
   const CurrentStepComponent = stepsComponents[step];
 
   const stepProps = {
+    Done: Done,
     formData,
     updateFormData,
     goBack,

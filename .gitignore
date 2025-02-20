@@ -34,3 +34,8 @@ yarn-error.log*
 
 # TypeScript 빌드 결과(예: dist 폴더 사용 시)
 /dist
+
+# firebase
+/.firebase
+.firebaserc
+firebase.json

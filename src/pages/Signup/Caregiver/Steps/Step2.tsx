@@ -70,7 +70,7 @@ const Step2: React.FC<Step2Props> = ({
     setIsModalOpen(true);
     setOtpTime(180);
     console.log(`인증번호 발송됨: ${code}`);
-    alert("인증번호가 발송되었습니다.");
+    alert(`인증번호가 발송되었습니다.${code}`);
   };
 
   const verifyCode = () => {
@@ -130,6 +130,7 @@ const Step2: React.FC<Step2Props> = ({
               >
                 인증번호 재전송
               </button>
+
               <Button type="button" onClick={verifyCode}>
                 입력 완료
               </Button>
