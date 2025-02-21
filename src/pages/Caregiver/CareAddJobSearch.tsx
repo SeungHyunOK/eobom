@@ -78,10 +78,16 @@ function CareAddJobSearch() {
   }
 
   const handleClickAddJobSearch = async () => {
+    const scheduleWithStart = new Map(Object.entries(schedule));
+    scheduleWithStart.set("근무일", [{
+      startTime: "00:00",
+      endTime: "00:00",
+    }]);
     const result = await createJobSearch({
       addressList: addressList,
       hourlyWage: Number(hourlyWage.replace(/[^0-9]/g, "")),
-      schedule: new Map(Object.entries(schedule)),
+      // schedule: new Map(Object.entries(schedule)),
+      schedule: scheduleWithStart,
     });
 
     if (result.user) {
@@ -169,7 +175,7 @@ function CareAddJobSearch() {
             <div className="h-full flex flex-col flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/money.png" />
-              <FormTitle content={<>근무 기간과<br />지급 가능 시급을 입력해주세요</>} />
+              <FormTitle content={<>근무 시에<br />희망하는 시급을 입력해주세요</>} />
               <Space css={"h-[14px]"} />
               <Explanation text="2025년 최저시급은 10,030원이에요" />
               <Space css={"h-[36px]"} />

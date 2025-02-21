@@ -125,7 +125,7 @@ function CareAddResume() {
             <div className="h-full flex flex-col flex-1">
               <Space css={"h-[36px]"} />
               <img className="w-[24px]" src="/assets/images/eyes.png" />
-              <FormTitle content={<>희망하는 보호사님의 성향을<br />3가지 선택해주세요</>} />
+              <FormTitle content={<>자신을 소개하는<br />키워드 3가지를 선택해주세요</>} />
               <Space css={"h-[36px]"} />
               <div className="flex gap-[8px] flex-wrap">
                 <CheckButton icon={<img className="w-[18px] mr-[6px]" src="/assets/images/hearts.png" />} text="친절해요" width="w-[110px]" height="h-[50px]" onClick={() => handleChangeFeatures(0)} checked={features[0]} />

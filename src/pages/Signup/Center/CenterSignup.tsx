@@ -373,6 +373,7 @@ function CenterSignup() {
                 <CheckButton text="네" width="w-[110px]" height="h-[34px]" onClick={() => setShowerTruck(true)} checked={showerTruck === true} />
                 <CheckButton text="아니오" width="w-[110px]" height="h-[34px]" onClick={() => setShowerTruck(false)} checked={showerTruck === false} />
               </div>
+              <Space css={"h-[34px]"} />
               <Label text="한줄 소개" />
               <Space css={"h-[18px]"} />
               <TextArea placeholder="예시 ) 5년 연속 A등급, 이어봄 재가방문요양센터입니다." value={centerIntroduction} onChange={handleChangeVenterIntroduction} maxLength={30} rows={2} />

@@ -133,11 +133,12 @@ function AddJob() {
   }
 
   const handleClickAddJob = async () => {
+    console.log(schedule);
     const scheduleWithStart = new Map(Object.entries(schedule));
-    scheduleWithStart.set("근무일", {
+    scheduleWithStart.set("근무일", [{
       startTime: startDate,
       endTime: endDate,
-    });
+    }]);
     let stringFeatures: string[] = [];
     features.map((feature, index) => {
       if (feature) {
@@ -145,10 +146,11 @@ function AddJob() {
       }
     });
     console.log(scheduleWithStart);
+    // return;
     const result = await createJobOffer({
       seniorId: Number(seniorId),
       hourlyWage: Number(hourlyWage.replace(/[^0-9]/g, "")),
-      caregiverCount,
+      caregiverCount: caregiverCount,
       schedule: scheduleWithStart,
 
       isBathingAssistanceNeeded: mealAssistDetail === 0, // 준비된 음식으로 식사를 차려주세요
@@ -163,18 +165,19 @@ function AddJob() {
       isFeedingAssistanceNeeded: movingAssistDetail === 1, // 휠체어 이동 보조가 필요해요
       isGroomingAssistanceNeeded: movingAssistDetail === 2, // 거동이 불가해요
 
-      isHousekeepingSupportNeeded: livingAssistDetail[1], // 청소, 빨래를 도와주세요
-      isHairWashingAssistanceNeeded: livingAssistDetail[2], // 어르신 목욕을 도와주세요
-      isMobilityAssistanceNeeded: livingAssistDetail[3], // 어르신 병원 동행이 필요해요
-      isOralCareAssistanceNeeded: livingAssistDetail[4], // 산책과 간단한 운동을 도와주세요
-      isPersonalActivitySupportNeeded: livingAssistDetail[5], // 말벗 등 정서 지원이 필요해요
-      isPositionChangeAssistanceNeeded: livingAssistDetail[6], // 인지자극 활동이 필요해요
+      isHousekeepingSupportNeeded: livingAssistDetail[0], // 청소, 빨래를 도와주세요
+      isHairWashingAssistanceNeeded: livingAssistDetail[1], // 어르신 목욕을 도와주세요
+      isMobilityAssistanceNeeded: livingAssistDetail[2], // 어르신 병원 동행이 필요해요
+      isOralCareAssistanceNeeded: livingAssistDetail[3], // 산책과 간단한 운동을 도와주세요
+      isPersonalActivitySupportNeeded: livingAssistDetail[4], // 말벗 등 정서 지원이 필요해요
+      isPositionChangeAssistanceNeeded: livingAssistDetail[5], // 인지자극 활동이 필요해요
 
       // isPhysicalFunctionSupportNeeded: false, // X
       // isToiletingAssistanceNeeded: false, // X
       requests: requests,
       features: stringFeatures,
     });
+    console.log(result)
     if (result !== null) {
       navigate(`/jobs/${result}`);
     }

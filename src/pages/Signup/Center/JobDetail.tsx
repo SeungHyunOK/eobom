@@ -23,6 +23,7 @@ type JobOfferProps = {
   offerPay: string,
   reqMent: string,
   wantList: string[],
+  jobOfferSchedule: Map<string, { startTime: string; endTime: string }>,
 
   isBathingAssistanceNeeded: boolean, // 준비된 음식으로 식사를 차려주세요
   isBodyWashingAssistanceNeeded: boolean, // 죽, 반찬 등 요리를 해주세요
@@ -50,8 +51,12 @@ type JobOfferProps = {
 }
 
 function JobDetail() {
+  const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+  const weekdaysKorean = ["월", "화", "수", "목", "금", "토", "일"];
+
   const { jobId } = useParams<{ jobId: string }>();
   const [jobOffer, setJobOffer] = useState<JobOfferProps | null>();
+  const [workingDays, setWorkingDays] = useState<string[]>([]);
   const navigate = useNavigate();
   const { getJobOffer } = useJob();
 
@@ -59,9 +64,18 @@ function JobDetail() {
     getData();
   }, []);
 
+
   const getData = async () => {
-    const offer = await getJobOffer(jobId!);
+    const offer : JobOfferProps | null = await getJobOffer(jobId!);
     setJobOffer(offer);
+    if (offer) {
+      weekdays.map((day: string, index) => {
+        const schedules = new Map(Object.entries((offer as JobOfferProps).jobOfferSchedule)).get(day);
+        schedules?.map((schedule: { startTime: string, endTime: string}) => {
+          setWorkingDays(prev => [...prev, `(${weekdaysKorean[index]}) ${Number(schedule.startTime.substring(0, 2))}시 ~ ${Number(schedule.endTime.substring(0, 2))}시`]);
+        });
+      })
+    }
   };
 
   const handleNavigateRecommend = () => {
@@ -112,6 +126,7 @@ function JobDetail() {
   const getWage = (wage: string) => {
     return String(wage).replace(/[^0-9]/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
+  
 
   return (
     <div className="flex flex-col justify-center font-pre select-none">
@@ -138,9 +153,13 @@ function JobDetail() {
               <img className="w-[24px] mr-[6px]" src="/assets/icons/calendar-bold.svg" />
             </div>
             <div>
-              <p className="text-[18px] font-bold">25.02.16 ~ 25.08.18</p>
-              <p className="text-[18px] font-bold">{"(월) 9시 ~ 11시"}</p>
-              <p className="text-[18px] font-bold">{"(수) 9시 ~ 11시"}</p>
+              {
+                workingDays.map((day) => {
+                  return <p className="text-[18px] font-bold">{day}</p>;
+                })
+              }
+              {/* <p className="text-[18px] font-bold">{"(월) 9시 ~ 11시"}</p>
+              <p className="text-[18px] font-bold">{"(수) 9시 ~ 11시"}</p> */}
             </div>
           </div>
           <div className="flex">
