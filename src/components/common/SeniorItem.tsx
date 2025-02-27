@@ -5,6 +5,7 @@ import Space from "./Space";
 type ItemProps = {
   senior: SeniorProps
   state?: number,
+  jobId?: string,
 }
 
 type SeniorProps = {
@@ -36,11 +37,17 @@ const getGender = (gender: string) => {
   return "여"
 }
 
-const SeniorItem = ({ senior, state }: ItemProps) => {
+const SeniorItem = ({ senior, state, jobId }: ItemProps) => {
   const navigate = useNavigate();
 
-  const handleNavigateAddJob = () => {
-    navigate("/jobs/add");
+  const handleNavigateAddJob = (seniorId: string) => {
+    navigate(`/seniors/${seniorId}/jobs/add`);
+  }
+
+  const handleNavigateRecommend = (jobId?: string) => {
+    if (jobId) {
+      navigate(`/jobs/${jobId}/recommend`);
+    }
   }
 
   switch (state) {
@@ -50,10 +57,10 @@ const SeniorItem = ({ senior, state }: ItemProps) => {
         <div className="flex flex-col w-full p-[20px] border border-[2px] border-[#FAF9F9] gap-[14px] rounded-[10px] shadow-sm">
           <div className="flex items-center">
             <img className="w-[20px] mr-[6px]" src="assets/images/old-man.png" />
-            <p className="text-[18px] text-[#3C3939] font-bold">{senior.seniorName} {`(만 ${getAge(senior.seniorBirth)}세, ${getGender(senior.seniorGender)})`}</p>
+            <p className="text-[18px] text-[#3C3939] font-bold">{senior.seniorName} 어르신 {`(만 ${getAge(senior.seniorBirth)}세, ${getGender(senior.seniorGender)})`}</p>
           </div>
           <p className="text-[16px] text-[#717171] font-semibold">{senior.seniorAddress}</p>
-          <button className={`w-full min-h-[48px] bg-[#FAF9F9] cursor-pointer rounded-[8px] text-[16px] text-[#717171] font-bold`} onClick={handleNavigateAddJob}>
+          <button className={`w-full min-h-[48px] bg-[#FAF9F9] cursor-pointer rounded-[8px] text-[16px] text-[#717171] font-bold`} onClick={() => handleNavigateAddJob(senior.seniorId)}>
             방문 요양 구인하기
           </button>
         </div>
@@ -63,11 +70,11 @@ const SeniorItem = ({ senior, state }: ItemProps) => {
         <div className="flex flex-col w-full p-[20px] border border-[2px] border-[#FAF9F9] gap-[14px] rounded-[10px] shadow-sm">
           <div className="flex items-center">
             <img className="w-[20px] mr-[6px]" src="assets/images/old-man.png" />
-            <p className="text-[18px] text-[#3C3939] font-bold">김누구 어르신</p>
+            <p className="text-[18px] text-[#3C3939] font-bold">{senior.seniorName} 어르신</p>
           </div>
-          <p className="text-[16px] text-[#717171] font-semibold">만 82세, 남, 서울시 노원구</p>
-          <MatchingState state={1} />
-          <button className={`relative w-full min-h-[48px] bg-[#FF8411] cursor-pointer rounded-[10px] text-[16px] text-[#FFFFFF] font-bold`} onClick={() => { }}>
+          <p className="text-[16px] text-[#717171] font-semibold">{`만 ${getAge(senior.seniorBirth)}세, ${getGender(senior.seniorGender)}, ${senior.seniorAddress.split(" ").slice(0, 2).join(" ")}`}</p>
+          <MatchingState state={0} />
+          <button className={`relative w-full min-h-[48px] bg-[#FF8411] cursor-pointer rounded-[10px] text-[16px] text-[#FFFFFF] font-bold`} onClick={() => handleNavigateRecommend(jobId)}>
             추천 보호사 리스트 확인하기
           </button>
         </div>
@@ -77,7 +84,7 @@ const SeniorItem = ({ senior, state }: ItemProps) => {
         <div className="flex flex-col w-full p-[20px] bg-[#FFECC4] border border-[2px] border-[#FFAE00] gap-[8px] rounded-[10px] shadow-sm">
           <div className="flex items-center">
             <img className="w-[20px] mr-[6px]" src="assets/images/old-man.png" />
-            <p className="text-[18px] text-[#3C3939] font-bold">김누구 어르신</p>
+            <p className="text-[18px] text-[#3C3939] font-bold">{senior.seniorName} 어르신</p>
           </div>
           <p className="text-[16px] text-[#717171] font-semibold">만 82세, 남, 서울시 노원구</p>
           <p className="text-[14px] text-[#FF8411] font-bold">매칭이 거절되었어요</p>

@@ -1,5 +1,16 @@
 import { useRecoilState } from "recoil";
-import { accessTokenState, userTypeState, userInfoState } from "../store/store";
+import { accessTokenState, userTypeState, userInfoState, centerInfoState } from "../store/store";
+
+type Certification = {
+  certiNumber: string,
+  certiType: string,
+}
+
+type Career = {
+  company: string,
+  period: string,
+  contents: string,
+}
 
 type CheckUserIdProps = {
   userId: string,
@@ -25,18 +36,52 @@ type CreateManagerProps = {
   openingDate: string,
 }
 
+type CreateCaregiverProps = {
+  userId: string,
+  userPassword: string,
+  userName: string,
+  phoneNumber: string,
+  userGender: string,
+  profileImage: Blob | null,
+  mimeType?: string,
+  userAddress: string,
+  certifications: Certification[],
+  hasCar: boolean,
+  driversLicense: boolean,
+  dementiaEducation: boolean,
+  careers?: Career[],
+  userIntro: string,
+}
+
+type UpdateCaregiverProps = {
+  userName: string,
+  phoneNumber: string,
+  userGender: string,
+  profileImage: Blob | null,
+  mimeType?: string,
+  userAddress: string,
+  certifications: Certification[],
+  hasCar: boolean,
+  driversLicense: boolean,
+  dementiaEducation: boolean,
+  careers?: Career[],
+  userIntro: string,
+}
+
 type LoginProps = {
   userId: string,
   userPassword: string,
 }
 
 const useAuth = () => {
+  const apiURL = process.env.REACT_APP_API_URL;
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
+  const [centerInfo, setCenterInfo] = useRecoilState(centerInfoState);
   const [userType, setUserType] = useRecoilState(userTypeState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
 
   const checkUserId = async ({ userId }: CheckUserIdProps) => {
-    return await fetch("/api/user/login", {
+    return await fetch(`${apiURL}/user/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,8 +119,7 @@ const useAuth = () => {
   const createManager = async ({ userId, userPassword, userName, phoneNumber, userGender, profileImage, centerName, showerTruck, centerAddress, centerRating, centerIntro, regNumber, repName, openingDate }: CreateManagerProps) => {
     const image = profileImage ? await blobToByteArray(profileImage) : null;
 
-
-    return await fetch("/api/manager/sign_up", {
+    return await fetch(`${apiURL}/manager/sign_up`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -88,7 +132,7 @@ const useAuth = () => {
           phone: phoneNumber,
           userType: "관리사",
           gender: "남성",
-          profileImage: { "type": "Buffer", "data": image },
+          profileImage: image ? { "type": "Buffer", "data": image } : null,
           mimeType: "image/jpeg",
           centerName: centerName,
           hasBathVehicle: showerTruck ?? false,
@@ -104,19 +148,93 @@ const useAuth = () => {
       ),
     })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+        // if (!response.ok) {
+        //   throw new Error("Network response was not ok");
+        // }
         return response.json();
       })
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         return result;
       });
   }
 
+  const createCaregiver = async ({ userId, userPassword, userName, phoneNumber, userGender, certifications, userAddress, hasCar, driversLicense, dementiaEducation }: CreateCaregiverProps) => {
+    return await fetch(`${apiURL}/caregiver/sign_up`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(
+        {
+          id: userId,
+          pw: userPassword,
+          name: userName,
+          phone: phoneNumber,
+          userType: "요양사",
+          gender: userGender,
+          certifications: certifications,
+          caregiverAddress: userAddress,
+          hasCar: hasCar,
+          hasDrivingLicense: driversLicense,
+          isDmentialTrained: dementiaEducation,
+          career: [],
+          intro: "",
+        }
+      ),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((result) => {
+        return result;
+      }).catch(error => console.log(error));
+  }
+
+  const updateCaregiver = async ({ userName, phoneNumber, userGender, profileImage, certifications, userAddress, hasCar, driversLicense, dementiaEducation, careers, userIntro }: UpdateCaregiverProps) => {
+    const image = profileImage ? await blobToByteArray(profileImage) : null;
+    console.log(careers);
+
+    // for (let i = 0; i < 2; i++) {
+    return await fetch(`${apiURL}/caregiver/editCaregiverInfo`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${accessToken}`
+      },
+      body: JSON.stringify(
+        {
+          name: userName,
+          phone: phoneNumber,
+          gender: userGender,
+          profileImage: image ? { "type": "Buffer", "data": image } : null,
+          mimeType: "image/jpeg",
+          certifications: certifications,
+          caregiverAddress: userAddress,
+          hasCar: hasCar,
+          hasDrivingLicense: driversLicense,
+          isDmentialTrained: dementiaEducation,
+          career: careers,
+          intro: userIntro,
+        }
+      ),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((result) => {
+        return result;
+      }).catch((error) => {
+        console.log(error);
+        // getAccessToken();
+        // return null;
+      });
+    // if (!result) return result;
+    // }
+  }
+
   const login = async ({ userId, userPassword }: LoginProps) => {
-    return await fetch("/api/user/login", {
+    return await fetch(`${apiURL}/user/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -133,8 +251,9 @@ const useAuth = () => {
       })
       .then((result) => {
         if (result.accessToken) {
+          // console.log(result);
           setAccessToken(result.accessToken);
-          getUserInfo(result.accessToken);
+          (async () => setUserInfo(await getUserInfo(result.accessToken)))();
           return true;
         }
         return false;
@@ -145,10 +264,11 @@ const useAuth = () => {
     setAccessToken("");
     setUserType("");
     setUserInfo({});
+    setCenterInfo({});
   }
 
   const getUserInfo = async (token?: string) => {
-    return await fetch("/api/user/getUserInfo", {
+    return await fetch(`${apiURL}/user/getUserInfo`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -159,18 +279,12 @@ const useAuth = () => {
         return response.json();
       })
       .then((result) => {
-        console.log(result);
-        if (result.userType) {
-          setUserInfo(result);
-          setUserType(result.userType);
-          return true;
-        }
-        return false;
+        return result;
       });
   }
 
   const deleteUser = async () => {
-    return await fetch("/api/user/withdrawal", {
+    return await fetch(`${apiURL}/user/withdrawal`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -190,7 +304,7 @@ const useAuth = () => {
   }
 
   const getAccessToken = async () => {
-    return await fetch("/api/user/getAccessToken", {
+    return await fetch(`${apiURL}/user/getAccessToken`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -211,13 +325,23 @@ const useAuth = () => {
   }
 
   const getLoggedIn = () => {
-    if (accessToken && userType) {
+    if (accessToken) {
       return true;
     }
     return false;
   }
 
-  return { checkUserId, createManager, login, logout, getUserInfo, deleteUser, getAccessToken, getLoggedIn };
+  const getUserType = () => {
+    // console.log(userInfo);
+    if (userInfo.userType === "요양사") {
+      return 1;
+    } else if (userInfo.userType === "관리사") {
+      return 2;
+    }
+    return null;
+  }
+
+  return { checkUserId, createManager, createCaregiver, updateCaregiver, login, logout, getUserInfo, deleteUser, getAccessToken, getLoggedIn, getUserType };
 }
 
 export default useAuth;

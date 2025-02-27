@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import ProgressBar from "../../../components/common/ProgressBar";
 import Button from "../../../components/common/Button";
 import Title from "../../../components/common/Title";
@@ -12,12 +12,13 @@ import { useDaumPostcodePopup } from "react-daum-postcode";
 import Label from "../../../components/common/Label";
 import { initializeApp } from "firebase/app";
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import Delay from "../../../components/common/Delay";
 import TextArea from "../../../components/common/TextArea";
 import TextButton from "../../../components/common/TextButton";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../apis/auth";
 import ProfileInput from "../../../components/common/ProfileInput";
+import Animation from "../../../components/common/Animation";
+import { runAfterDelay } from "../../../utils/delay";
 
 
 declare global {
@@ -43,13 +44,14 @@ const auth = getAuth();
 auth.languageCode = "ko";
 
 function CenterSignup() {
-  const [step, setStep] = useState<number>(6);
+  const [step, setStep] = useState<number>(0);
   const [userId, setUserId] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
   const [userIdValidation, setUserIdValidation] = useState<boolean | null>(null);
   const [userPasswordValidation, setUserPasswordValidation] = useState<boolean | null>(null);
   const [userName, setUserName] = useState<string>("");
   const [userPhoneNumber, setUserPhoneNumber] = useState<string>("");
+  const [authPhoneNumber, setAuthPhoneNumber] = useState<boolean>(false);
   const [centerAddress, setCenterAddress] = useState<string>("");
   const [centerAddressDetail, setCenterAddressDetail] = useState<string>("");
   const [centerName, setCenterName] = useState<string>("");
@@ -66,6 +68,12 @@ function CenterSignup() {
   const navigate = useNavigate();
   const openSearchAddress = useDaumPostcodePopup();
   const { checkUserId, createManager, login } = useAuth();
+
+  useEffect(() => {
+    if (step === 7) {
+      runAfterDelay(2, handleClickDone);
+    }
+  }, [step]);
 
   const handleChangeUserId = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserId(e.target.value);
@@ -114,6 +122,11 @@ function CenterSignup() {
       }).catch((error) => {
         console.log(error);
       });
+  }
+
+  const handleConfirmAuthCode = () => {
+    setAuthPhoneNumber(true);
+    handleClickDone();
   }
 
   const handleChangeCenterAddressDetail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -202,7 +215,7 @@ function CenterSignup() {
       profileImage: image,
       centerName: centerName,
       showerTruck: showerTruck,
-      centerAddress: centerAddress + centerAddressDetail,
+      centerAddress: centerAddress + "@" + centerAddressDetail,
       centerRating: centerRating ? ["A등급", "B등급", "C등급", "D등급"][centerRating] : null,
       centerIntro: centerIntroduction,
       regNumber: registrationNumber,
@@ -279,11 +292,11 @@ function CenterSignup() {
               <Input type="text" placeholder="예시 ) 010-1234-5678" value={userPhoneNumber} onChange={handleChangeUserPhoneNumber} />
             </div>
             <div ref={divRef} />
-            {/* <Button text="인증번호 발송" onClick={() => handleSendAuthCode(true)} disabled={!userPhoneNumber} /> */}
-            <Button text="인증번호 발송" onClick={handleClickDone} disabled={!userPhoneNumber} />
+            <Button text={authPhoneNumber ? "입력 완료" : "인증번호 발송"} onClick={authPhoneNumber ? handleClickDone : () => handleSendAuthCode(true)} disabled={!userPhoneNumber} />
+            {/* <Button text="인증번호 발송" onClick={handleClickDone} disabled={!userPhoneNumber} /> */}
             {
               openBottomSheet
-                ? <BottomSheet start={Date.now()} handleSendAuthCode={handleSendAuthCode} handleClickDone={handleClickDone} />
+                ? <BottomSheet start={Date.now()} handleSendAuthCode={handleSendAuthCode} handleConfirmAuthCode={handleConfirmAuthCode} />
                 : null
             }
           </div>
@@ -360,6 +373,7 @@ function CenterSignup() {
                 <CheckButton text="네" width="w-[110px]" height="h-[34px]" onClick={() => setShowerTruck(true)} checked={showerTruck === true} />
                 <CheckButton text="아니오" width="w-[110px]" height="h-[34px]" onClick={() => setShowerTruck(false)} checked={showerTruck === false} />
               </div>
+              <Space css={"h-[34px]"} />
               <Label text="한줄 소개" />
               <Space css={"h-[18px]"} />
               <TextArea placeholder="예시 ) 5년 연속 A등급, 이어봄 재가방문요양센터입니다." value={centerIntroduction} onChange={handleChangeVenterIntroduction} maxLength={30} rows={2} />
@@ -380,13 +394,6 @@ function CenterSignup() {
               <Space css={"h-[46px]"} />
               <Space css={"h-[80px]"} />
               <ProfileInput onChange={handleChangeProfileImage} />
-              {/* <div className="flex w-full justify-center cursor-pointer">
-                <div className="w-[180px] h-[180px] bg-[#D4D2D2] rounded-[30px]">
-                  <div className="relative top-[157px] left-[157px] flex justify-center items-center w-[46px] h-[46px] bg-[#FAF9F9] rounded-[50%] shadow-md">
-                    <img src="/assets/icons/camera.svg"></img>
-                  </div>
-                </div>
-              </div> */}
             </div>
             <Space css={"h-[56px]"} />
             <Button text="회원가입 완료" onClick={() => handleClickSignup(imageBlob)} disabled={!imageURL} textButton={
@@ -397,44 +404,66 @@ function CenterSignup() {
     }
   }
 
-  if (step <= 6) {
-    return (
-      <div className="flex flex-col justify-center font-pre p-[20px] select-none">
-        <Space css={"h-[28px]"} />
-        <div className="flex justify-center">
-          <img className="absolute left-[20px] cursor-pointer" src="/assets/icons/past.svg" onClick={handleClickPrev} />
-          <Title text="회원가입" />
+  switch (step) {
+    default:
+      return (
+        <div className="flex flex-col justify-center font-pre p-[20px] select-none">
+          <Space css={"h-[28px]"} />
+          <div className="flex justify-center">
+            <img className="absolute left-[20px] cursor-pointer" src="/assets/icons/past.svg" onClick={handleClickPrev} />
+            <Title text="회원가입" />
+          </div>
+          <Space css={"h-[16px]"} />
+          {
+            BodyComponent()
+          }
+          <Space css={"h-[80px]"} />
         </div>
-        <Space css={"h-[16px]"} />
-        {
-          BodyComponent()
-        }
-        <Space css={"h-[80px]"} />
-      </div>
-    );
-  }
-
-  return (
-    <div className="h-full flex flex-col font-pre p-[20px] select-none">
-      <Delay start={Date.now()} seconds={2} components={[
-        <>
-          <div className="flex flex-col justify-center flex-1 ">
-            <FormTitle content={<>이어봄 회원가입이<br />완료되었어요!</>} align="text-center" />
+      );
+    case 7:
+      return (
+        <div className="h-full flex flex-col font-pre select-none">
+          <div className="flex flex-col justify-center items-center flex-1">
+            <Animation delay={0} y={30} step={step} component={
+              <div className="flex flex-col items-center">
+                <object className="w-[150px]" data="/assets/icons/confetti-ball.svg" type="image/svg+xml">
+                  <img className="w-[150px]" src="/assets/icons/confetti-ball.svg" />
+                </object>
+                <Space css={"h-[60px]"} />
+                <Animation delay={0} y={30} step={step} component={
+                  <FormTitle content={<>이어봄 회원가입이<br />완료되었어요!</>} align="text-center" />
+                } />
+              </div>
+            } />
           </div>
           <Space css={"h-[76px]"} />
-        </>,
-        <>
-          <div className="flex flex-col justify-center flex-1 ">
-            <FormTitle content={<>이제 어르신 정보를 등록하고<br />보호사 구인을 할 수 있어요</>} align="text-center" />
+        </div>
+      );
+    case 8:
+      return (
+        <div className="h-full flex flex-col font-pre select-none">
+          <div className="flex flex-col justify-center items-center flex-1">
+            <Animation delay={0} y={30} step={step} component={
+              <div className="flex flex-col items-center">
+                <object className="w-[150px]" data="/assets/icons/memo.svg" type="image/svg+xml">
+                  <img className="w-[150px]" src="/assets/icons/memo.svg" />
+                </object>
+                <Space css={"h-[60px]"} />
+                <Animation delay={0} y={30} step={step} component={
+                  <FormTitle content={<>이제 어르신 정보를 등록하고<br />보호사 구인을 할 수 있어요</>} align="text-center" />
+                } />
+              </div>
+            } />
           </div>
           <Space css={"h-[56px]"} />
-          <Button text="어르신 정보 등록하기" onClick={handleNavigateAddSenior} disabled={false} textButton={
-            <TextButton text="다음에 입력할게요" onClick={handleNavigateLogin} />
+          <Animation delay={1} y={0} step={step} component={
+            <Button text="어르신 정보 등록하기" onClick={handleNavigateAddSenior} disabled={false} textButton={
+              <TextButton text="다음에 입력할게요" onClick={handleNavigateLogin} />
+            } />
           } />
-        </>
-      ]} />
-    </div >
-  );
+        </div>
+      );
+  }
 }
 
 export default CenterSignup;

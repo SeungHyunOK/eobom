@@ -21,7 +21,9 @@ function ChatList() {
       </div> */}
       <button className="flex justify-between p-[20px] border-b border-b-[#D4D2D2]" onClick={handleNavigateChatDetail}>
         <div className=" flex justify-between items-center gap-[16px]">
-          <div className="w-[50px] h-[50px] bg-[#9C9898] rounded-full" />
+          <div className="w-[50px] h-[50px] bg-[#FAF9F9] rounded-full">
+            <img src={"/assets/icons/profile.svg"} />
+          </div>
           <div className="flex flex-col items-start">
             <p className="text-[15px] text-[#181818] font-bold">김누구 보호사</p>
             <p className="text-[10px] text-[#717171] font-semibold">김누구 어르신 {"(이어봄방문요양센터)"}</p>
@@ -33,7 +35,9 @@ function ChatList() {
       </button>
       <button className="flex justify-between p-[20px] border-b border-b-[#D4D2D2]" onClick={handleNavigateChatDetail}>
         <div className=" flex justify-between items-center gap-[16px]">
-          <div className="w-[50px] h-[50px] bg-[#9C9898] rounded-full" />
+          <div className="w-[50px] h-[50px] bg-[#FAF9F9] rounded-full">
+            <img src={"/assets/icons/profile.svg"} />
+          </div>
           <div className="flex flex-col items-start">
             <p className="text-[15px] text-[#181818] font-bold">김누구 보호사</p>
             <p className="text-[10px] text-[#717171] font-semibold">김누구 어르신 {"(이어봄방문요양센터)"}</p>

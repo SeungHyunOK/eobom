@@ -16,9 +16,11 @@ function Chat() {
       <CenterHeader text="김누구 보호사" prev={true} />
       <div>
         <div className="mb-[90px]" />
-        <div className="fixed top-[90px] w-full flex justify-between p-[20px] bg-[#FFFFFF] border-b border-b-[#D4D2D2] z-0">
+        <div className="fixed top-[60px] w-full flex justify-between p-[20px] bg-[#FFFFFF] border-b border-b-[#D4D2D2] z-0">
           <div className="flex justify-between items-center gap-[16px]">
-            <div className="w-[50px] h-[50px] bg-[#9C9898] rounded-full" />
+            <div className="w-[50px] h-[50px] bg-[#FAF9F9] rounded-full">
+              <img src={"/assets/icons/profile.svg"} />
+            </div>
             <div className="flex flex-col gap-[6px]">
               <p className="text-[14px] text-[#181818] font-semibold">김누구 어르신 {"(만 82세, 남)"}</p>
               <button className="w-[90px] h-[22px] flex justify-center items-center bg-[#FAF9F9] border border-[#D4D2D2] text-[11px] text-[#3C3939] font-bold rounded-full leading-none">
@@ -28,7 +30,7 @@ function Chat() {
           </div>
         </div>
       </div>
-      <div className="w-full flex flex-col justify-end p-[20px] gap-[20px]">
+      <div className="w-full flex flex-col h-full justify-end p-[20px] gap-[20px]">
         <div className="flex flex-col gap-[20px] pl-[16px] border-l-[2px] border-[#FF8411]">
           <p className="text-[16px] text-[#181818] font-bold">매칭 조율을 요청했어요</p>
           <p className="text-[14px] text-[#717171] font-semibold">급여, 근무 시간 등 근무 조건 협의를 위해<br />보호사가 매칭 조율을 요청했어요</p>

@@ -48,7 +48,7 @@ const Input = ({ type, label, placeholder, value, onChange, onClick, prefix, suf
       case "date":
       case "tel":
         return (
-          <input ref={inputRef} className={`${type === "date" ? "w-[80px]" : "w-full"} text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none`} placeholder={placeholder} value={value} onChange={onChange} type="tel" onFocus={handleFocus} onBlur={handleBlur} />
+          <input ref={inputRef} className={`${type === "date" ? placeholder === "YY.MM" ? "w-[60px]" : "w-[80px]" : "w-full"} text-[19px] flex-1 font-semibold placeholder-[#9C9898] outline-none`} placeholder={placeholder} value={value} onChange={onChange} type="tel" onFocus={handleFocus} onBlur={handleBlur} />
         );
       default:
         return (
@@ -70,7 +70,7 @@ const Input = ({ type, label, placeholder, value, onChange, onClick, prefix, suf
         {BodyComponent()}
         {suffix ?? null}
       </div>
-      <div className={`${type === "date" ? "w-[126px]" : "w-full"} h-[2px] ${underlines[value ? 1 : 0]}`} />
+      <div className={`${type === "date" ? placeholder === "YY.MM" ? "w-[100px]" : "w-[126px]" : "w-full"} h-[2px] ${underlines[value ? 1 : 0]}`} />
     </label>
   );
 };

@@ -42,10 +42,6 @@ function AddJob() {
   const navigate = useNavigate();
   const { createJobOffer } = useJob();
 
-  useEffect(() => {
-    console.log(schedule);
-  }, [schedule]);
-
   const handleChangeMealAssist = () => {
     setMealAssist(!mealAssist);
     setMealAssistDetail(null);
@@ -137,23 +133,55 @@ function AddJob() {
   }
 
   const handleClickAddJob = async () => {
+    console.log(schedule);
+    const scheduleWithStart = new Map(Object.entries(schedule));
+    scheduleWithStart.set("근무일", [{
+      startTime: startDate,
+      endTime: endDate,
+    }]);
+    let stringFeatures: string[] = [];
+    features.map((feature, index) => {
+      if (feature) {
+        stringFeatures.push(["친절해요", "위생 관리 철저해요", "근무 경험이 많아요", "성실해요", "차분해요", "밝고 긍정적이에요", "소통을 잘해요", "믿음직해요", "응급대처가 가능해요", "꼼꼼해요"][index]);
+      }
+    });
+    console.log(scheduleWithStart);
+    // return;
     const result = await createJobOffer({
       seniorId: Number(seniorId),
       hourlyWage: Number(hourlyWage.replace(/[^0-9]/g, "")),
-      caregiverCount,
-      schedule: schedule,
-      mealAssist: mealAssist,
-      toiletAssist: toiletAssist,
-      movingAssist: movingAssist,
-      bathingAssist: bathingAssist,
-      livingAssist: livingAssist,
+      caregiverCount: caregiverCount,
+      schedule: scheduleWithStart,
+
+      isBathingAssistanceNeeded: mealAssistDetail === 0, // 준비된 음식으로 식사를 차려주세요
+      isBodyWashingAssistanceNeeded: mealAssistDetail === 1, // 죽, 반찬 등 요리를 해주세요
+      isCognitiveStimulationNeeded: mealAssistDetail === 2, // 경관식 보조가 필요해요
+
+      isCognitiveBehaviorManagementNeeded: toiletAssistDetail === 0, // 가끔 대소변 실수 시 도와주세요
+      isCommunicationSupportNeeded: toiletAssistDetail === 1, // 기저귀 케어가 필요해요
+      isDailyLivingSupportNeeded: toiletAssistDetail === 2, // 유치도뇨/방광루/장루 관리가 필요해요
+
+      isDressingAssistanceNeeded: movingAssistDetail === 0, // 이동 시 부축 도움이 필요해요
+      isFeedingAssistanceNeeded: movingAssistDetail === 1, // 휠체어 이동 보조가 필요해요
+      isGroomingAssistanceNeeded: movingAssistDetail === 2, // 거동이 불가해요
+
+      isHousekeepingSupportNeeded: livingAssistDetail[0], // 청소, 빨래를 도와주세요
+      isHairWashingAssistanceNeeded: livingAssistDetail[1], // 어르신 목욕을 도와주세요
+      isMobilityAssistanceNeeded: livingAssistDetail[2], // 어르신 병원 동행이 필요해요
+      isOralCareAssistanceNeeded: livingAssistDetail[3], // 산책과 간단한 운동을 도와주세요
+      isPersonalActivitySupportNeeded: livingAssistDetail[4], // 말벗 등 정서 지원이 필요해요
+      isPositionChangeAssistanceNeeded: livingAssistDetail[5], // 인지자극 활동이 필요해요
+
+      // isPhysicalFunctionSupportNeeded: false, // X
+      // isToiletingAssistanceNeeded: false, // X
+      requests: requests,
+      features: stringFeatures,
     });
+    console.log(result)
     if (result !== null) {
       navigate(`/jobs/${result}`);
     }
   }
-
-
 
   const BodyComponent = () => {
     switch (step) {
@@ -258,7 +286,7 @@ function AddJob() {
               <Space css={"h-[36px]"} />
               <TimeTable setWeeklyHours={setWeeklyHours} setSchedule={setSchedule} />
             </div>
-            <Button text="선택 완료" onClick={handleClickDone} disabled={false} textButton={
+            <Button text="선택 완료" onClick={handleClickDone} disabled={Object.entries(schedule).length <= 0} textButton={
               <TextButton text="임시저장" onClick={() => { }} />
             } />
           </div>
