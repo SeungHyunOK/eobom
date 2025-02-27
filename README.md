@@ -8,4 +8,4 @@ Tailwind CSS: 유틸리티 퍼스트(Utility-First) CSS 프레임워크<br/>
 react-helmet-async: SEO 및 문서 <head> 제어<br/>
 GSAP: 강력한 애니메이션 라이브러리<br/>
 React Router: 리액트형식의 페이지 이동<br/>
-React Query: 현명한 자원관리
+Recoil: 현명한 자원관리
