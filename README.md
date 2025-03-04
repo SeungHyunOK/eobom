@@ -1,4 +1,4 @@
-프로젝트 이름
+eobom
 이 프로젝트는 React 18 + TypeScript 환경에서 Tailwind CSS, react-helmet-async, GSAP 등을 사용하여 제작되었습니다.
 
 주요 기술 스택<br/>
